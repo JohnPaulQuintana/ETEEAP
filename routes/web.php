@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GuessController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,9 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', [GuessController::class, 'index'])->name('index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

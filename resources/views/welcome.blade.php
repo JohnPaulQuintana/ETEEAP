@@ -11,6 +11,15 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    {{-- font awesome --}}
+    <link rel="stylesheet" data-purpose="Layout StyleSheet" title="Web Awesome"
+        href="/css/app-wa-462d1fe84b879d730fe2180b0e0354e0.css?vsn=d">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/all.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-thin.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-solid.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-regular.css">
+    <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.1/css/sharp-light.css">
+
 </head>
 
 <body class="bg-slate-200 dark:bg-gray-950">
@@ -155,7 +164,7 @@
 
                         <li>
                             <a href="#"
-                                class="block py-2 px-3 text-white border border-white hover:text-blue-200 hover:border-blue-200 md:hover:bg-transparent">Requirements</a>
+                                class="b-r block py-2 px-3 text-white hover:text-blue-200 md:hover:bg-transparent">Requirements</a>
                         </li>
                         
 
@@ -253,22 +262,30 @@
                                 Application Tracking System for ETEEAP
                             </p>
 
-                           
+                            <a href="#" class="b-r border-b border-blue-700 font-bold text-blue-600 hover:text-blue-500">
+                                Requirements
+                                <i class="fa-duotone fa-arrow-right"></i>
+                            </a>
                         </div>
                     </div>
 
                     <div class="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
                         <div class="w-full p-4 sm:p-12.5 xl:p-17.5">
-                        
+                            {{-- <span class="mb-1.5 block font-medium">Start for free</span> --}}
                             <h2 class="mb-9 text-2xl font-bold text-blue-900 dark:text-white sm:text-title-xl2">
                                 Sign In to ETEEAP
                             </h2>
 
-                            <form>
+                            <!-- Session Status -->
+                            <x-auth-session-status class="mb-4" :status="session('status')" />
+
+                            <form  method="POST" action="{{ route('login') }}">
+                                @csrf
                                 <div class="mb-4">
                                     <label class="mb-2.5 block font-medium text-blue-900 dark:text-white">Email</label>
                                     <div class="relative">
-                                        <input type="email" placeholder="Enter your email"
+                                        <input type="email" name="email" placeholder="Enter your email"
+                                            value="{{ old('email') }}"
                                             class="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
 
                                         <span class="absolute right-4 top-4">
@@ -281,14 +298,18 @@
                                                 </g>
                                             </svg>
                                         </span>
+                                        
                                     </div>
+                                    <x-input-error :messages="$errors->get('email')" class="mt-2" />
                                 </div>
 
                                 <div class="mb-6">
                                     <label class="mb-2.5 block font-medium text-blue-900 dark:text-white">
                                         Password</label>
                                     <div class="relative">
-                                        <input type="password" placeholder="6+ Characters, 1 Capital letter"
+                                        <input type="password" placeholder="8 Characters"
+                                            name="password"
+                                            value="{{ old('password') }}"
                                             class="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary" />
 
                                         <span class="absolute right-4 top-4">
@@ -305,6 +326,7 @@
                                             </svg>
                                         </span>
                                     </div>
+                                    <x-input-error :messages="$errors->get('password')" class="mt-2" />
                                 </div>
 
                                 <div class="mb-5">
@@ -328,9 +350,49 @@
         </div>
     </main>
 
+    @include('popup.requirement')
 
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+    <script>
+        $(document).ready(function(){
+            // set the modal menu element
+            const $requirementM = document.getElementById('requirement-modal');
+            // options with default values
+            const options = {
+                placement: 'bottom-right',
+                backdrop: 'static',
+                backdropClasses:
+                    'bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40',
+                closable: true,
+                onHide: () => {
+                    console.log('modal is hidden');
+                },
+                onShow: () => {
+                    console.log('modal is shown');
+                },
+                onToggle: () => {
+                    console.log('modal has been toggled');
+                },
+            };
+
+            // instance options object
+            const instanceOptions = {
+                id: 'requirement-modal',
+                override: true
+            };
+            // on load
+            const rq = new Modal($requirementM, options, instanceOptions);
+            
+            // rq.show()
+
+            $('.b-r').on('click', function(){
+               
+                rq.show()
+            })
+        })
+    </script>
 </body>
 
 </html>
