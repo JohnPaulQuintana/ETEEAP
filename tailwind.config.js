@@ -22,6 +22,8 @@ export default {
           },
         extend: {
             colors: {
+                bgprimary: 'rgba(22,34,57,0.95)',
+                textprimary:'#3CF',
                 current: 'currentColor',
                 transparent: 'transparent',
                 white: '#FFFFFF',

@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\GuessController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,15 +18,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+})->name('welcome');
 
-Route::get('/', [GuessController::class, 'index'])->name('index');
+// Route::get('/', [GuessController::class, 'index'])->name('index');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['checkUserRole:0','auth','verified'])->group(function(){
+    Route::get('/user-dashboard', [UserController::class, 'index'])->name('user-dashboard');
+
+    Route::post('/store', [DocumentController::class, 'store'])->name('store');
+
+    Route::get('/history/{id}', [UserController::class, 'ajaxCallHistory'])->name('ajax.history');
+});
+
+Route::middleware(['checkUserRole:1','auth','verified'])->group(function(){
+    Route::get('/admin-dashboard', [AdminController::class, 'index'])->name('admin-dashboard');
+
+    Route::get('/documents/{id}', [AdminController::class, 'ajaxCall'])->name('ajax');
+    Route::get('/documents-update/{id}', [AdminController::class, 'ajaxCallUpdate'])->name('ajax.update');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
