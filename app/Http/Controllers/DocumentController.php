@@ -10,6 +10,11 @@ use App\Models\Document;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+// use Illuminate\Notifications\Notification;
+
+use App\Notifications\SendEmailNotification;
+use Illuminate\Support\Facades\Notification;
+
 class DocumentController extends Controller
 {
     public function index(){
@@ -97,6 +102,30 @@ class DocumentController extends Controller
         Note::create(['status_id'=>$insertedDocs->id, 'notes'=>"Document's is sumitted successfully, we will send a notification once its reviewed."]);
         // return response()->json(['status'=>'success', 'message'=>"Your document's successfully submitted, hava a nice day!"]);
        
+        // Get the administrator user
+        $notifyUser = User::where('role', 1)->first();
+
+        // Set the time zone to Asia/Manila
+        date_default_timezone_set('Asia/Manila');
+
+        // Prepare the notification details
+        $details = [
+            'greetings' => "Hello ".$notifyUser->name."!",
+            'body' => "A new application form has been submitted and is currently awaiting review by our team.",
+            'body1' => "Please ensure to review the application promptly and thoroughly.",
+            'body2' => "Sender Name: ". Auth::user()->name,
+            'body3' => "Date: ". date('Y-m-d'),
+            'body4' => "Time: ". date('h:i A'),
+            'body5' => "Rest assured that you will be notified promptly once a decision has been made regarding the application.",
+            // 'body5' => "",
+            'body6' => "Thank you for your attention to this matter.",
+            'actiontext' => 'Go to Dashboard',
+            'actionurl' => route('admin-dashboard'), // Assuming 'admin.dashboard' is the route name for the admin dashboard
+            'lastline' => 'Best regards, ETEEAP Application Tracking System',
+        ];
+
+        // Send the notification to the administrator
+        Notification::send($notifyUser, new SendEmailNotification($details));
          //for user 
          $mydocs = User::with(['documents.status','documents.status.notes', 'documents.tvids'])->where('id',Auth::user()->id)->get();
          // dd($mydocs);

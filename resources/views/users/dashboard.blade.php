@@ -195,6 +195,14 @@
                                         className = 'text-orange-400'
                                         classNameBg = 'bg-orange-400'
                                         break;
+                                    case "accepted":
+                                        className = 'text-green-400'
+                                        classNameBg = 'bg-green-400'
+                                        break;
+                                    case "rejected":
+                                        className = 'text-red-500'
+                                        classNameBg = 'bg-red-500'
+                                        break;
                                 
                                     default:
                                         className = 'text-yellow-400'
@@ -202,20 +210,20 @@
                                         break;
                                 }
                                 lists += `
-                                <li class="mb-10 ms-8">            
-                                    <span class="absolute flex items-center justify-center w-6 h-6 bg-gray-100 rounded-full -start-3.5 ring-8 ring-white dark:ring-gray-700 dark:bg-gray-600">
-                                         <i class="fa-sharp fa-solid fa-circle w-2.5 h-2.5 ${className}"></i>  
-                                    </span>
-                                    <h3 class="flex items-start mb-1 text-lg font-semibold text-gray-900 dark:text-white">
-                                        ETEEAP APPLICATION 
-                                        <span class="${classNameBg} text-black text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
-                                            ${history.status}...
+                                    <li class="mb-10 ms-8">            
+                                        <span class="absolute flex items-center justify-center w-6 h-6 bg-gray-100 rounded-full -start-3.5 ring-8 ring-white dark:ring-gray-700 dark:bg-gray-600">
+                                            <i class="fa-sharp fa-solid fa-circle w-2.5 h-2.5 ${className}"></i>  
                                         </span>
-                                    </h3>
-                                    <time class="block mb-3 text-sm font-normal leading-none text-gray-500 dark:text-gray-400">Date : ${formattedDate}</time>
-                                    <time class="block mb-3 text-sm font-normal leading-none text-gray-500 dark:text-gray-400">Time : ${formattedDay}</time>
-                                    <span class="block border bg-slate-50 rounded-md p-2 mb-3 text-sm font-normal leading-none ${className} dark:text-gray-400">${history.notes}</span>
-                                </li>
+                                        <h3 class="flex items-start mb-1 text-lg font-semibold text-gray-900 dark:text-white">
+                                            ETEEAP APPLICATION 
+                                            <span class="${classNameBg} text-black text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
+                                                ${history.status}...
+                                            </span>
+                                        </h3>
+                                        <time class="block mb-3 text-sm font-normal leading-none text-gray-500 dark:text-gray-400">Date : ${formattedDate}</time>
+                                        <time class="block mb-3 text-sm font-normal leading-none text-gray-500 dark:text-gray-400">Time : ${formattedDay}</time>
+                                        <span class="block border bg-slate-50 rounded-md p-2 mb-3 text-sm font-normal leading-none ${className} dark:text-gray-400">${history.notes}</span>
+                                    </li>
                                 `
                             });
 

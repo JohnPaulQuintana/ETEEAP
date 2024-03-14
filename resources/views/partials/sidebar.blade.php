@@ -31,7 +31,7 @@
                         <!-- Menu Item Dashboard -->
                         <li>
                             <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-                                href="#" @click.prevent="selected = (selected === 'Dashboard' ? '':'Dashboard')"
+                                href="{{ route('admin-dashboard') }}"
                                 :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Dashboard') }">
                                 <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -75,12 +75,24 @@
                         <!-- Menu Item Return -->
                         <li>
                             <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-                                href="profile.html" @click="selected = (selected === 'Profile' ? '':'Profile')"
+                                href="{{ route('admin-dashboard.accepted') }}" @click="selected = (selected === 'Profile' ? '':'Profile')"
+                                :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Profile') && (page === 'profile') }"
+                                :class="page === 'profile' && 'bg-graydark'">
+                                
+                                <i class="fa-light fa-file-circle-check text-xl"></i>
+                                Accepted Applicant
+                            </a>
+                        </li>
+                        <!-- Menu Item Return -->
+                        <!-- Menu Item Return -->
+                        <li>
+                            <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
+                                href="{{ route('admin-dashboard.declined') }}" @click="selected = (selected === 'Profile' ? '':'Profile')"
                                 :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Profile') && (page === 'profile') }"
                                 :class="page === 'profile' && 'bg-graydark'">
                                 
                                 <i class="fa-light fa-file-circle-xmark text-xl"></i>
-                                Return Documents
+                                Declined Applicant
                             </a>
                         </li>
                         <!-- Menu Item Return -->
@@ -88,7 +100,7 @@
                         <!-- Menu Item Profile -->
                         <li>
                             <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-                                href="profile.html" @click="selected = (selected === 'Profile' ? '':'Profile')"
+                                href="{{ route('profile.edit') }}" @click="selected = (selected === 'Profile' ? '':'Profile')"
                                 :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Profile') && (page === 'profile') }"
                                 :class="page === 'profile' && 'bg-graydark'">
                                 <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none"
@@ -123,7 +135,7 @@
                         <!-- Menu Item Dashboard -->
                         <li>
                             <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-                                href="#" @click.prevent="selected = (selected === 'Dashboard' ? '':'Dashboard')"
+                                href="{{ route('user-dashboard') }}"
                                 :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Dashboard') }">
                                 <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -167,7 +179,7 @@
                         <!-- Menu Item Return -->
                         <li>
                             <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-                                href="profile.html" @click="selected = (selected === 'Profile' ? '':'Profile')"
+                                href="#" @click="selected = (selected === 'Profile' ? '':'Profile')"
                                 :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Profile') && (page === 'profile') }"
                                 :class="page === 'profile' && 'bg-graydark'">
                                 
@@ -180,7 +192,7 @@
                         <!-- Menu Item Profile -->
                         <li>
                             <a class="group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4"
-                                href="profile.html" @click="selected = (selected === 'Profile' ? '':'Profile')"
+                                href="{{ route('profile.edit') }}" @click="selected = (selected === 'Profile' ? '':'Profile')"
                                 :class="{ 'bg-graydark dark:bg-meta-4': (selected === 'Profile') && (page === 'profile') }"
                                 :class="page === 'profile' && 'bg-graydark'">
                                 <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none"

@@ -15,12 +15,24 @@
         <div class="flex flex-row gap-1">
             <div class="text-white">
                 <span class="text-blue-900 dark:text-white">Status:</span>
-                <h1 class="text-[13px] bg-yellow-400 rounded-lg text-center p-[2px]">
-                    {{ $d->status }}
-                    <i class="fa-solid fa-circle text-[6px]"></i>
-                    <i class="fa-solid fa-circle text-[6px]"></i>
-                    <i class="fa-solid fa-circle text-[6px]"></i>
+                
+                    @switch($d->status)
+                        @case('accepted')
+                            <h1 class="text-[13px] bg-green-400 rounded-lg text-center p-[2px]">
+                            @break
+                        @case('in-review')
+                            <h1 class="text-[13px] bg-blue-900 rounded-lg text-center p-[2px]">
+                            @break
                     
+                        @case('rejected')
+                            <h1 class="text-[13px] bg-red-500 rounded-lg text-center p-[2px]">
+                            @break
+                    
+                        @default
+                            <h1 class="text-[13px] bg-yellow-400 rounded-lg text-center p-[2px]">
+                                @break
+                    @endswitch
+                    {{ $d->status }}
                 </h1>
             </div>
             <div class="text-white">

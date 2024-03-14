@@ -27,4 +27,7 @@ class Document extends Model
     public function history() :HasMany{
         return $this->hasMany(History::class);
     }
+    public function checked() :HasMany{
+        return $this->hasMany(CheckingDocument::class);
+    }
 }

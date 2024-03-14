@@ -49,4 +49,8 @@ class User extends Authenticatable
     { 
         return $this->hasMany(Document::class);
     }
+    public function interview () : HasMany 
+    { 
+        return $this->hasMany(Interview::class);
+    }
 }
