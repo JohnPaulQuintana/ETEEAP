@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\User;
 use App\Models\Status;
 use App\Models\History;
@@ -50,6 +51,13 @@ class AdminController extends Controller
         
         
         return view('admin.dashboard',['documents' => $alldocs]);
+    }
+
+    // department
+    public function department(){
+        $departments = Department::with('user')->withCount('user')->get();
+    //    dd($departments);
+        return view('admin.department', ['departments'=>$departments]);
     }
 
 

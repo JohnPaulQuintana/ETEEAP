@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CheckingDocumentController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DocumentController;
-use App\Http\Controllers\GuessController;
 use App\Http\Controllers\InterviewController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -43,6 +43,10 @@ Route::middleware(['checkUserRole:1','auth','verified'])->group(function(){
     Route::get('/admin-dashboard/accepted', [AdminController::class, 'accepted'])->name('admin-dashboard.accepted');
     Route::get('/admin-dashboard/declined', [AdminController::class, 'declined'])->name('admin-dashboard.declined');
 
+    Route::get('/department', [AdminController::class, 'department'])->name('department');
+    Route::post('/department-add', [DepartmentController::class, 'index'])->name('department.store');
+    Route::post('/department-user', [DepartmentController::class, 'user'])->name('department.user');
+
     Route::get('/documents/{id}', [AdminController::class, 'ajaxCall'])->name('ajax');
     Route::get('/documents-update/{id}', [AdminController::class, 'ajaxCallUpdate'])->name('ajax.update');
 
@@ -50,6 +54,10 @@ Route::middleware(['checkUserRole:1','auth','verified'])->group(function(){
     Route::post('/checkedDocument', [CheckingDocumentController::class, 'checkedDocument'])->name('checkedDocument');
 
     Route::post('/interview', [InterviewController::class, 'setUpInterview'])->name('interview');
+});
+
+Route::middleware(['checkUserRole:2','auth','verified'])->group(function(){
+    Route::get('/department-dashboard',[DepartmentController::class, 'dashboard'])->name('department.dashboard');
 });
 
 Route::middleware('auth')->group(function () {

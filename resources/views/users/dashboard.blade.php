@@ -85,6 +85,7 @@
 
     @include('popup.requirementSend')
     @include('popup.checkstatus')
+    @include('popup.comments')
     @section('scripts')
         <script>
             var response = @json(session('status'));
@@ -95,6 +96,7 @@
                 // set the modal menu element
                 const $requirementU = document.getElementById('requirementUpload-modal');
                 const $timeline = document.getElementById('timeline-modal');
+                const $comments = document.getElementById('comments-modal');
                 // options with default values
                 const options = {
                     placement: 'bottom-right',
@@ -127,6 +129,24 @@
                         console.log('modal has been toggled');
                     },
                 };
+                // options with default values
+                const optionComments = {
+                    placement: 'bottom-right',
+                    backdrop: 'static',
+                    backdropClasses: 'bg-blue-900/50 dark:bg-blue-900/80 fixed inset-0 z-40',
+                    closable: true,
+                    onHide: () => {
+                        console.log('modal is hidden');
+
+                        
+                    },
+                    onShow: () => {
+                        console.log('modal is shown');
+                    },
+                    onToggle: () => {
+                        console.log('modal has been toggled');
+                    },
+                };
 
                 // instance options object
                 const instanceOptions = {
@@ -138,9 +158,15 @@
                     id: 'timeline-modal',
                     override: true
                 };
+                // instance options object
+                const instanceOptionsC = {
+                    id: 'comments-modal',
+                    override: true
+                };
                 // on load
                 const rqu = new Modal($requirementU, options, instanceOptions);
                 const tm = new Modal($timeline, options, instanceOptionsT);
+                const cm = new Modal($comments, optionComments, instanceOptionsC);
 
                 if(response === 'success'){
                     window.location.reload()
@@ -148,6 +174,10 @@
 
                 $(document).on('click', '.sendDocs', function() {
                     rqu.show()
+                })
+
+                $(document).on('click', '.reupload', function() {
+                    cm.show()
                 })
 
                 $(document).on('click', '.checkStatus', function(){
@@ -159,6 +189,12 @@
 
                 $(document).on('click', '.t-close', function(){
                     tm.hide()
+                })
+                $(document).on('click', '.rs-close', function(){
+                    rqu.hide()
+                })
+                $(document).on('click', '.c-close', function(){
+                    cm.hide()
                 })
 
 
@@ -210,19 +246,69 @@
                                         break;
                                 }
                                 lists += `
-                                    <li class="mb-10 ms-8">            
-                                        <span class="absolute flex items-center justify-center w-6 h-6 bg-gray-100 rounded-full -start-3.5 ring-8 ring-white dark:ring-gray-700 dark:bg-gray-600">
-                                            <i class="fa-sharp fa-solid fa-circle w-2.5 h-2.5 ${className}"></i>  
-                                        </span>
-                                        <h3 class="flex items-start mb-1 text-lg font-semibold text-gray-900 dark:text-white">
-                                            ETEEAP APPLICATION 
-                                            <span class="${classNameBg} text-black text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
-                                                ${history.status}...
+                                    <li class="shadow-md p-2 mb-10 ms-8 grid grid-cols-1 lg:grid-cols-2 gap-2">            
+                                        <div>
+                                            <span class="absolute flex items-center justify-center w-6 h-6 bg-gray-100 rounded-full -start-3.5 ring-8 ring-white dark:ring-gray-700 dark:bg-gray-600">
+                                                <i class="fa-sharp fa-solid fa-circle w-2.5 h-2.5 ${className}"></i>  
                                             </span>
-                                        </h3>
-                                        <time class="block mb-3 text-sm font-normal leading-none text-gray-500 dark:text-gray-400">Date : ${formattedDate}</time>
-                                        <time class="block mb-3 text-sm font-normal leading-none text-gray-500 dark:text-gray-400">Time : ${formattedDay}</time>
-                                        <span class="block border bg-slate-50 rounded-md p-2 mb-3 text-sm font-normal leading-none ${className} dark:text-gray-400">${history.notes}</span>
+                                            <h3 class="flex items-start mb-1 text-lg font-semibold text-blue-900 dark:text-white">
+                                                ETEEAP APPLICATION 
+                                                <span class="${classNameBg} text-white text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
+                                                    ${history.status}
+                                                </span>
+                                                <span class="bg-red-500 hover:bg-red-700 hover:cursor-pointer text-white text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
+                                                    Notify
+                                                </span>
+                                            </h3>
+                                            <time class="block mb-3 text-sm font-normal leading-none text-blue-900 dark:text-gray-400"><span class="font-bold">Date :</span> ${formattedDate}</time>
+                                            <time class="block mb-3 text-sm font-normal leading-none text-blue-900 dark:text-gray-400"><span class="font-bold">Time :</span> ${formattedDay}</time>
+                                            <span class="block rounded-md p-2 mb-3 text-blue-900 text-md font-normal leading-none bg-gray-2 dark:text-gray-400">${history.notes}</span>
+                                        
+                                        </div>
+
+                                        <div class="border border-gray-2 rounded-md bg-gray-2 p-2 text-blue-900 w-full">
+                                            <span class="p-1 font-bold">Comment's</span>
+                                            <div class="text-wrap w-full">
+                                                <div class="break-words max-h-60 overflow-auto">
+
+                                                    <span class="block text-left border rounded-md bg-white p-1 mb-2">
+                                                        
+                                                        <div class="flex items-start gap-2.5">
+                                                            <div class="flex flex-col gap-1">
+                                                                <div class="flex flex-col w-full max-w-[326px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
+                                                                    <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                                                                        <span class="text-sm font-semibold text-gray-900 dark:text-white">John Paul Quintana</span>
+                                                                        <span class="text-sm font-normal ${classNameBg} rounded-sm text-white dark:text-gray-400">11:46 AM</span>
+                                                                    </div>
+                                                                    <div class="flex items-start bg-gray-50 dark:bg-gray-600 rounded-xl p-2">
+                                                                        <div class="me-2">
+                                                                            <span>Kindly resubmit this documents</span>
+                                                                        <span class="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white">
+                                                                            <i class="fa-sharp fa-solid fa-files flex-shrink-0"></i>
+                                                                            
+                                                                            Flowbite Terms & Conditions
+                                                                        </span>
+                                                                        
+                                                                        </div>
+                                                                        <div class="inline-flex self-center items-center">
+                                                                        <button class="reupload border inline-flex bg-blue-900 self-center items-center p-2 text-sm font-medium text-center text-white bg-gray-50 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-600 dark:hover:bg-gray-500 dark:focus:ring-gray-600" type="button">
+                                                                            <i class="fa-sharp fa-solid fa-upload text-md"></i>  
+                                                                            
+                                                                        </button>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        
+                                                        </div>
+
+                                                    </span>
+
+                                                </div>
+                                            </div>    
+                                        </div>
+
                                     </li>
                                 `
                             });

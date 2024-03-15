@@ -37,6 +37,9 @@ class AuthenticatedSessionController extends Controller
             case 1:
                 return redirect()->intended(RouteServiceProvider::AdminDashboard);
                
+            case 2:
+                return redirect()->intended(RouteServiceProvider::DepartmentDashboard);
+               
             
             default:
                 return redirect()->route('login');
