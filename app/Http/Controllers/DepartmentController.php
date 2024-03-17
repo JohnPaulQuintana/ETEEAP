@@ -14,8 +14,15 @@ class DepartmentController extends Controller
     public function dashboard(){
         // dd(Auth::user());
         $department = Department::where('id', Auth::user()->department_id)->first();
+
+        $alldocs = User::whereHas('documents', function ($query) {
+            $query->whereHas('status', function ($subquery) {
+                $subquery->whereNotIn('status',['accepted', 'rejected']);
+            });
+        })->with(['documents.status', 'documents.status.notes', 'documents.tvids', 'documents.checked'])->get();
+
         // dd($department);
-        return view('department.dashboard', ['department' => $department]);
+        return view('department.dashboard', ['department' => $department, 'documents' => $alldocs]);
     }
     public function index(Request $request){
         // dd($request);
