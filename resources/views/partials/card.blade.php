@@ -7,9 +7,10 @@
         {{-- <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p> --}}
     </div>
     <div class="flex items-center justify-between gap-5 mb-3">
-        <div class="checkStatus p-2 border rounded-xl shadow-default hover:bg-blue-100" data-id="{{ $d->id }}">
+        {{-- checkStatus remove today --}}
+        <a href="{{ route('timeline', $d->id) }}" class="p-2 border rounded-xl shadow-default hover:bg-blue-100" data-id="{{ $d->id }}">
             <i class="fa-duotone fa-file-doc text-5xl text-blue-900 dark:text-white hover:cursor-pointer"></i>
-        </div>
+        </a>
         {{-- <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src="/docs/images/blog/image-4.jpg" alt=""> --}}
         
         <div class="flex flex-row gap-1">

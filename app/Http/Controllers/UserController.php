@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CheckingDocument;
 use App\Models\History;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,6 +27,15 @@ class UserController extends Controller
         return view('users.dashboard', ['documents' => $mydocs]);
     }
 
+    public function timeline(Request $request,$id){
+        $history = History::with('document')->where('document_id', $id)->latest()->get();
+
+        $declined = CheckingDocument::where('document_id',$id) ->where('action', 'declined')
+            ->with(['reupload'])
+            ->get();
+        // dd($declined[0]->reuploadDocuments);
+        return view('users.timeline', ['histories'=>$history, 'declined'=>$declined]);
+    }
     // get the history with documents
     public function ajaxCallHistory($id){
         $history = History::with('document')->where('document_id', $id)->latest()->get();

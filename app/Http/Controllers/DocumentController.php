@@ -90,7 +90,10 @@ class DocumentController extends Controller
 
         // Include sender_id and receiver_id in the data to insert
         $dataToInsert['user_id'] = Auth::user()->id; // sender_id
-        $dataToInsert['reciever_id'] = 1; // admin
+
+        // get the first destination
+        $firstDesitination = User::where('department_id', 2)->first();
+        $dataToInsert['reciever_id'] = $firstDesitination->id; // admin
 
 
         // Insert into the database

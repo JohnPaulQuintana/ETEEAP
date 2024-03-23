@@ -15,17 +15,21 @@
                 <span class="text-blue-900"><i class="fa-solid fa-asterisk text-red-500"></i> REQUIRED TO SUBMIT</span>
                 <div class="">
                    
-                    <form class="max-w-lg mx-auto h-fit overflow-auto" enctype="multipart/form-data" action="{{ route('store') }}" method="post">
+                    <form class="max-w-lg mx-auto h-fit overflow-auto" enctype="multipart/form-data" action="{{ route('reupload') }}" method="post">
                         @csrf
+                        <input type="number" name="documentId" id="documentId" value="" class="hidden">
+                        <input type="number" name="checkedId" id="checkedId" value="" class="hidden">
+                        <input type="text" name="checkedName" id="checkedName" value="" class="hidden">
+                        <input type="text" name="checkedSubName" id="checkedSubName" value="" class="hidden">
                         <div class="mb-2 p-1">
-                            <label class="block mb-2 text-md text-left font-bold text-bgprimary" for="loi">1.Letter of Intent: <i class="fa-solid fa-asterisk text-red-500"></i></label>
-                            <input name="loi" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="loi" type="file" accept=".doc, .pdf, .png, .jpeg" required>
-                            <div class="mt-1 text-sm text-left uppercase text-bgprimary dark:text-gray-300" id="user_avatar_help">addressed to: Mr. Philip M. Flores, Director, ETEEAP, Arellano University, 2600 Legarda St., Sampaloc, Manila 1008</div>
+                            <label class="block mb-2 text-md text-left font-bold text-bgprimary" for="reuploadDocs" id="reuploadLable">1.Letter of Intent: <i class="fa-solid fa-asterisk text-red-500"></i></label>
+                            <input name="reuploadDocs" id="reuploadDocs" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" type="file" accept=".doc, .pdf, .png, .jpeg" required>
+                            {{-- <div class="mt-1 text-sm text-left uppercase text-bgprimary dark:text-gray-300" id="user_avatar_help">addressed to: Mr. Philip M. Flores, Director, ETEEAP, Arellano University, 2600 Legarda St., Sampaloc, Manila 1008</div> --}}
                         </div>
 
                         <div class="mb-2 p-1">
                             <label class="block mb-2 text-md text-left font-bold text-bgprimary" for="comment">Comments:</label>
-                            <textarea id="comment" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                            <textarea id="reuploadComment" name="reuploadComment" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
                         </div>
                         
                         

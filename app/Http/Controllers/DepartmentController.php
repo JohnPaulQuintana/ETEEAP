@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CheckingDocument;
 use App\Models\User;
 use App\Models\Department;
 use Illuminate\Http\Request;
@@ -20,9 +21,13 @@ class DepartmentController extends Controller
                 $subquery->whereNotIn('status',['accepted', 'rejected']);
             });
         })->with(['documents.status', 'documents.status.notes', 'documents.tvids', 'documents.checked'])->get();
-
-        // dd($department);
-        return view('department.dashboard', ['department' => $department, 'documents' => $alldocs]);
+        // dd($alldocs[0]->documents[0]->id);
+        $checked = CheckingDocument::where('document_id',$alldocs[0]->documents[0]->id)
+            ->select('sub_name', 'action')->get();
+        $declined = CheckingDocument::where('document_id',$alldocs[0]->documents[0]->id) ->where('action', 'declined')
+            ->get();
+        // dd($declined);
+        return view('department.dashboard', ['department' => $department, 'documents' => $alldocs, 'checked' => $checked, 'declined' => $declined]);
     }
     public function index(Request $request){
         // dd($request);

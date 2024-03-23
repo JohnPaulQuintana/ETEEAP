@@ -27,9 +27,9 @@ class CheckingDocumentController extends Controller
                         ]
                     );
     
-                    return response()->json(['status'=>'success',',message'=>"document's updated successfully"]);
+                    return response()->json(['status'=>'success','message'=>"document's updated successfully"]);
                 }else{
-                    return response()->json(['status'=>'error',',message'=>"document is already checked"]);
+                    return response()->json(['status'=>'error','message'=>"document is already checked"]);
                 }
             }
         }

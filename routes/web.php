@@ -6,6 +6,7 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\InterviewController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReuploadDocumentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +37,10 @@ Route::middleware(['checkUserRole:0','auth','verified'])->group(function(){
     Route::post('/store', [DocumentController::class, 'store'])->name('store');
 
     Route::get('/history/{id}', [UserController::class, 'ajaxCallHistory'])->name('ajax.history');
+
+    Route::get('/timeline/{id}', [UserController::class, 'timeline'])->name('timeline');
+
+    Route::post('/reupload', [ReuploadDocumentController::class, 'reupload'])->name('reupload');
 });
 
 Route::middleware(['checkUserRole:1','auth','verified'])->group(function(){
@@ -58,10 +63,11 @@ Route::middleware(['checkUserRole:1','auth','verified'])->group(function(){
 
 Route::middleware(['checkUserRole:2','auth','verified'])->group(function(){
     Route::get('/department-dashboard',[DepartmentController::class, 'dashboard'])->name('department.dashboard');
+    Route::post('/evaluate', [CheckingDocumentController::class, 'checkedDocument'])->name('evaluate');   
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');  
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });

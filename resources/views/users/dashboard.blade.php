@@ -84,8 +84,8 @@
     </div>
 
     @include('popup.requirementSend')
-    @include('popup.checkstatus')
-    @include('popup.comments')
+    {{-- @include('popup.checkstatus') --}}
+   
     @section('scripts')
         <script>
             var response = @json(session('status'));
@@ -95,8 +95,8 @@
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 // set the modal menu element
                 const $requirementU = document.getElementById('requirementUpload-modal');
-                const $timeline = document.getElementById('timeline-modal');
-                const $comments = document.getElementById('comments-modal');
+                // const $timeline = document.getElementById('timeline-modal');
+                // const $comments = document.getElementById('comments-modal');
                 // options with default values
                 const options = {
                     placement: 'bottom-right',
@@ -130,23 +130,23 @@
                     },
                 };
                 // options with default values
-                const optionComments = {
-                    placement: 'bottom-right',
-                    backdrop: 'static',
-                    backdropClasses: 'bg-blue-900/50 dark:bg-blue-900/80 fixed inset-0 z-40',
-                    closable: true,
-                    onHide: () => {
-                        console.log('modal is hidden');
+                // const optionComments = {
+                //     placement: 'bottom-right',
+                //     backdrop: 'static',
+                //     backdropClasses: 'bg-blue-900/50 dark:bg-blue-900/80 fixed inset-0 z-40',
+                //     closable: true,
+                //     onHide: () => {
+                //         console.log('modal is hidden');
 
                         
-                    },
-                    onShow: () => {
-                        console.log('modal is shown');
-                    },
-                    onToggle: () => {
-                        console.log('modal has been toggled');
-                    },
-                };
+                //     },
+                //     onShow: () => {
+                //         console.log('modal is shown');
+                //     },
+                //     onToggle: () => {
+                //         console.log('modal has been toggled');
+                //     },
+                // };
 
                 // instance options object
                 const instanceOptions = {
@@ -154,19 +154,19 @@
                     override: true
                 };
                 // instance options object
-                const instanceOptionsT = {
-                    id: 'timeline-modal',
-                    override: true
-                };
-                // instance options object
-                const instanceOptionsC = {
-                    id: 'comments-modal',
-                    override: true
-                };
+                // const instanceOptionsT = {
+                //     id: 'timeline-modal',
+                //     override: true
+                // };
+                // // instance options object
+                // const instanceOptionsC = {
+                //     id: 'comments-modal',
+                //     override: true
+                // };
                 // on load
                 const rqu = new Modal($requirementU, options, instanceOptions);
-                const tm = new Modal($timeline, options, instanceOptionsT);
-                const cm = new Modal($comments, optionComments, instanceOptionsC);
+                // const tm = new Modal($timeline, options, instanceOptionsT);
+                // const cm = new Modal($comments, optionComments, instanceOptionsC);
 
                 if(response === 'success'){
                     window.location.reload()
@@ -176,26 +176,28 @@
                     rqu.show()
                 })
 
-                $(document).on('click', '.reupload', function() {
-                    cm.show()
-                })
-
-                $(document).on('click', '.checkStatus', function(){
-                    var docId = $(this).data('id')
-                    fetchHistory('/history/'+docId)
-                    tm.show()
-                    // alert(docId)
-                })
-
-                $(document).on('click', '.t-close', function(){
-                    tm.hide()
-                })
                 $(document).on('click', '.rs-close', function(){
                     rqu.hide()
                 })
-                $(document).on('click', '.c-close', function(){
-                    cm.hide()
-                })
+
+                // $(document).on('click', '.reupload', function() {
+                //     cm.show()
+                // })
+
+                // $(document).on('click', '.checkStatus', function(){
+                //     var docId = $(this).data('id')
+                //     fetchHistory('/history/'+docId)
+                //     tm.show()
+                //     // alert(docId)
+                // })
+
+                // $(document).on('click', '.t-close', function(){
+                //     tm.hide()
+                // })
+                
+                // $(document).on('click', '.c-close', function(){
+                //     cm.hide()
+                // })
 
 
                 // Function to make the Ajax request
