@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CheckingDocument;
 use App\Models\User;
+use App\Models\Status;
+use App\Models\History;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use App\Models\CheckingDocument;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use App\Notifications\SendEmailNotification;
+use Illuminate\Support\Facades\Notification;
 
 class DepartmentController extends Controller
 {
@@ -24,10 +28,30 @@ class DepartmentController extends Controller
         // dd($alldocs[0]->documents[0]->id);
         $checked = CheckingDocument::where('document_id',$alldocs[0]->documents[0]->id)
             ->select('sub_name', 'action')->get();
+
+            $subNames = $checked->pluck('sub_name')->toArray();
+            $subNameCounts = array_count_values($subNames);
+            $acceptedRecords = collect(); // Initialize an empty collection to hold the accepted records
+
+            foreach ($subNameCounts as $subName => $count) {
+                if ($count >= 2) {
+                    $acceptedRecords = $acceptedRecords->merge(
+                        CheckingDocument::where('sub_name', $subName)
+                            ->where('action', 'accepted')
+                            ->latest()
+                            ->get()
+                    );
+                    // Now you have $acceptedRecords containing records with sub_name occurring 2 or more times and action as 'accepted'
+                }
+            }
+
+            // dd($acceptedRecords);
+        
         $declined = CheckingDocument::where('document_id',$alldocs[0]->documents[0]->id) ->where('action', 'declined')
+            ->with(['reupload'])
             ->get();
         // dd($declined);
-        return view('department.dashboard', ['department' => $department, 'documents' => $alldocs, 'checked' => $checked, 'declined' => $declined]);
+        return view('department.dashboard', ['department' => $department, 'documents' => $alldocs, 'checked' => $checked, 'declined' => $declined, 'resubmittedDocument'=>$acceptedRecords]);
     }
     public function index(Request $request){
         // dd($request);
@@ -54,5 +78,47 @@ class DepartmentController extends Controller
         }
         return Redirect::route('department')->with(['status'=>'error','message'=>'This user : '.$request->input('name'). ' is already created. try another one!']);
         
+    }
+
+     // call from ajax update
+     public function ajaxCallUpdate(Request $request, $id){
+        // dd($id);
+        $notifyUser = User::where('id', $id)->first();
+        $documents = User::has('documents')->with('documents.status', 'documents.status.notes', 'documents.tvids')->find($id);
+        // Assuming there's a single document associated with the user
+        // $document = $documents->documents->first();
+       
+        if ($documents) {
+            foreach ($documents->documents as $document) {
+                Status::where('id', $document->id)->update(['status'=>'in-review']);
+                $existingRecord = History::where('document_id', $document->id)->where('status', 'in-review')->first();
+                if(!$existingRecord){
+                    History::create(['document_id' => $document->id, 'status'=> 'in-review', 'notes' =>'your documents is in process now.']);
+                 // Build the email notification details
+                 // Set the time zone to Asia/Manila
+                    date_default_timezone_set('Asia/Manila');       
+                 $details = [
+                            'greetings' => "Hi ".$notifyUser->name,
+                            'body' => "We wanted to inform you that your application is currently under review by our team.",
+                            'body1' => "This process may take some time as we carefully evaluate each application to ensure the best possible outcome.",
+                            'body2' => "Date: ". date('Y-m-d'),
+                            'body3' => "Time: ". date('h:i A'),
+                            'body4' => "Rest assured that we will notify you promptly once a decision has been made regarding your application.",
+                            'body5' => "In the meantime, we encourage you to explore our website for more information about our organization and the opportunities we offer.",
+                            'body6' => "If you have any questions or concerns regarding your application, please feel free to contact us. Our team is here to assist you throughout the process.",
+                            'actiontext' => 'Go to Dashboard',
+                            'actionurl' => route('user-dashboard'),
+                            'lastline' => 'Thank you for your patience and understanding. We appreciate your interest in our organization.',
+                        ];
+
+                    //send notification to a user 
+                    Notification::send($notifyUser, new SendEmailNotification($details));
+                }
+               
+                // dd($document->id);
+                return response()->json(['status'=>'success']);
+            }
+        }
+       
     }
 }

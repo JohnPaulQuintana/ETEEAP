@@ -15,7 +15,10 @@ class CheckingDocumentController extends Controller
         // dd($request);
         if ($documents) {
             foreach ($documents->documents as $document) {
-                $existingRecord = CheckingDocument::where('document_id', $document->id)->where('sub_name', $request->input('subname'))->first();
+                $existingRecord = CheckingDocument::where('document_id', $document->id)
+                    ->where('sub_name', $request->input('subname'))
+                    ->where('action', 'accepted')
+                    ->first();
                 if(!$existingRecord){
                     CheckingDocument::create(
                         [

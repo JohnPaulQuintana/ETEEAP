@@ -38,6 +38,8 @@
 
 
                                 <li class="shadow-md p-2 ms-8 grid grid-cols-1 lg:grid-cols-2 gap-2">
+
+
                                     {{-- documents --}}
                                     <div>
                                         <span
@@ -54,26 +56,53 @@
                                             </span>
                                             <span
                                                 class="bg-blue-500 hover:bg-blue-700 hover:cursor-pointer text-white text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
-                                                Date: {{ \Carbon\Carbon::parse($document->documents[0]->created_at)->format('Y-m-d') }}
+                                                Date:
+                                                {{ \Carbon\Carbon::parse($document->documents[0]->created_at)->format('Y-m-d') }}
                                             </span>
                                             <span
                                                 class="bg-blue-500 hover:bg-blue-700 hover:cursor-pointer text-white text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
-                                                Time: {{ \Carbon\Carbon::parse($document->documents[0]->created_at)->format('h:i A') }}
+                                                Time:
+                                                {{ \Carbon\Carbon::parse($document->documents[0]->created_at)->format('h:i A') }}
                                             </span>
                                         </h3>
-                                        {{-- <time
-                                            class="block mb-3 text-sm font-normal leading-none text-blue-900 dark:text-gray-400">
-                                            <span class="font-bold">Date :</span>
-                                            {{ \Carbon\Carbon::parse($document->documents[0]->created_at)->format('Y-m-d') }}
-                                        </time>
-                                        <time
-                                            class="block mb-3 text-sm font-normal leading-none text-blue-900 dark:text-gray-400">
-                                            <span class="font-bold">Time :</span>
-                                            {{ \Carbon\Carbon::parse($document->documents[0]->created_at)->format('h:i A') }}
-                                        </time> --}}
+
+
 
                                         {{-- {{ $checked }} --}}
                                         <div class="rounded-md p-2">
+                                            {{-- resubmited documents display first to view --}}
+                                            {{-- {{ $resubmittedDocument }} --}}
+                                            @if (isset($resubmittedDocument))
+                                                @foreach ($resubmittedDocument as $resubDoc)
+                                                    <div class="p-5 shadow-md border rounded-md mb-2 border-green-500">
+                                                        <div class="flex items-center gap-2">
+                                                            <i
+                                                                class="fa-solid fa-file-invoice text-4xl text-blue-900"></i>
+                                                            <span
+                                                                class="col-span-2 text-blue-900">{{ $resubDoc->requirements }}</span>
+
+                                                        </div>
+                                                        <div class="w-full flex justify-end gap-2">
+
+                                                            <a class="border rounded-md bg-green-500 text-white p-1">
+                                                                <i class="fa-solid fa-check"></i>
+                                                                <span>Evaluated</span>
+                                                            </a>
+                                                            <a class="border rounded-md bg-red-500 text-white p-1">
+                                                                <i class="fa-solid fa-check"></i>
+                                                                <span>re-submitted</span>
+                                                            </a>
+
+
+                                                        </div>
+
+                                                    </div>
+                                                @endforeach
+                                            @endif
+
+
+
+
                                             @php
                                                 $count = 0;
                                                 $originalName = [
@@ -117,13 +146,12 @@
                                                     {{-- {{ $count++ }} {{ isset($checked[$count++]->action) }} --}}
                                                     @php
                                                         $borderClass = '';
-                                                      
+
                                                         foreach ($checked as $check) {
                                                             if ($columnKey[$key] === $check->sub_name) {
                                                                 $borderClass = 'border-green-500';
-                                                                if($check->action !== 'accepted'){
+                                                                if ($check->action !== 'accepted') {
                                                                     $borderClass = 'border-red-500';
-
                                                                 }
                                                             }
                                                         }
@@ -183,7 +211,8 @@
                                         <span class="font-bold">Comment's
                                             <span
                                                 class="bg-blue-500 hover:bg-blue-700 hover:cursor-pointer text-white text-[14px] font-medium mr-2 px-2.5 py-2 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
-                                                Forward to <i class="fa-sharp fa-solid fa-paper-plane-top text-[10px]"></i>
+                                                Forward to <i
+                                                    class="fa-sharp fa-solid fa-paper-plane-top text-[10px]"></i>
                                             </span>
 
                                         </span>
@@ -193,7 +222,8 @@
                                                 <div class="text-wrap w-full mt-3">
                                                     <div class="break-words max-h-60 overflow-auto">
 
-                                                        <span class="block text-left border rounded-md bg-white p-1 mb-2">
+                                                        <span
+                                                            class="block text-left border rounded-md bg-white p-1 mb-2">
 
                                                             <div class="flex items-start gap-2.5">
                                                                 <div class="flex flex-col w-full gap-1">
@@ -203,7 +233,7 @@
                                                                             class="flex items-center space-x-2 rtl:space-x-reverse">
                                                                             <span
                                                                                 class="text-sm font-semibold text-gray-900 p-1 dark:text-white">
-                                                                                {{ __("ETEEAP Department") }}    
+                                                                                {{ __('ETEEAP Department') }}
                                                                             </span>
                                                                             <span
                                                                                 class="text-sm font-normal bg-yellow-400 p-[2px] rounded-sm text-white dark:text-gray-400">
@@ -224,7 +254,8 @@
                                                                                     {{ $dec->requirements }}
                                                                                 </span>
                                                                                 <span class="mt-2 text-red-700 mx-10">
-                                                                                    <i class="fa-solid fa-circle-info"></i>
+                                                                                    <i
+                                                                                        class="fa-solid fa-circle-info"></i>
                                                                                     {{ $dec->description }}
                                                                                 </span>
                                                                             </div>
@@ -244,12 +275,44 @@
 
                                                             </div>
 
+                                                            {{-- comments --}}
+                                                            @if (isset($dec->reupload))
+                                                                @foreach ($dec->reupload as $reupload_doc)
+                                                                    {{-- {{ $document }} --}}
+                                                                    <div
+                                                                        class="bg-gray p-2 capitalize text-green-700 mb-2">
+                                                                        <div class="flex justify-between">
+                                                                            <span
+                                                                                class="border rounded-md p-[5px] bg-gray text-green-500">re-uploaded</span>
+                                                                            <span
+                                                                                class="border rounded-md p-[5px] bg-gray text-green-500">{{ \Carbon\Carbon::parse($reupload_doc->created_at)->format('h:i A') }}</span>
+                                                                        </div>
+                                                                        <div class="flex items-center gap-2 my-2">
+                                                                            <i class="fa-solid fa-file-check fa-xl"></i>
+                                                                            {{-- let file = $(this).data('doc').replace(/^public\//, 'storage/')
+                                                                            let fileName = $(this).data('filename')
+                                                                            let subName = $(this).data('sub_name')
+                                                                            let user_id = $(this).data('user_id'); --}}
+                                                                            <span
+                                                                                data-filename="{{ $dec->requirements }}"
+                                                                                data-path="{{ $reupload_doc->path }}"
+                                                                                data-sub_name="{{ $dec->sub_name }}"
+                                                                                data-user_id="{{ $document->id }}"
+                                                                                class="reuploadView text-blue-900 hover:cursor-pointer hover:text-blue-700">{{ $dec->requirements }}</span>
+                                                                        </div>
+                                                                        <div class="flex items-center gap-2 mx-15">
+                                                                            <i class="fa-solid fa-circle-info"></i>
+                                                                            <span>{{ $reupload_doc->reupload_description }}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                @endforeach
+                                                            @endif
                                                         </span>
 
                                                     </div>
                                                 </div>
                                             @endforeach
-                                            
+
 
                                         </div>
                                     </div>
@@ -303,12 +366,18 @@
                 };
                 const rq = new Modal($requirement, options, instanceOptions);
 
+                // open documents
+               
+
+                // open the docx
                 $('.docx').on('click', function() {
 
                     let file = $(this).data('doc').replace(/^public\//, 'storage/')
                     let fileName = $(this).data('filename')
                     let subName = $(this).data('sub_name')
                     let user_id = $(this).data('user_id');
+
+                    updateStatus(`/update-status/${user_id}`)
 
                     $('.btn-iframe-accepted').attr('data-user_id', user_id);
                     $('.btn-iframe-declined').attr('data-user_id', user_id);
@@ -318,6 +387,26 @@
                     $('#subname').val(subName)
                     // console.log($(this).data('doc'))
                     $('#fileViewer').attr('src', `{{ asset('${file}') }}`)
+                    rq.show()
+
+                    
+                })
+
+                // open the reupload docs
+                $('.reuploadView').on('click', function() {
+                    let reuploadfile = $(this).data('path').replace(/^public\//, 'storage/')
+                    let reuploadfileName = $(this).data('filename')
+                    let reuploadsubName = $(this).data('sub_name')
+                    let reuploaduser_id = $(this).data('user_id');
+
+                    $('.btn-iframe-accepted').attr('data-user_id', reuploaduser_id);
+                    $('.btn-iframe-declined').attr('data-user_id', reuploaduser_id);
+
+                    $('#filename').text(reuploadfileName)
+                    $('#filename-orig').val(reuploadfileName)
+                    $('#subname').val(reuploadsubName)
+                    console.log(reuploaduser_id, reuploadfileName, reuploadsubName, reuploadfile)
+                    $('#fileViewer').attr('src', `{{ asset('${reuploadfile}') }}`)
                     rq.show()
                 })
                 $('.stClose').on('click', function() {
@@ -451,6 +540,30 @@
                                 reject('Error fetching data: ' + error);
                             }
                         });
+                    });
+                }
+
+                // Function to make the Ajax request for updating status
+                function updateStatus(endpoint) {
+
+                    // Include the CSRF token in the headers
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        }
+                    });
+
+                    $.ajax({
+                        url: endpoint,
+                        type: 'get', // Change the type if needed
+                        dataType: 'json',
+                        success: function(data) {
+                            // Handle the data as needed
+                            console.log(data);
+                        },
+                        error: function(error) {
+                            console.error('Error fetching data:', error);
+                        }
                     });
                 }
 
