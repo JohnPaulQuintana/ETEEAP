@@ -59,4 +59,8 @@ class User extends Authenticatable
     public function department() : BelongsTo{
         return $this->belongsTo(Department::class);
     }
+
+    public function forwardedDocs() :HasMany{
+        return $this->hasMany(ForwardToDept::class, 'receiver_id');
+    }
 }

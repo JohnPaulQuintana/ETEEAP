@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CheckingDocumentController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\ForwardToDeptController;
 use App\Http\Controllers\InterviewController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReuploadDocumentController;
@@ -65,6 +66,9 @@ Route::middleware(['checkUserRole:2','auth','verified'])->group(function(){
     Route::get('/department-dashboard',[DepartmentController::class, 'dashboard'])->name('department.dashboard');
     Route::post('/evaluate', [CheckingDocumentController::class, 'checkedDocument'])->name('evaluate');   
     Route::get('/update-status/{id}', [DepartmentController::class, 'ajaxCallUpdate'])->name('update');
+
+    Route::get('/forwarded',[DepartmentController::class, 'dashboard'])->name('forwarded');
+
 });
 
 Route::middleware('auth')->group(function () {

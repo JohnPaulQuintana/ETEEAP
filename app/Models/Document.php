@@ -30,4 +30,8 @@ class Document extends Model
     public function checked() :HasMany{
         return $this->hasMany(CheckingDocument::class);
     }
+
+    // public function forwarded() :HasMany{
+    //     return $this->hasMany(ForwardToDept::class);
+    // }
 }
