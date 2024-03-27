@@ -37,7 +37,7 @@
         </div>
 
         <div class="flex items-center gap-3 2xsm:gap-7">
-            <ul class="flex items-center gap-2 2xsm:gap-4">
+            {{-- <ul class="flex items-center gap-2 2xsm:gap-4">
                 <li>
                     <!-- Dark Mode Toggler -->
                     <label :class="darkMode ? 'bg-primary' : 'bg-stroke'"
@@ -71,7 +71,7 @@
                 </li>
 
                 <!-- Notification Menu Area -->
-                {{-- <li class="relative" x-data="{ dropdownOpen: false, notifying: true }" @click.outside="dropdownOpen = false">
+                <li class="relative" x-data="{ dropdownOpen: false, notifying: true }" @click.outside="dropdownOpen = false">
                     <a class="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-strokedark dark:bg-meta-4 dark:text-white"
                         href="#" @click.prevent="dropdownOpen = ! dropdownOpen; notifying = false">
                         <span :class="!notifying && 'hidden'"
@@ -146,11 +146,11 @@
                         </ul>
                     </div>
                     <!-- Dropdown End -->
-                </li> --}}
+                </li>
                 <!-- Notification Menu Area -->
 
                 
-            </ul>
+            </ul> --}}
 
             <!-- User Area -->
             <div class="relative" x-data="{ dropdownOpen: false }" @click.outside="dropdownOpen = false">
