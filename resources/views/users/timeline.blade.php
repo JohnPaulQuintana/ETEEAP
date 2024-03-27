@@ -28,23 +28,23 @@
                                 @switch($history->status)
                                     @case('rejected')
                                        @php
-                                            $classNameBg = 'bg-red-500';
+                                            $classNameBg = 'text-red-500';
                                        @endphp
                                         @break
                                     @case('in-review')
                                        @php
-                                            $classNameBg = 'bg-orange-400';
+                                            $classNameBg = 'text-orange-400';
                                        @endphp
                                         @break
                                     @case('accepted')
                                        @php
-                                            $classNameBg = 'bg-green-400';
+                                            $classNameBg = 'text-green-400';
                                        @endphp
                                         @break
                                 
                                     @default
                                         @php
-                                            $classNameBg = 'bg-yellow-400';
+                                            $classNameBg = 'text-yellow-400';
                                         @endphp
                                         @break
                                         
@@ -59,7 +59,7 @@
                                             class="flex items-start mb-1 text-lg font-semibold text-blue-900 dark:text-white">
                                             ETEEAP APPLICATION
                                             <span
-                                                class="{{ $classNameBg }} text-white text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
+                                                class="bg-gray {{ $classNameBg }} text-white text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
                                                {{ $history->status }}
                                             </span>
                                             <span
@@ -100,11 +100,11 @@
                                                                                 {{ __("ETEEAP Department") }}    
                                                                             </span>
                                                                             <span
-                                                                                class="text-sm font-normal bg-yellow-400 p-[2px] rounded-sm text-white dark:text-gray-400">
+                                                                                class="text-sm font-normal bg-gray p-[2px] rounded-sm dark:text-gray-400">
                                                                                 {{ \Carbon\Carbon::parse($dec->created_at)->format('h:i A') }}
                                                                             </span>
                                                                             <span
-                                                                                class="text-sm font-normal bg-red-500 p-[2px] rounded-sm text-white dark:text-gray-400">re-submit</span>
+                                                                                class="text-sm font-normal bg-gray p-[2px] rounded-sm text-red-500 dark:text-gray-400">re-submit</span>
                                                                         </div>
                                                                         <div
                                                                             class="flex justify-between w-full items-start bg-gray-50 dark:bg-gray-600 rounded-xl p-2">
@@ -126,7 +126,7 @@
                                                                                 class="inline-flex self-center items-center">
                                                                                 <button
                                                                                     data-id="{{ $dec->id }}" data-document_id="{{ $dec->document_id }}" data-subname="{{ $dec->sub_name }}" data-document_name="{{ $dec->requirements }}"
-                                                                                    class="reupload border inline-flex bg-blue-900 self-center items-center p-2 text-sm font-medium text-center text-white bg-gray-50 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-600 dark:hover:bg-gray-500 dark:focus:ring-gray-600"
+                                                                                    class="reupload inline-flex bg-blue-900 self-center items-center p-2 text-sm font-medium text-center text-white bg-gray-50 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-600 dark:hover:bg-gray-500 dark:focus:ring-gray-600"
                                                                                     type="button">
                                                                                     <i
                                                                                         class="fa-solid fa-envelope-open-text text-md"></i>
@@ -144,17 +144,17 @@
                                                             @if (isset($dec->reupload))
                                                                 @foreach ($dec->reupload as $reupload_doc)
                                                                     {{-- {{ $reupload_doc }} --}}
-                                                                    <div class="bg-gray p-2 capitalize text-green-700 mb-2">
+                                                                    <div class="bg-slate-50 p-2 capitalize mb-2">
                                                                         <div class="flex justify-between">
-                                                                            <span class="border rounded-md p-[5px] bg-gray text-green-500">re-uploaded</span>
-                                                                            <span class="border rounded-md p-[5px] bg-gray text-green-500">{{ \Carbon\Carbon::parse($reupload_doc->created_at)->format('h:i A') }}</span>
+                                                                            <span class="rounded-md p-[5px] bg-white text-blue-900">re-uploaded</span>
+                                                                            <span class="rounded-md p-[5px] bg-white text-blue-900">{{ \Carbon\Carbon::parse($reupload_doc->created_at)->format('h:i A') }}</span>
                                                                         </div>
                                                                         <div class="flex items-center gap-2 my-2">
                                                                             <i class="fa-solid fa-file-check fa-xl"></i>
                                                                             <span class="text-blue-900">{{ $dec->requirements }}</span>
                                                                         </div>
                                                                         <div class="flex items-center gap-2 mx-15">
-                                                                            <i class="fa-solid fa-circle-info"></i>
+                                                                            <i class="fa-solid fa-circle-info text-red-700"></i>
                                                                             <span>{{ $reupload_doc->reupload_description }}</span>
                                                                         </div>
                                                                     </div>
