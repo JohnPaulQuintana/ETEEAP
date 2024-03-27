@@ -11,13 +11,13 @@ class ForwardToDept extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['receiver_id', 'document_id', 'isForwarded'];
+    protected $fillable = ['sender_id','receiver_id', 'document_id', 'isForwarded'];
 
     public function user() :BelongsTo{
         return $this->belongsTo(User::class, 'receiver_id');
     }
 
-    // public function documents() :BelongsTo{
-    //     return $this->belongsTo(Document::class);
-    // }
+    public function departmentComments() :HasMany{
+        return $this->hasMany(DepartmentComment::class, 'forward_to_depts_id');
+    }
 }

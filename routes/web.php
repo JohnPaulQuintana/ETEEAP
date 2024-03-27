@@ -67,7 +67,8 @@ Route::middleware(['checkUserRole:2','auth','verified'])->group(function(){
     Route::post('/evaluate', [CheckingDocumentController::class, 'checkedDocument'])->name('evaluate');   
     Route::get('/update-status/{id}', [DepartmentController::class, 'ajaxCallUpdate'])->name('update');
 
-    Route::get('/forwarded',[DepartmentController::class, 'dashboard'])->name('forwarded');
+    Route::get('/forward',[DepartmentController::class, 'departmentUser'])->name('departmentUser');
+    Route::post('/outgoing',[DepartmentController::class, 'outgoing'])->name('outgoing');
 
 });
 

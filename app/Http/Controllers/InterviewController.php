@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Interview;
 use Illuminate\Http\Request;
+use App\Models\ForwardToDept;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\SendEmailNotification;
 use Illuminate\Support\Facades\Notification;
@@ -16,7 +17,7 @@ class InterviewController extends Controller
         // dd($request);
         // Convert 24-hour time to AM/PM format
          $formattedTime = Carbon::createFromFormat('H:i', $request->input('time'))->format('h:i A');
-
+        
         $notifyUser = User::where('id', $request->input('user_id'))->first();
         Interview::create([
             'user_id' => $request->input('user_id'),
@@ -28,6 +29,11 @@ class InterviewController extends Controller
             'interviewed' => 1,//means setup success
 
         ]);
+
+        $markAsForwarded = ForwardToDept::where('document_id', $request->input('document_id'))->where('receiver_id',Auth::user()->id)->first();
+        if($markAsForwarded){
+            $markAsForwarded->update(['isForwarded'=>true]);
+        }
 
         // Build the email notification details
             $details = [

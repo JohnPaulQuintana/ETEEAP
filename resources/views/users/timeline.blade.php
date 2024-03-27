@@ -85,7 +85,7 @@
                                             {{-- list of resubmit docs --}}
                                             @foreach ($declined as $dec)
                                                 <div class="text-wrap w-full mt-3">
-                                                    <div class="break-words max-h-60 overflow-auto">
+                                                    <div class="break-words">
 
                                                         <span class="block text-left border rounded-md bg-white p-1 mb-2">
 

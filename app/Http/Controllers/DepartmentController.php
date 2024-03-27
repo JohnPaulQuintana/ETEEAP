@@ -9,6 +9,8 @@ use App\Models\Document;
 use App\Models\Department;
 use Illuminate\Http\Request;
 use App\Models\CheckingDocument;
+use App\Models\DepartmentComment;
+use App\Models\ForwardToDept;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
@@ -21,68 +23,77 @@ class DepartmentController extends Controller
     {
         // dd(Auth::user());
         $department = Department::where('id', Auth::user()->department_id)->first();
-
-        if ($department === 'ETEEAP Department') {
+        // dd($department);
+        if ($department->department_name === 'ETEEAP Department') {
             $alldocs = User::whereHas('documents', function ($query) {
                 $query->whereHas('status', function ($subquery) {
-                    $subquery->whereNotIn('status', ['accepted', 'rejected']);
+                    $subquery->whereNotIn('status', ['accepted', 'rejected'])
+                        ->where('isForwarded', 0);
                 });
             })->with(['documents.status', 'documents.status.notes', 'documents.tvids', 'documents.checked'])->get();
-            // dd($alldocs[0]->documents[0]->id);
-            $checked = CheckingDocument::where('document_id', $alldocs[0]->documents[0]->id)
-                ->select('sub_name', 'action')->get();
+            // dd($alldocs);
+            if (count($alldocs) > 0) {
+                $checked = CheckingDocument::where('document_id', $alldocs[0]->documents[0]->id)
+                    ->select('sub_name', 'action')->get();
 
-            $subNames = $checked->pluck('sub_name')->toArray();
-            $subNameCounts = array_count_values($subNames);
-            $acceptedRecords = collect(); // Initialize an empty collection to hold the accepted records
+                $subNames = $checked->pluck('sub_name')->toArray();
+                $subNameCounts = array_count_values($subNames);
+                $acceptedRecords = collect(); // Initialize an empty collection to hold the accepted records
 
-            foreach ($subNameCounts as $subName => $count) {
-                if ($count >= 2) {
-                    $acceptedRecords = $acceptedRecords->merge(
-                        CheckingDocument::where('sub_name', $subName)
-                            ->where('action', 'accepted')
-                            ->latest()
-                            ->get()
-                    );
-                    // Now you have $acceptedRecords containing records with sub_name occurring 2 or more times and action as 'accepted'
+                foreach ($subNameCounts as $subName => $count) {
+                    if ($count >= 2) {
+                        $acceptedRecords = $acceptedRecords->merge(
+                            CheckingDocument::where('sub_name', $subName)
+                                ->where('action', 'accepted')
+                                ->latest()
+                                ->get()
+                        );
+                        // Now you have $acceptedRecords containing records with sub_name occurring 2 or more times and action as 'accepted'
+                    }
                 }
+
+                // dd($acceptedRecords);
+
+                $declined = CheckingDocument::where('document_id', $alldocs[0]->documents[0]->id)->where('action', 'declined')
+                    ->with(['reupload'])
+                    ->get();
             }
-
-            // dd($acceptedRecords);
-
-            $declined = CheckingDocument::where('document_id', $alldocs[0]->documents[0]->id)->where('action', 'declined')
-                ->with(['reupload'])
-                ->get();
             // dd($declined);
-            return view('department.dashboard', ['department' => $department, 'documents' => $alldocs, 'checked' => $checked, 'declined' => $declined, 'resubmittedDocument' => $acceptedRecords]);
-        }else{
+            return view('department.dashboard', ['department' => $department, 'documents' => $alldocs, 'checked' => $checked ?? [], 'declined' => $declined ?? [], 'resubmittedDocument' => $acceptedRecords ?? []]);
+        } else {
             // $department = Department::where('id', Auth::user()->department_id)->first();
 
             $forwardedToMe = Document::join('forward_to_depts', 'forward_to_depts.document_id', '=', 'documents.id')
-            // ->join('users', 'users.id', '=', 'documents.user')
-            ->where('forward_to_depts.receiver_id', Auth::id())
-            ->where('forward_to_depts.isForwarded', 0)
-            ->select('forward_to_depts.receiver_id as forward_to', 'forward_to_depts.document_id', 'forward_to_depts.created_at as date',
-                'documents.*',
-                // 'checking_documents.sub_name', 'checking_documents.requirements', 'checking_documents.description', 'checking_documents.action', 'checking_documents.created_at as checked_date'
-            )
-            ->with(['checked'=> function($query){
-                $query->where('action','accepted');
-            }, 'user', 'status'])
-            ->get();
-            
+                // ->join('department_comments', 'department_comments.forward_to_depts_id', '=', 'forward_to_depts.id')
+                ->where('forward_to_depts.receiver_id', Auth::id())
+                ->where('forward_to_depts.isForwarded', 0)
+                ->select(
+                    'forward_to_depts.receiver_id as forward_to',
+                    'forward_to_depts.document_id',
+                    'forward_to_depts.id as ftd_id',
+                    'forward_to_depts.created_at as date',
+                    'documents.*'
+                    // 'checking_documents.sub_name', 'checking_documents.requirements', 'checking_documents.description', 'checking_documents.action', 'checking_documents.created_at as checked_date'
+                )
+                ->with(['checked' => function ($query) {
+                    $query->where('action', 'accepted');
+                }, 'user', 'status'])
+                ->get();
+
             // dd($forwardedToMe);
-                foreach ($forwardedToMe as $key => $value) {
-                    
-                    foreach ($value->checked as $key => $v) {
-                        $resubmitted = CheckingDocument::where('action', 'declined')->where('document_id', $v->document_id)->with('reupload')->get();
-                    }
-                    
-        
-                }
+            foreach ($forwardedToMe as $key => $value) {
+                $comments = DepartmentComment::join('users', 'users.id', '=', 'department_comments.sender_id')
+                    ->select('department_comments.*', 'users.name')
+                    ->where('forward_to_depts_id', $value->ftd_id)->get();
+                foreach ($value->checked as $key => $v) {
+                    $resubmitted = CheckingDocument::where('action', 'declined')->where('document_id', $v->document_id)->with('reupload')->get();
             
-            //   dd($resubmitted);
-            return view('department.forwarded',['department' => $department, 'forwardedDocuments'=>$forwardedToMe, 'resubmitted' =>$resubmitted ?? []]);
+                    
+                }
+            }
+
+            //   dd($comments);
+            return view('department.dashboard', ['department' => $department, 'forwardedDocuments' => $forwardedToMe, 'resubmitted' => $resubmitted ?? [], 'comments'=>$comments ?? []]);
         }
     }
     public function index(Request $request)
@@ -152,5 +163,29 @@ class DepartmentController extends Controller
                 return response()->json(['status' => 'success']);
             }
         }
+    }
+
+    // get department user
+    public function departmentUser()
+    {
+        $departmentUsers = User::where('role', '!=', 0)->where('name', '!=', Auth::user()->name)->with('department')->get();
+        // dd($departmentUsers);
+        return response()->json(['departmentUsers' => $departmentUsers]);
+    }
+
+    // outgoing document's 
+    public function outgoing(Request $request)
+    {
+        // dd($request);
+        $markAsForwarded = ForwardToDept::where('document_id', $request->input('document_id'))->where('receiver_id',Auth::user()->id)->first();
+        if($markAsForwarded){
+            $markAsForwarded->update(['isForwarded'=>true]);
+        }
+        [$userId, $dept] = explode("|", $request->input('user_id'));
+        $ftp = ForwardToDept::create(['sender_id'=>Auth::user()->id,'receiver_id' => $userId, 'document_id' => $request->input('document_id')]);
+        DepartmentComment::create(['forward_to_depts_id'=>$ftp->id, 'department_comment' => $request->input('message'), 'sender_id'=> Auth::user()->id ]);
+        Document::where('id', $request->input('document_id'))->update(['isForwarded'=>1]);
+        History::create(['document_id'=>$request->input('document_id'), 'status'=>'forwarded', 'notes'=>"Your Document's is Forwarded to department name ".$dept]);
+        return redirect()->back()->withInput();
     }
 }

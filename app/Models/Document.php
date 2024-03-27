@@ -11,7 +11,7 @@ class Document extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'reciever_id', 'loi', 'ce', 'cr', 'nce','hdt','f137_8','abcb','mc','nbc','ge','pc','rl','cgmc', 'cer'];
+    protected $fillable = ['user_id', 'reciever_id','isForwarded' ,'loi', 'ce', 'cr', 'nce','hdt','f137_8','abcb','mc','nbc','ge','pc','rl','cgmc', 'cer'];
 
     public function user() : BelongsTo{
         return $this->belongsTo(User::class);
