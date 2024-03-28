@@ -10,6 +10,7 @@
     <!-- Bootstrap core CSS -->
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.3/css/bootstrap.min.css" /> --}}
     <!-- Scripts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.3/css/bootstrap.min.css" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     {{-- font awesome --}}
@@ -23,12 +24,21 @@
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat:100,200,300,400,500,600,700,800,900"
         rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('assets/css/templatemo-grad-school.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/owl.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/lightbox.css') }}">
+
+        {{-- Check if the current URL contains 'reset-password' --}}
+        @if (Str::contains(Request::url(), 'reset-password'))
+            <link rel="stylesheet" href="{{ asset(str_replace('reset-password/', '', 'assets/css/templatemo-grad-school.css')) }}">
+            <link rel="stylesheet" href="{{ asset(str_replace('reset-password/', '', 'assets/css/owl.css')) }}">
+            <link rel="stylesheet" href="{{ asset(str_replace('reset-password/', '', 'assets/css/lightbox.css')) }}">
+        @else
+            <link rel="stylesheet" href="{{ asset('assets/css/templatemo-grad-school.css') }}">
+            <link rel="stylesheet" href="{{ asset('assets/css/owl.css') }}">
+            <link rel="stylesheet" href="{{ asset('assets/css/lightbox.css') }}">
+        @endif 
 </head>
 
 <body class="font-sans">
+    {{-- <h1>{{ Str::contains(Request::url(), 'reset-password') }}</h1> --}}
     {{-- <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
             <div>
                 <a href="/">
@@ -44,7 +54,13 @@
     <header class="main-header clearfix" role="header">
         <div class="logo">
             <a href="#" class="flex items-center gap-2">
-                <img class="w-12 h-12" src="./assets/images/logo.png" alt="" srcset="">
+                @if (Str::contains(Request::url(), 'reset-password'))
+                    <img class="w-12 h-12" src="{{ asset(str_replace('reset-password/', '', './assets/images/logo.png')) }}" alt="" srcset="">
+                @else
+
+                    <img class="w-12 h-12" src="./assets/images/logo.png" alt="" srcset="">
+                @endif
+                
                 <em>ETEEAP</em>
             </a>
         </div>
@@ -55,18 +71,20 @@
                 <li class="has-submenu"><a class="text-white hover:cursor-pointer">Authentication</a>
                     <ul class="sub-menu">
                         <li><a href="{{ route('login') }}">Login</a></li>
-                        <li><a href="{{ route('register') }}">Register</a></li>
+                        {{-- <li><a href="{{ route('register') }}">Register</a></li> --}}
 
                     </ul>
                 </li>
+                <li><a class="border border-white" href="{{ route('register') }}">Apply Now</a></li>
             </ul>
         </nav>
     </header>
     <!-- ***** Main Banner Area Start ***** -->
     <section class="section main-banner" id="top" data-section="section1">
-        <video autoplay muted loop id="bg-video">
+        <img id="bg-video" src="{{ asset('images/background2.jpg') }}" alt="" srcset="">
+        {{-- <video autoplay muted loop id="bg-video">
             <source src="assets/images/course-video.mp4" type="video/mp4" />
-        </video>
+        </video> --}}
 
     </section>
     <!-- ***** Main Banner Area End ***** -->
@@ -75,7 +93,7 @@
             <div class="flex flex-col justify-center items-center mt-29">
                 <h6 class="font-bold text-xl md:text-2xl text-white">Application Tracking System</h6>
                 <h6 class="font-bold text-xl md:text-2xl text-white mt-3">for</h6>
-                <h2 class="mt-1 font-bold text-4xl md:text-6xl text-textprimary uppercase"><em>ETEEAP program</em> </h2>
+                <h2 class="mt-1 font-bold text-4xl md:text-6xl text-textprimary uppercase not-italic">ETEEAP program</h2>
                 <div class="main-button mt-2">
                     <div class="scroll-to-section"><a class="b-r hover:cursor-pointer">Requirements</a></div>
                 </div>
@@ -92,13 +110,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.3/js/bootstrap.min.js"></script>
 
-    <script src="assets/js/isotope.min.js"></script>
-    <script src="assets/js/owl-carousel.js"></script>
-    <script src="assets/js/lightbox.js"></script>
-    <script src="assets/js/tabs.js"></script>
-    <script src="assets/js/video.js"></script>
-    <script src="assets/js/slick-slider.js"></script>
-    <script src="assets/js/custom.js"></script>
+    @if (Str::contains(Request::url(), 'reset-password'))
+        <script src="{{ asset(str_replace('reset-password/', '', 'assets/js/isotope.min.js'))}}"></script>
+        <script src="{{ asset(str_replace('reset-password/', '', 'assets/js/owl-carousel.js')) }}"></script>
+        <script src="{{ asset(str_replace('reset-password/', '', 'assets/js/lightbox.js')) }}"></script>
+        <script src="{{ asset(str_replace('reset-password/', '', 'assets/js/tabs.js')) }}"></script>
+        <script src="{{ asset(str_replace('reset-password/', '', 'assets/js/video.js')) }}"></script>
+        <script src="{{ asset(str_replace('reset-password/', '', 'assets/js/slick-slider.js')) }}"></script>
+        <script src="{{ asset(str_replace('reset-password/', '', 'assets/js/custom.js')) }}"></script>
+    @else
+        <script src="assets/js/isotope.min.js"></script>
+        <script src="assets/js/owl-carousel.js"></script>
+        <script src="assets/js/lightbox.js"></script>
+        <script src="assets/js/tabs.js"></script>
+        <script src="assets/js/video.js"></script>
+        <script src="assets/js/slick-slider.js"></script>
+        <script src="assets/js/custom.js"></script>
+    @endif
+    
     <script>
         $(document).ready(function() {
             //according to loftblog tut

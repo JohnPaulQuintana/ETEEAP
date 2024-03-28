@@ -15,14 +15,31 @@ class VerifyEmailController extends Controller
      */
     public function __invoke(EmailVerificationRequest $request): RedirectResponse
     {
-        if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended(RouteServiceProvider::HOME.'?verified=1');
+        $user = $request->user();
+
+        if ($user->hasVerifiedEmail()) {
+           
+            // Redirect users based on their roles
+            if ($user->role === 1) {
+                return redirect()->intended(RouteServiceProvider::AdminDashboard.'?verified=1');
+            } elseif ($user->role === 2) {
+                return redirect()->intended(RouteServiceProvider::DepartmentDashboard.'?verified=1');
+            } else {
+                return redirect()->intended(RouteServiceProvider::UserDashboard.'?verified=1');
+            }
         }
 
         if ($request->user()->markEmailAsVerified()) {
             event(new Verified($request->user()));
         }
 
-        return redirect()->intended(RouteServiceProvider::HOME.'?verified=1');
+        // return redirect()->intended(RouteServiceProvider::HOME.'?verified=1');
+        if ($user->role === 1) {
+            return redirect()->intended(RouteServiceProvider::AdminDashboard.'?verified=1');
+        } elseif ($user->role === 2) {
+            return redirect()->intended(RouteServiceProvider::DepartmentDashboard.'?verified=1');
+        } else {
+            return redirect()->intended(RouteServiceProvider::UserDashboard.'?verified=1');
+        }
     }
 }

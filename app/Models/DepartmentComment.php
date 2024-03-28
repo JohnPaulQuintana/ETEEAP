@@ -10,7 +10,7 @@ class DepartmentComment extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['sender_id','forward_to_depts_id', 'document_name', 'department_comment'];
+    protected $fillable = ['sender_id','receiver_id','document_id','forward_to_depts_id', 'document_name', 'department_comment'];
 
     public function forwardToDept() :BelongsTo{
         return $this->belongsTo(ForwardToDept::class, 'forward_to_depts_id');

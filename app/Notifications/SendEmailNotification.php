@@ -47,8 +47,14 @@ class SendEmailNotification extends Notification
                     ->line($this->details['body4'])
                     ->line($this->details['body5'])
                     ->line($this->details['body6'])
+                    ->line($this->details['body7'])
+                    ->line($this->details['body8'])
                     ->action($this->details['actiontext'],$this->details['actionurl'])
-                    ->line($this->details['lastline']);
+                    ->line($this->details['lastline'])
+                    ->line($this->details['lastline2'])
+                    ->line($this->details['lastline3'])
+                    ->line($this->details['lastline4'])
+                    ->line($this->details['lastline5']);
     }
 
     /**

@@ -1,4 +1,11 @@
 <x-app-layout>
+    @section('links')
+        <style>
+            /* #history-card li div h3 span.noti:not(:first-child):not(:first-of-type) {
+                display: none;
+            } */
+        </style>
+    @endsection
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-5">
 
         <div class="mt-10">
@@ -59,11 +66,12 @@
                                             class="flex items-start mb-1 text-lg font-semibold text-blue-900 dark:text-white">
                                             ETEEAP APPLICATION
                                             <span
-                                                class="bg-gray {{ $classNameBg }} text-white text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
+                                                class="bg-gray {{ $classNameBg }} text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
                                                {{ $history->status }}
                                             </span>
+
                                             <span
-                                                class="bg-red-500 hover:bg-red-700 hover:cursor-pointer text-white text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
+                                                class="noti bg-red-500 hover:bg-red-700 hover:cursor-pointer text-white text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
                                                 Notify
                                             </span>
                                         </h3>
@@ -197,6 +205,9 @@
         <script>
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             $(document).ready(function(){
+                // hide all the passed history
+                $('#history-card li div h3 span.noti').not(':first').hide();
+                $('.reupload').not(':first').hide();
                 const $comments = document.getElementById('comments-modal');
 
                 // options with default values

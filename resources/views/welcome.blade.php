@@ -57,19 +57,21 @@
                 <li class="has-submenu"><a class="text-white hover:cursor-pointer">Authentication</a>
                     <ul class="sub-menu">
                         <li><a href="{{ route('login') }}">Login</a></li>
-                        <li><a href="{{ route('register') }}">Register</a></li>
+                        {{-- <li><a href="{{ route('register') }}">Register</a></li> --}}
 
                     </ul>
                 </li>
+                <li><a class="border" href="{{ route('register') }}">Apply Now</a></li>
             </ul>
         </nav>
     </header>
 
     <!-- ***** Main Banner Area Start ***** -->
     <section class="section main-banner" id="top" data-section="section1">
-        <video autoplay muted loop id="bg-video">
+        <img id="bg-video" src="{{ asset('images/background.jpg') }}" alt="">
+        {{-- <video autoplay muted loop id="bg-video">
             <source src="assets/images/course-video.mp4" type="video/mp4" />
-        </video>
+        </video> --}}
 
         <div class="video-overlay header-text">
             <div class="caption">
