@@ -120,11 +120,18 @@ class DocumentController extends Controller
             'body3' => "Date: ". date('Y-m-d'),
             'body4' => "Time: ". date('h:i A'),
             'body5' => "Rest assured that you will be notified promptly once a decision has been made regarding the application.",
+            
             // 'body5' => "",
             'body6' => "Thank you for your attention to this matter.",
+            'body7' => "",
+            'body8' => "",
             'actiontext' => 'Go to Dashboard',
             'actionurl' => route('admin-dashboard'), // Assuming 'admin.dashboard' is the route name for the admin dashboard
             'lastline' => 'Best regards, ETEEAP Application Tracking System',
+            'lastline2' => '',
+            'lastline3' => '',
+            'lastline4' => '',
+            'lastline5' => '',
         ];
 
         // Send the notification to the administrator

@@ -28,10 +28,11 @@ class UserController extends Controller
     }
 
     public function timeline(Request $request,$id){
-        $history = History::with('document')->where('document_id', $id)->latest()->get();
-
+        $history = History::with('document')->where('document_id', $id)->orderByDesc('created_at')->get();
+        // dd($history);
         $declined = CheckingDocument::where('document_id',$id) ->where('action', 'declined')
             ->with(['reupload'])
+            ->orderByDesc('updated_at')
             ->get();
         // dd($declined[0]->reuploadDocuments);
         return view('users.timeline', ['histories'=>$history, 'declined'=>$declined]);

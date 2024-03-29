@@ -8,11 +8,13 @@ use App\Models\History;
 use App\Models\Document;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use App\Models\ForwardToDept;
 use App\Models\CheckingDocument;
 use App\Models\DepartmentComment;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\SendEmailNotification;
 use Illuminate\Support\Facades\Notification;
+use App\Notifications\SendRejectedNotification;
 
 class AdminController extends Controller
 {
@@ -27,7 +29,7 @@ class AdminController extends Controller
 
         $alldocs = User::whereHas('documents', function ($query) {
             $query->whereHas('status', function ($subquery) {
-                $subquery->whereNotIn('status', ['pending', 'rejected', 'in-review']);
+                $subquery->whereNotIn('status', ['pending', 'rejected', 'in-review', 'forwarded']);
             });
         })->with(['documents.status', 'interview'])->get();
 
@@ -37,14 +39,15 @@ class AdminController extends Controller
     public function declined()
     {
 
-        // $alldocs = User::whereHas('documents', function ($query) {
-        //     $query->whereHas('status', function ($subquery) {
-        //         $subquery->whereNotIn('status',['pending', 'rejected','in-review']);
-        //     });
-        // })->with(['documents.status', 'interview'])->get();
+        $alldocs = User::whereHas('documents', function ($query) {
+            $query->whereHas('status', function ($subquery) {
+                $subquery->whereNotIn('status', ['pending', 'accepted', 'in-review', 'forwarded']);
+            });
+        })->with(['documents.status', 'interview'])->get();
 
+        // dd($alldocs);
 
-        return view('admin.declined');
+        return view('admin.declined',['documents' => $alldocs]);
     }
     public function index()
     {
@@ -84,8 +87,29 @@ class AdminController extends Controller
             }
         }
 
+        $acceptedApplicants = User::whereHas('documents', function ($query) {
+            $query->whereHas('status', function ($subquery) {
+                $subquery->whereNotIn('status', ['pending', 'rejected', 'in-review']);
+            });
+        })->with(['documents.status', 'interview'])->get();
+
+        $declinedApplicants = User::whereHas('documents', function ($query) {
+            $query->whereHas('status', function ($subquery) {
+                $subquery->whereNotIn('status', ['pending', 'accepted', 'in-review']);
+            });
+        })->with(['documents.status', 'interview'])->get();
+
+        $departmentCount = Department::count();
+
         // return view('admin.dashboard', ['documents' => $alldocs]);
-        return view('admin.dashboard', ['forwardedDocuments' => $forwardedToMe, 'resubmitted' => $resubmitted ?? [], 'comments' => $comments ?? []]);
+        return view('admin.dashboard', [
+            'forwardedDocuments' => $forwardedToMe, 
+            'resubmitted' => $resubmitted ?? [], 
+            'comments' => $comments ?? [], 
+            'accepted' => count($acceptedApplicants),
+            'declined' => count($declinedApplicants),
+            'department' => $departmentCount,
+        ]);
     }
 
     // department
@@ -157,13 +181,82 @@ class AdminController extends Controller
                 Status::where('id', $document->id)->update(['status' => $request->input('type')]);
                 $existingRecord = History::where('document_id', $document->id)->where('status', $request->input('type'))->first();
                 if (!$existingRecord) {
-                    History::create(['document_id' => $document->id, 'status' => $request->input('type'), 'notes' => ($request->input('type') == 'accepted' ? ' Your Application is accepted, we will sending you an email for the interview.' : 'Your Application is rejected, the details available on return documents section.')]);
+                    History::create(['document_id' => $document->id, 'status' => $request->input('type'), 'notes' => ($request->input('type') == 'accepted' ? ' Your Application is accepted, we will sending you an email for the interview.' : 'Your Application is rejected.')]);
+                }
+
+                if($request->input('type') === 'rejected'){
+                    $markAsForwarded = ForwardToDept::where('document_id', $document->id)->where('receiver_id',Auth::user()->id)->first();
+                    if($markAsForwarded){
+                        $markAsForwarded->update(['isForwarded'=>true]);
+                        $notifyUser = user::where('id', $request->input('user_id'))->first();
+                        $details = [
+                            "greetings" => "Dear Ms/Mr " . $notifyUser->name . ",",
+                            "body" => "We regret to inform you that your application has been rejected. We appreciate the time and effort you put into the application process.",
+                            "lastline" => "Thank you for your cooperation.",
+                            "actiontext" => "Available on Dashboard",
+                            "actionurl" => route('user-dashboard'),
+                        ];
+                        
+                        //send notification to a user 
+                        Notification::send($notifyUser, new SendRejectedNotification($details));
+                    }
                 }
             }
-            return response()->json(['status' => 'success', 'message' => 'successfully accepted', 'user_id' => $documents->id]);
+
+            
+            return response()->json(['status' => 'success', 'message' => 'successfully '.$request->input('type'), 'user_id' => $documents->id]);
         }
 
         // If no documents were found
         return response()->json(['status' => 'error', 'message' => 'No documents found for the user.']);
+    }
+
+    public function delete(Request $request){
+        // dd($request->input('id'));
+        $id = $request->input('id');
+        if ($id) {
+            $deleted = Department::destroy($id);
+            return $deleted ? response()->json(['status'=>'success','message' => 'Department deleted successfully']) : response()->json(['status'=>'error','message' => 'Department not found']);
+        } else {
+            return response()->json(['status'=>'error','message' => 'Department not found'], 400);
+        }
+    }
+
+    public function info(Request $request){
+        // dd($request);
+
+        $users = User::join('departments', 'departments.id', '=', 'users.department_id')
+            ->where('users.id', $request->input('user_id'))
+            ->select('users.*', 'departments.department_name', 'departments.id as dept_id')
+            ->get();
+            // dd($users);
+        $depts = Department::whereNotIn('id', [$users[0]->department_id])->get();
+        if($users){
+            return response()->json(['status'=>'success', 'users'=>$users, 'depts'=>$depts]);
+        }
+        return response()->json(['status'=>'error', 'data'=>[], 'depts'=> []]);
+    }
+
+    public function update(Request $request){
+        // dd($request);
+        $updated = User::where('id', $request->input('user_id'))
+            ->update(['name'=>$request->input('name'), 'email'=>$request->input('email'), 'department_id'=>$request->input('dept')]);
+
+        if($updated){
+            return response()->json(['status'=>'success', 'message'=>'Successfully Updated']);
+        }else{
+            return response()->json(['status'=>'error', 'message'=>'Error Updating']);
+        }
+    }
+
+    public function deleteUser(Request $request){
+        // dd($request);
+        $id = $request->input('user_id');
+        if ($id) {
+            $deleted = User::destroy($id);
+            return $deleted ? response()->json(['status'=>'success','message' => 'User deleted successfully']) : response()->json(['status'=>'error','message' => 'Department not found']);
+        } else {
+            return response()->json(['status'=>'error','message' => 'User not found'], 400);
+        }
     }
 }

@@ -64,14 +64,14 @@
                             `
                             }
                         },
-                        {
-                            title: 'Interviewer',
-                            data: null,
-                            render: function(data, type, row) {
+                        // {
+                        //     title: 'Interviewer',
+                        //     data: null,
+                        //     render: function(data, type, row) {
                             
-                                return `<span class="p-1 rounded-md lowercase text-black text-sm">${row.interview[0].interviewer}</span>`
-                            }
-                        },
+                        //         return `<span class="p-1 rounded-md lowercase text-black text-sm">${row.interview[0].interviewer}</span>`
+                        //     }
+                        // },
                         {
                             title: 'Time',
                             data: null,
@@ -88,14 +88,14 @@
                                 return `<span class="p-1 rounded-md lowercase text-black text-sm">${row.interview[0].location}</span>`
                             }
                         },
-                        {
-                            title: 'What to bring?',
-                            data: null,
-                            render: function(data, type, row) {
+                        // {
+                        //     title: 'What to bring?',
+                        //     data: null,
+                        //     render: function(data, type, row) {
                             
-                                return `<span class="p-1 rounded-md lowercase text-black text-sm">${row.interview[0].what_to_bring}</span>`
-                            }
-                        },
+                        //         return `<span class="p-1 rounded-md lowercase text-black text-sm">${row.interview[0].what_to_bring}</span>`
+                        //     }
+                        // },
                         {
                             title: 'Date Created: ',
                             data: null,

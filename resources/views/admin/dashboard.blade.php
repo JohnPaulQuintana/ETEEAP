@@ -1,12 +1,16 @@
 <x-app-layout>
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-5">
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 mb-2">
+            {{-- {{ count($forwardedDocuments) }} --}}
+            @include('partials.header-card', ['ra'=> count($forwardedDocuments), 'acc'=>$accepted, 'dc'=>$declined, 'dept'=>$department])
+        </div>
         <div class="mb-2">
             @include('partials.anouncement', ['admin' => 'Welcome back, ' . Auth::user()->name . '! There are pending documents awaiting your review. Please proceed to the document management section to take necessary action.'])
         </div>
 
         <div class="flex justify-between mt-5 mb-5">
             <div class="flex">
-                <h1 class="text-blue-900 mx-2 font-bold text-xl border-l-4 pl-2 dark:text-white">Document's </h1>
+                <h1 class="text-blue-900 mx-2 font-bold text-xl border-l-4 pl-2 dark:text-white">Applicant Document's </h1>
             </div>
             @include('partials.breadcrumb')
         </div>
@@ -41,18 +45,36 @@
                                         <li class="shadow-md p-2 ms-8 grid grid-cols-1 lg:grid-cols-2 gap-2">
                                             <div>
 
+                                                @php
+                                                        $textColor = 'text-yellow-500';
+                                                        switch ($forwarded->status[0]->status) {
+                                                            case 'rejected':
+                                                                $textColor = 'text-red-500';
+                                                                break;
+                                                            case 'accepted':
+                                                                $textColor = 'text-green-500';
+                                                                break;
+                                                            case 'pending':
+                                                                $textColor = 'text-red-500';
+                                                                break;
+                                                            
+                                                            default:
+                                                                # code...
+                                                                break;
+                                                        }
+                                                    @endphp
                                                 <span
                                                     class="absolute flex items-center justify-center w-6 h-6 bg-gray-100 rounded-full -start-3.5 ring-8 ring-white dark:ring-gray-700 dark:bg-gray-600">
                                                     <i
-                                                        class="fa-sharp fa-solid fa-circle w-2.5 h-2.5 text-yellow-400"></i>
+                                                        class="fa-sharp fa-solid fa-circle w-2.5 h-2.5 {{ $textColor }}"></i>
                                                 </span>
 
                                                 <h3
                                                     class="flex items-start mb-1 text-lg font-semibold text-blue-900 dark:text-white">
                                                     ETEEAP APPLICATION
-
+                                                    
                                                     <span
-                                                        class="bg-gray text-yellow-400 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
+                                                        class="bg-gray {{ $textColor }} text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
                                                         {{ $forwarded->status[0]->status }}
                                                     </span>
                                                     <span
@@ -127,26 +149,31 @@
                                             {{-- comments --}}
                                             
                                             <div class="bg-gray p-2">
-                                                <div class="flex justify-between items-center mb-1">
-                                                    <span class="font-bold">Comment's
-                                                        <span data-document_id="{{ $forwarded->document_id }}"
-                                                            class="ftd bg-blue-500 hover:bg-blue-700 hover:cursor-pointer text-white text-[14px] font-medium mr-2 px-2.5 py-2 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
-                                                            Forward to <i
-                                                                class="fa-sharp fa-solid fa-paper-plane-top text-[10px]"></i>
-                                                        </span>
-                                                        {{-- {{ $forwarded->user_id }} --}}
-                                                        <span 
-                                                            data-document_id="{{ $forwarded->document_id }}"
-                                                            data-user_id="{{ $forwarded->user_id }}"
-                                                            class="forInterview bg-blue-500 hover:bg-blue-700 hover:cursor-pointer text-white text-[14px] font-medium mr-2 px-2.5 py-2 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
-                                                            For Interview <i
-                                                                class="fa-sharp fa-solid fa-paper-plane-top text-[10px]"></i>
-                                                        </span>
-
+                                                <div class="flex items-center mb-1">
+                                                    <span data-document_id="{{ $forwarded->document_id }}"
+                                                        class="ftd bg-blue-500 hover:bg-blue-700 hover:cursor-pointer text-white text-[14px] font-medium mr-2 px-2.5 py-2 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
+                                                        Forward to <i
+                                                            class="fa-sharp fa-solid fa-paper-plane-top text-[10px]"></i>
                                                     </span>
+                                                    {{-- {{ $forwarded->user_id }} --}}
+                                                    <span 
+                                                        data-document_id="{{ $forwarded->document_id }}"
+                                                        data-user_id="{{ $forwarded->user_id }}"
+                                                        class="forInterview bg-blue-500 hover:bg-blue-700 hover:cursor-pointer text-white text-[14px] font-medium mr-2 px-2.5 py-2 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
+                                                        For Interview <i
+                                                            class="fa-sharp fa-solid fa-paper-plane-top text-[10px]"></i>
+                                                    </span>
+                                                    <span 
+                                                        data-document_id="{{ $forwarded->document_id }}"
+                                                        data-user_id="{{ $forwarded->user_id }}"
+                                                        class="btn-reject bg-red-500 hover:bg-red-700 hover:cursor-pointer text-white text-[14px] font-medium mr-2 px-2.5 py-2 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
+                                                        Reject Application <i
+                                                            class="fa-sharp fa-solid fa-paper-plane-top text-[10px]"></i>
+                                                    </span>
+                                                    
 
                                                 </div>
-                                               
+                                                <span class="font-bold">Comment's</span>
                                                 @if (count($comments) == 0)
                                                     <div class=" bg-white rounded-md p-2 flex items-center justify-center mt-4 h-28">
                                                         <h1 class="text-xl">No comment's available</h1>
@@ -532,6 +559,7 @@
                             // Handle the error as needed
                         });
                 })
+
                 // btn reject
                 $(document).on('click', '.btn-reject', function() {
                     var user_id = $(this).data('user_id');
@@ -542,6 +570,13 @@
                     acceptOrReject('/accept', 'post', data)
                         .then(function(data) {
                             console.log(data)
+                            if(data.status === 'success'){
+                                setTimeout(() => {
+                                // if(result.value.refresh){
+                                    window.location.reload()
+                                // }
+                                }, 1000);
+                            }
                             // Handle the data or perform additional actions if needed
                         })
                         .catch(function(errorMessage) {
@@ -702,10 +737,7 @@
                                     <label for="user_id" class="text-left block mb-2 text-md font-bold text-gray-900 dark:text-white">Interviewer Name</label>
                                     <input type="text" id="user_id" value="${id}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                 </div>
-                                <div class="mb-2">
-                                    <label for="interviewer" class="text-left block mb-2 text-md font-bold text-gray-900 dark:text-white">Interviewer Name</label>
-                                    <input type="text" id="interviewer" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                                </div>
+                               
                                 <div class="mb-2 flex w-full gap-2">
                                     <div class="w-full">
                                         <label for="date" class="block text-left mb-2 text-md font-bold text-gray-900 dark:text-white">Date Interview</label>
@@ -720,10 +752,7 @@
                                     <label for="address" class="block text-left mb-2 text-md font-bold text-gray-900 dark:text-white">Location:</label>
                                     <textarea id="address" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write details here..."></textarea>
                                 </div>
-                                <div class="mb-2">
-                                    <label for="details" class="block text-left mb-2 text-md font-bold text-gray-900 dark:text-white">What to bring:</label>
-                                    <textarea id="details" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write details here..."></textarea>
-                                </div>
+                               
                             </div>`,
                         inputAttributes: {
                             autocapitalize: "off"
@@ -733,15 +762,15 @@
                         showLoaderOnConfirm: true,
                         allowOutsideClick: false,
                         preConfirm: async () => {
-                            var interviewer = $('#interviewer').val()
+                            // var interviewer = $('#interviewer').val()
                             var date = $('#date').val()
                             var time = $('#time').val()
                             var address = $('#address').val()
-                            var details = $('#details').val()
+                            // var details = $('#details').val()
                             var user_id = $('#user_id').val()
                             var document_id = $('#documentID').val()
                             // console.log(interviewer, date, time, address, details, user_id)
-                            if(interviewer == '' || date == '' || time == '' || address == '' || details == ''){
+                            if(date == '' || time == '' || address == ''){
                                 return Swal.showValidationMessage(`All field is required to fill`)
                             }
 
@@ -753,7 +782,7 @@
                                         'Content-Type': 'application/json',
                                         'X-CSRF-TOKEN': csrfToken
                                     },
-                                    body: JSON.stringify({'document_id':document_id,'user_id': user_id, 'interviewer': interviewer, 'date':date, 'time':time, 'address':address, 'details':details}),
+                                    body: JSON.stringify({'document_id':document_id,'user_id': user_id, 'date':date, 'time':time, 'address':address}),
                                 });
 
                                 if (!response.ok) {

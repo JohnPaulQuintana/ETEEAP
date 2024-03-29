@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Document;
 use Illuminate\Http\Request;
 use App\Models\CheckingDocument;
-use App\Models\Document;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\SendReuploadNotification;
 
 class CheckingDocumentController extends Controller
 {
@@ -31,6 +33,22 @@ class CheckingDocumentController extends Controller
                             'action'=>$request->input('type')
                         ]
                     );
+
+                    if ($request->input('type') === 'declined') {
+                        $notifyUser = user::where('id', $request->input('user_id'))->first();
+                        $details = [
+                            "greetings"=>"Dear Ms/Mr ".$notifyUser->name,
+                            "body" => "I hope this message finds you well.",
+                            "body2" => "We would like to inform you that upon reviewing the document you submitted, it appears that there are certain areas that require revision or additional information. Therefore, we kindly request you to resubmit the document with the necessary changes as soon as possible.",
+                            "body3" => "Your prompt attention to this matter would be greatly appreciated. Should you have any questions or require further assistance, please do not hesitate to contact us.",
+                            "lastline" => "Thank you for your cooperation.",
+                            "actiontext"=>"Available on Dashboard",
+                            "actionurl"=>route('user-dashboard'),
+                
+                        ];
+                        //send notification to a user 
+                        Notification::send($notifyUser, new SendReuploadNotification($details));
+                    }
     
                     return response()->json(['status'=>'success','message'=>"document's updated successfully"]);
                 }else{
@@ -42,6 +60,21 @@ class CheckingDocumentController extends Controller
 
                         // update the documents
                         Document::where('id', $document->id)->update(['isForwarded'=>0]);
+
+                        $notifyUser = user::where('id', $request->input('user_id'))->first();
+                        $details = [
+                            "greetings"=>"Dear Ms/Mr ".$notifyUser->name,
+                            "body" => "I hope this message finds you well.",
+                            "body2" => "We would like to inform you that upon reviewing the document you submitted, it appears that there are certain areas that require revision or additional information. Therefore, we kindly request you to resubmit the document with the necessary changes as soon as possible.",
+                            "body3" => "Your prompt attention to this matter would be greatly appreciated. Should you have any questions or require further assistance, please do not hesitate to contact us.",
+                            "lastline" => "Thank you for your cooperation.",
+                            "actiontext"=>"Available on Dashboard",
+                            "actionurl"=>route('user-dashboard'),
+                
+                        ];
+                        //send notification to a user 
+                        Notification::send($notifyUser, new SendReuploadNotification($details));
+                        
                         return response()->json(['status'=>'success','message'=>"document's marked as failed the validation."]);
                     }
                     

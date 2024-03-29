@@ -4,8 +4,10 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CheckingDocumentController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\EvaluatedController;
 use App\Http\Controllers\ForwardToDeptController;
 use App\Http\Controllers\InterviewController;
+use App\Http\Controllers\NotifyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReuploadDocumentController;
 use App\Http\Controllers\UserController;
@@ -42,6 +44,8 @@ Route::middleware(['checkUserRole:0','auth','verified'])->group(function(){
     Route::get('/timeline/{id}', [UserController::class, 'timeline'])->name('timeline');
 
     Route::post('/reupload', [ReuploadDocumentController::class, 'reupload'])->name('reupload');
+
+    Route::post('/notify', [NotifyController::class, 'notify'])->name('notify');
 });
 
 Route::middleware(['checkUserRole:1','auth','verified'])->group(function(){
@@ -60,6 +64,11 @@ Route::middleware(['checkUserRole:1','auth','verified'])->group(function(){
     Route::post('/checkedDocument', [CheckingDocumentController::class, 'checkedDocument'])->name('checkedDocument');
 
     Route::post('/interview', [InterviewController::class, 'setUpInterview'])->name('interview');
+
+    Route::post('/delete-department', [AdminController::class, 'delete'])->name('admin.delete');
+    Route::get('/user-info', [AdminController::class, 'info'])->name('info');
+    Route::post('/user-update', [AdminController::class, 'update'])->name('user.update');
+    Route::post('/user-delete', [AdminController::class, 'deleteUser'])->name('user.delete');
 });
 
 Route::middleware(['checkUserRole:2','auth','verified'])->group(function(){
@@ -69,6 +78,8 @@ Route::middleware(['checkUserRole:2','auth','verified'])->group(function(){
 
     Route::get('/forward',[DepartmentController::class, 'departmentUser'])->name('departmentUser');
     Route::post('/outgoing',[DepartmentController::class, 'outgoing'])->name('outgoing');
+
+    Route::get('/evaluated', [EvaluatedController::class, 'evaluated'])->name('evaluated');
 
 });
 

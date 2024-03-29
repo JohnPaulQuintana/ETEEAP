@@ -54,12 +54,12 @@
         <nav id="menu" class="main-nav" role="navigation">
             <ul class="main-menu">
                 <li><a href="{{ route('welcome') }}">Home</a></li>
-                <li class="has-submenu"><a class="text-white hover:cursor-pointer">Authentication</a>
-                    <ul class="sub-menu">
+                <li><a href="{{ route('login') }}">Login</a>
+                    {{-- <ul class="sub-menu">
                         <li><a href="{{ route('login') }}">Login</a></li>
-                        {{-- <li><a href="{{ route('register') }}">Register</a></li> --}}
+                        <li><a href="{{ route('register') }}">Register</a></li>
 
-                    </ul>
+                    </ul> --}}
                 </li>
                 <li><a class="border" href="{{ route('register') }}">Apply Now</a></li>
             </ul>
@@ -68,7 +68,7 @@
 
     <!-- ***** Main Banner Area Start ***** -->
     <section class="section main-banner" id="top" data-section="section1">
-        <img id="bg-video" src="{{ asset('images/background.jpg') }}" alt="">
+        <img class="mt-21" id="bg-video" src="{{ asset('images/background.jpg') }}" alt="">
         {{-- <video autoplay muted loop id="bg-video">
             <source src="assets/images/course-video.mp4" type="video/mp4" />
         </video> --}}
