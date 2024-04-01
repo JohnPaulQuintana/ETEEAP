@@ -88,7 +88,7 @@
         <div class="video-overlay header-text grid grid-cols-1 md:grid-cols-2">
             <div class="flex flex-col justify-center items-center mt-29">
                 <h6 class="font-bold text-xl md:text-2xl text-white">Application Tracking System</h6>
-                <h6 class="font-bold text-xl md:text-2xl text-white mt-3">for</h6>
+                <h6 class="font-bold text-xl md:text-2xl text-white mt-3">for the</h6>
                 <h2 class="mt-1 font-bold text-4xl md:text-6xl text-textprimary uppercase not-italic">ETEEAP program</h2>
                 <div class="main-button mt-2">
                     <div class="scroll-to-section"><a class="b-r hover:cursor-pointer">Requirements</a></div>
