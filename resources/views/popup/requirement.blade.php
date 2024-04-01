@@ -11,7 +11,7 @@
             <div class="p-4 md:p-5 text-center">
                 <i class="fa-sharp fa-regular fa-circle-check mx-auto mb-2 text-gray-400 w-12 h-12 text-5xl text-textprimary"></i>
                
-                <h3 class="mb-5 text-lg font-normal text-textprimary dark:text-gray-400">You need to know about the requirements.</h3>
+                <h3 class="mb-5 text-lg font-normal text-textprimary dark:text-gray-400">Please find below the outlined qualifications, requirements, updated course offerings, application process, and program fees.</h3>
                 <div class="border border-gray p-2 rounded">
                    <iframe src="{{ asset('requirement/Qualification-and-Requirements.pdf') }}" frameborder="0" width="100%" height="750"></iframe>
                 </div>
