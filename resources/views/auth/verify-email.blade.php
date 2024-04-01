@@ -2,7 +2,7 @@
 
     <div class="w-full max-w-md p-4 bg-bgprimary border-bgprimary rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
         <div class="mb-4 text-sm text-gray-600">
-            {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
+            {{ __('hank you for signing up! Before proceeding, please verify your email address by clicking on the link we've sent to your inbox. If you haven't received the email, we're happy to send another one.') }}
         </div>
     
         @if (session('status') == 'verification-link-sent')

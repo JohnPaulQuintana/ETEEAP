@@ -32,7 +32,7 @@
                 
                     <div class="mt-2">
                         <label for="message" class="block mb-2 text-sm dark:text-white">Comments/Instructions</label>
-                        <textarea id="message" name="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                        <textarea id="message" name="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Add your comments or messages here..."></textarea>
                     </div>
                     {{-- <input type="text" name="department_name" id="forwarded_department_name" class="hidden"> --}}
                     <button data-modal-hide="static-modal" type="submit" id="btn-iframe-accepted" class="btn-iframe-accepted text-white mt-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Forward Documents</button>
@@ -42,7 +42,7 @@
                   
                   <div>   
                       <label for="message" class="block mb-2 text-sm font-bold text-blue-900 dark:text-white">Comments/Instructions</label>
-                      <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                      <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Add your comments or messages here..."></textarea>
                       <input type="text" name="" id="filename-orig" class="hidden">
                       <input type="text" name="" id="subname" class="hidden">
                   </div> --}}
