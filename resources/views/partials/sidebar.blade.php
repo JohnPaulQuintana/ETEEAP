@@ -158,7 +158,7 @@
                                             fill="" />
                                     </svg>
 
-                                    Document's
+                                    Applications
 
 
                                 </a>
@@ -188,7 +188,7 @@
                                         fill="" />
                                 </svg>
 
-                                Application Record's 
+                                Application Reports 
 
 
                             </a>
@@ -262,7 +262,7 @@
                                         fill="" />
                                 </svg>
 
-                                My Documents
+                                My Application
 
 
                             </a>

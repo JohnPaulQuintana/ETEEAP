@@ -31,7 +31,7 @@
                         data-tabs-target="#applicant" type="button" role="tab" aria-controls="applicant"
                         aria-selected="false">
 
-                        {{ __("Applicant's") }} <span
+                        {{ __("Applicants") }} <span
                             class="text-red-500">{{ isset($documents) ? count($documents) : 0 }}</span>
                     </button>
                 </li>
@@ -40,7 +40,7 @@
                         data-tabs-target="#returned" type="button" role="tab" aria-controls="returned"
                         aria-selected="false">
 
-                        {{ __("Returned Document's") }} <span
+                        {{ __("Returned Documents") }} <span
                             class="text-red-500">{{ isset($forwardedDocuments) ? count($forwardedDocuments) : '' }}</span>
                     </button>
                 </li>
@@ -314,7 +314,7 @@
                                                             {{-- {{ $document->documents[0] }} --}}
                                                             <div
                                                                 class="border border-gray-2 rounded-md bg-gray-2 p-2 text-blue-900 w-full">
-                                                                <span class="font-bold">Comment's
+                                                                <span class="font-bold">Comments
                                                                     <span
                                                                         data-document_id={{ $document->documents[0]->id }}
                                                                         class="ftd bg-blue-500 hover:bg-blue-700 hover:cursor-pointer text-white text-[14px] font-medium mr-2 px-2.5 py-2 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
@@ -448,14 +448,14 @@
                                 @elseif (isset($forwardedDocuments) && count($forwardedDocuments) === 0 && isset($documents) && count($documents) === 0)
                                     <div id="default-tab-content">
                                         <div class="p-5">
-                                            <h1 class="text-md">There's is no pending document's today!</h1>
+                                            <h1 class="text-md">There are no pending applications today.</h1>
                                         </div>
                                     </div>
                                 @else
                                     <div
                                         class="flex items-center justify-between p-4 md:p-5 rounded-t dark:border-gray-600">
                                         <h3 class="text-lg font-semibold dark:text-white">
-                                            There's no Application to application right now!
+                                        There are no applications to review at the moment.
                                         </h3>
 
                                     </div>
@@ -595,7 +595,7 @@
 
                                                             <div class="bg-gray p-2">
                                                                 <div class="flex justify-between items-center mb-1">
-                                                                    <span class="font-bold">Comment's
+                                                                    <span class="font-bold">Comments
                                                                         <span
                                                                             data-document_id="{{ $forwarded->document_id }}"
                                                                             class="ftd bg-blue-500 hover:bg-blue-700 hover:cursor-pointer text-white text-[14px] font-medium mr-2 px-2.5 py-2 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
@@ -610,7 +610,7 @@
                                                                 @if (count($forwarded->comments) == 0)
                                                                     <div
                                                                         class=" bg-white rounded-md p-2 flex items-center justify-center mt-4 h-28">
-                                                                        <h1 class="text-xl">No comment's available</h1>
+                                                                        <h1 class="text-xl">No comments available</h1>
                                                                     </div>
                                                                 @endif
                                                                 @foreach ($forwarded->comments as $comment)
@@ -734,7 +734,7 @@
                                     <div
                                         class="flex items-center justify-between p-4 md:p-5 rounded-t dark:border-gray-600">
                                         <h3 class="text-lg font-semibold dark:text-white">
-                                            There's no Application to returned application right now!
+                                        No documents have been returned.
                                         </h3>
 
                                     </div>
@@ -1083,7 +1083,7 @@
 
                 function flashAlert(message) {
                     Swal.fire({
-                        title: "Document's Forwarded Successfully!",
+                        title: "Application Forwarded Successfully!",
                         text: message,
                         icon: "success"
                     });

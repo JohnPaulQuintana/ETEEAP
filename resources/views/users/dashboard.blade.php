@@ -24,7 +24,7 @@
         <div class="mt-10">
             <div class="flex justify-between">
                 <div class="flex">
-                    <h1 class="text-blue-900 mx-2 font-bold border-l-4 pl-2 dark:text-white">My Document's </h1>
+                    <h1 class="text-blue-900 mx-2 font-bold border-l-4 pl-2 dark:text-white">My Application </h1>
                     <span class="sendDocs" data-tooltip-target="tooltip-light" data-tooltip-style="light"><i
                             class="fa-regular fa-file-circle-plus text-xl text-blue-700 hover:text-blue-500 hover:cursor-pointer dark:text-white"></i></span>
                     <div id="tooltip-light" role="tooltip"
@@ -269,7 +269,7 @@
                                         </div>
 
                                         <div class="border border-gray-2 rounded-md bg-gray-2 p-2 text-blue-900 w-full">
-                                            <span class="p-1 font-bold">Comment's</span>
+                                            <span class="p-1 font-bold">Comments</span>
                                             <div class="text-wrap w-full">
                                                 <div class="break-words max-h-60 overflow-auto">
 
@@ -360,7 +360,7 @@
                             //                     <input type="radio" id="job-${count}" name="job" value="job-1" class="hidden peer" required />
                             //                     <label for="job-${count}" class="inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-900 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">                           
                             //                         <div class="block">
-                            //                             <div class="w-full text-lg font-semibold">REQUIREMENT'S - ${count}</div>
+                            //                             <div class="w-full text-lg font-semibold">REQUIREMENTS - ${count}</div>
                             //                             <div class="w-full text-gray-500 dark:text-gray-400 text-sm">${mapping[key]}</div>
                             //                         </div>
                             //                         <svg class="w-4 h-4 ms-3 rtl:rotate-180 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>

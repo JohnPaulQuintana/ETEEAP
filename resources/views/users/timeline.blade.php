@@ -94,8 +94,8 @@
                                                 class="rounded-md p-2 mb-3 text-blue-900 text-md font-normal text-center leading-none bg-gray-2 dark:text-gray-400">
                                                 <i class="fa-solid fa-envelope-circle-check text-4xl"></i>
                                                 <p class="mb-5 text-green-500 text-2xl">Application Accepted</p>
-                                                <p>Thank you for your patient's, Kindly follow's the intruction listed
-                                                    on the email we sent to you!</p>
+                                                <p>Thank you for your patience. Kindly follow the instructions listed
+                                                on the program details provided on the main page.</p>
 
                                             </div>
                                         @endif
@@ -116,7 +116,7 @@
 
                                     {{--  comments --}}
                                     <div class="border border-gray-2 rounded-md bg-gray-2 p-2 text-blue-900 w-full">
-                                        <span class="font-bold">Comment's</span>
+                                        <span class="font-bold">Comments</span>
                                         <div class="">
                                             {{-- list of resubmit docs --}}
 
@@ -221,7 +221,7 @@
                                                 @endforeach
                                             @else
                                                 <div class="rounded-md bg-white text-center p-10">
-                                                    <p>There is no available comment's</p>
+                                                    <p>No comments available.</p>
                                                 </div>
                                             @endif
 

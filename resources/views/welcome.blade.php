@@ -79,7 +79,7 @@
                 <h6 class="mt-3">for the</h6>
                 <h2 class="mt-0"><em>ETEEAP Program</em> </h2>
                 <div class="main-button">
-                    <div class="scroll-to-section"><a class="b-r hover:cursor-pointer">Requirements</a></div>
+                    <div class="scroll-to-section"><a class="b-r hover:cursor-pointer">Program Details</a></div>
                 </div>
             </div>
         </div>

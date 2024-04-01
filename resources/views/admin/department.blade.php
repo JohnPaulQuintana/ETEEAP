@@ -71,7 +71,7 @@
                         id="{{ str_replace(' ', '', $department->department_name) }}" role="tabpanel"
                         aria-labelledby="{{ str_replace(' ', '', $department->department_name) }}-tab">
                         <div class="flex justify-between">
-                            <h1 class="border-l-4 pl-2 border-blue-900 text-blue-900 font-bold">Designated User's</h1>
+                            <h1 class="border-l-4 pl-2 border-blue-900 text-blue-900 font-bold">Designated Users</h1>
                             <h1 data-id="{{ $department->id }}"
                                 class="deleteDept text-red-500 border border-red-500 rounded-md p-1 font-bold hover:text-red-700 hover:cursor-pointer">
                                 Delete Department</h1>
@@ -528,7 +528,7 @@
                             console.log(result)
                             Swal.fire({
                                 title: "Information Updated Successfully!",
-                                text: `The page is refreshing in 3 second's`,
+                                text: `The page is refreshing in 3 seconds`,
                                 icon: "success"
                             });
 

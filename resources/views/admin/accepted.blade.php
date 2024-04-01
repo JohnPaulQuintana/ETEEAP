@@ -6,7 +6,7 @@
 
         <div class="flex justify-between mt-5 mb-5">
             <div class="flex">
-                <h1 class="text-blue-900 mx-2 font-bold text-xl border-l-4 pl-2 dark:text-white">Accepted Applicant's </h1>
+                <h1 class="text-blue-900 mx-2 font-bold text-xl border-l-4 pl-2 dark:text-white">Accepted Applicants </h1>
                 
             </div>
             @include('partials.breadcrumb')

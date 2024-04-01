@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-5">
         <div class="mb-2">
-            @include('partials.anouncement', ['admin' => 'Welcome back, ' . Auth::user()->name . "! We're glad to have you back on your profile. If you need to update any information or explore your profile further, you're in the right place."])
+            @include('partials.anouncement', ['admin' => 'Welcome back, ' . Auth::user()->name . "! Explore and update your profile here."])
         </div>
 
         <div class="flex justify-between mt-5">

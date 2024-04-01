@@ -91,7 +91,7 @@
                 <h6 class="font-bold text-xl md:text-2xl text-white mt-3">for the</h6>
                 <h2 class="mt-1 font-bold text-4xl md:text-6xl text-textprimary uppercase not-italic">ETEEAP program</h2>
                 <div class="main-button mt-2">
-                    <div class="scroll-to-section"><a class="b-r hover:cursor-pointer">Requirements</a></div>
+                    <div class="scroll-to-section"><a class="b-r hover:cursor-pointer">Program Details</a></div>
                 </div>
             </div>
             <div class="flex justify-center items-center">
