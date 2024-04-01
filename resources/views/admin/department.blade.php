@@ -37,7 +37,7 @@
                         <button
                             class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                             id="add-tab" data-tabs-target="#add" type="button" role="tab" aria-controls="add"
-                            aria-selected="false">Add Departments</button>
+                            aria-selected="false">Add Department</button>
                     </li>
 
                     <li role="presentation">
@@ -59,7 +59,7 @@
                         <button
                             class="inline-block p-4 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                             id="users-tab" data-tabs-target="#user" type="button" role="tab" aria-controls="user"
-                            aria-selected="@php echo $enableD; @endphp">Add Users</button>
+                            aria-selected="@php echo $enableD; @endphp">Add User</button>
                     </li>
                 </ul>
             </div>
@@ -71,7 +71,7 @@
                         id="{{ str_replace(' ', '', $department->department_name) }}" role="tabpanel"
                         aria-labelledby="{{ str_replace(' ', '', $department->department_name) }}-tab">
                         <div class="flex justify-between">
-                            <h1 class="border-l-4 pl-2 border-blue-900 text-blue-900 font-bold">Designated Users</h1>
+                            <h1 class="border-l-4 pl-2 border-blue-900 text-blue-900 font-bold">Users</h1>
                             <h1 data-id="{{ $department->id }}"
                                 class="deleteDept text-red-500 border border-red-500 rounded-md p-1 font-bold hover:text-red-700 hover:cursor-pointer">
                                 Delete Department</h1>
@@ -158,7 +158,7 @@
                     <form class="max-w-full" action="{{ route('department.store') }}" method="POST">
                         @csrf
                         <div>
-                            <h1 class="text-xl mb-2">Add a department section</h1>
+                            <h1 class="text-xl mb-2">Add New Department</h1>
                         </div>
                         <div class="flex items-center gap-2">
                             <div class="relative w-100">
@@ -188,7 +188,7 @@
                     <form class="max-w-full" action="{{ route('department.user') }}" method="POST">
                         @csrf
                         <div>
-                            <h1 class="text-xl mb-2">Add users and designated department section</h1>
+                            <h1 class="text-xl mb-2">Add Users to Designated Departments</h1>
                         </div>
                         <div class="flex items-center gap-2">
 

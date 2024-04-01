@@ -49,7 +49,7 @@
                                         fill="" />
                                 </svg>
 
-                                Documents
+                                Applications
 
 
                             </a>
@@ -65,7 +65,7 @@
                                 :class="page === 'profile' && 'bg-graydark'">
                                 
                                 <i class="fa-light fa-file-circle-check text-xl"></i>
-                                Accepted Applicant
+                                Accepted Applicants
                             </a>
                         </li>
                     
@@ -77,7 +77,7 @@
                                 :class="page === 'profile' && 'bg-graydark'">
                                 
                                 <i class="fa-light fa-file-circle-xmark text-xl"></i>
-                                Declined Applicant
+                                Declined Applicants
                             </a>
                         </li>
 

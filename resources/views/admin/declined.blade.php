@@ -1,12 +1,10 @@
 <x-app-layout>
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-5">
-        <div class="mb-2">
-            @include('partials.anouncement', ['admin' => 'Here is the list of rejected applicants ' . Auth::user()->name])
-        </div>
+    
 
         <div class="flex justify-between mt-5 mb-5">
             <div class="flex">
-                <h1 class="text-blue-900 mx-2 font-bold text-xl border-l-4 pl-2 dark:text-white">Rejected Applicant's </h1>
+                <h1 class="text-blue-900 mx-2 font-bold text-xl border-l-4 pl-2 dark:text-white">Rejected Applicants </h1>
                 
             </div>
             @include('partials.breadcrumb')

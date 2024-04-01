@@ -4,13 +4,11 @@
             {{-- {{ count($forwardedDocuments) }} --}}
             @include('partials.header-card', ['ra'=> count($forwardedDocuments), 'acc'=>$accepted, 'dc'=>$declined, 'dept'=>$department])
         </div>
-        <div class="mb-2">
-            @include('partials.anouncement', ['admin' => 'Welcome back, ' . Auth::user()->name . '! There are pending documents awaiting your review. Please proceed to the document management section to take necessary action.'])
-        </div>
+        
 
         <div class="flex justify-between mt-5 mb-5">
             <div class="flex">
-                <h1 class="text-blue-900 mx-2 font-bold text-xl border-l-4 pl-2 dark:text-white">Applicant Documents </h1>
+                <h1 class="text-blue-900 mx-2 font-bold text-xl border-l-4 pl-2 dark:text-white">Applications </h1>
             </div>
             @include('partials.breadcrumb')
         </div>
@@ -297,7 +295,7 @@
                             <div
                                 class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                                 <h3 class="text-lg font-semibold text-blue-900 dark:text-white">
-                                    There's no application to review right now!
+                                There are no applications to review at the moment.
                                 </h3>
                                 <button type="button"
                                     class="t-close text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
