@@ -82,8 +82,23 @@ class DepartmentController extends Controller
             })->with(['documents.status', 'documents.status.notes', 'documents.tvids', 'documents.checked'])->get();
             // dd($alldocs);
             if (count($alldocs) > 0) {
-                $checked = CheckingDocument::where('document_id', $alldocs[0]->documents[0]->id)
-                    ->select('sub_name', 'action')->get();
+                // $checked = CheckingDocument::where('document_id', $alldocs[0]->documents[0]->id)
+                //     ->select('sub_name', 'action')->get();
+
+                foreach ($alldocs as $key => $alldoc) {
+                    foreach ($alldoc->documents as $value) {
+                        $checked = CheckingDocument::where('document_id', $value->id)
+                        ->select('sub_name', 'action')->get();
+                        $alldoc->checked = $checked;
+
+                        $declined = CheckingDocument::where('document_id', $value->id)->where('action', 'declined')
+                        ->with(['reupload'])
+                        ->get();
+
+                        $alldoc->declined = $declined;
+
+                    }
+                }
 
                 $subNames = $checked->pluck('sub_name')->toArray();
                 $subNameCounts = array_count_values($subNames);
@@ -103,9 +118,9 @@ class DepartmentController extends Controller
 
                 // dd($acceptedRecords);
 
-                $declined = CheckingDocument::where('document_id', $alldocs[0]->documents[0]->id)->where('action', 'declined')
-                    ->with(['reupload'])
-                    ->get();
+                // $declined = CheckingDocument::where('document_id', $alldocs[0]->documents[0]->id)->where('action', 'declined')
+                //     ->with(['reupload'])
+                //     ->get();
             }
 
 
@@ -178,7 +193,7 @@ class DepartmentController extends Controller
                 Status::where('id', $document->id)->update(['status' => 'in-review']);
                 $existingRecord = History::where('document_id', $document->id)->where('status', 'in-review')->first();
                 if (!$existingRecord) {
-                    History::create(['document_id' => $document->id, 'status' => 'in-review', 'notes' => 'Your documents are currently being processed. Please be patient as we meticulously review each detail to ensure accuracy and quality.']);
+                    History::create(['document_id' => $document->id, 'status' => 'in-review', 'notes' => 'Your application are currently being processed. Please be patient as we meticulously review each detail to ensure accuracy and quality.']);
                     // Build the email notification details
                     // Set the time zone to Asia/Manila
                     date_default_timezone_set('Asia/Manila');
@@ -227,7 +242,7 @@ class DepartmentController extends Controller
         $ftp = ForwardToDept::create(['sender_id' => Auth::user()->id, 'receiver_id' => $userId, 'document_id' => $request->input('document_id')]);
         DepartmentComment::create(['forward_to_depts_id' => $ftp->id, 'department_comment' => $request->input('message'), 'sender_id' => Auth::user()->id, 'receiver_id' => $userId, 'document_id' => $request->input('document_id')]);
         Document::where('id', $request->input('document_id'))->update(['isForwarded' => 1]);
-        History::create(['document_id' => $request->input('document_id'), 'status' => 'forwarded', 'notes' => "Your Document's is Forwarded to department name " . $dept]);
+        History::create(['document_id' => $request->input('document_id'), 'status' => 'forwarded', 'notes' => "Your application is forwarded to department name " . $dept]);
         Status::where('id', $request->input('document_id'))->update(['status' => 'forwarded']);
         Session::flash('pop-message', 'Your successfully sent this document to ' . $dept);
         return redirect()->back()->withInput();

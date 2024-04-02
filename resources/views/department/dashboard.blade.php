@@ -225,13 +225,14 @@
                                                                             'cer',
                                                                         ];
                                                                     @endphp
+                                                                    {{-- {{ $document->checked }} --}}
                                                                     @foreach ($originalName as $key => $doc)
                                                                         @if ($document->documents[0][$columnKey[$key]] !== null)
                                                                             {{-- {{ $count++ }} {{ isset($checked[$count++]->action) }} --}}
                                                                             @php
                                                                                 $borderClass = '';
 
-                                                                                foreach ($checked as $check) {
+                                                                                foreach ($document->checked as $check) {
                                                                                     if (
                                                                                         $columnKey[$key] ===
                                                                                         $check->sub_name
@@ -265,7 +266,7 @@
                                                                                         $isText = 'Evaluated';
                                                                                         $icons = 'fa-check';
                                                                                         $bgColor = 'bg-green-500';
-                                                                                        foreach ($checked as $check) {
+                                                                                        foreach ($document->checked as $check) {
                                                                                             if (
                                                                                                 $columnKey[$key] ===
                                                                                                 $check->sub_name
@@ -325,13 +326,13 @@
                                                                 </span>
                                                                 <div class="">
                                                                     {{-- list of resubmit docs --}}
-                                                                    @foreach ($declined as $dec)
+                                                                    @foreach ($document->declined as $dec)
                                                                         <div class="text-wrap w-full mt-3">
                                                                             <div class="break-words">
-
+                                                                                {{-- {{ $dec }} --}}
                                                                                 <span
                                                                                     class="block text-left border rounded-md bg-white p-1 mb-2">
-
+                                                                                    
                                                                                     <div
                                                                                         class="flex items-start gap-2.5">
                                                                                         <div
@@ -422,6 +423,8 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         @endforeach
+
+                                                                                    
                                                                                     @endif
                                                                                 </span>
 

@@ -69,6 +69,10 @@ Route::middleware(['checkUserRole:1','auth','verified'])->group(function(){
     Route::get('/user-info', [AdminController::class, 'info'])->name('info');
     Route::post('/user-update', [AdminController::class, 'update'])->name('user.update');
     Route::post('/user-delete', [AdminController::class, 'deleteUser'])->name('user.delete');
+
+    Route::get('/admin-update-status/{id}', [AdminController::class, 'ajaxCallUpdate'])->name('update');
+    Route::get('/admin-forward',[AdminController::class, 'departmentUser'])->name('departmentUser');
+    Route::post('/admin-outgoing',[AdminController::class, 'outgoing'])->name('admin.outgoing');
 });
 
 Route::middleware(['checkUserRole:2','auth','verified'])->group(function(){

@@ -115,7 +115,7 @@
                                     </div>
 
                                     {{--  comments --}}
-                                    <div class="border border-gray-2 rounded-md bg-gray-2 p-2 text-blue-900 w-full">
+                                    <div class="border border-gray-2 rounded-md bg-gray-2 p-2 text-blue-900 w-full c-con">
                                         <span class="font-bold">Comments</span>
                                         <div class="">
                                             {{-- list of resubmit docs --}}
@@ -128,7 +128,7 @@
                                                             <span
                                                                 class="block text-left border rounded-md bg-white p-1 mb-2">
 
-                                                                <div class="flex items-start gap-2.5">
+                                                                <div class="flex items-start gap-2.5 content">
                                                                     <div class="flex flex-col w-full gap-1">
                                                                         <div
                                                                             class="flex flex-col w-full leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
@@ -257,7 +257,8 @@
             $(document).ready(function() {
                 // hide all the passed history
                 $('#history-card li div h3 span.noti').not(':first').hide();
-                $('.reupload').not(':first').hide();
+                $('.c-con > content').not(':first').hide();
+                $('.c-con').not(':first').html(`<div class="text-slate-400 flex flex-col justify-center items-center p-5"><h1>Comment's not available right now!</h1><i class="fa-solid fa-square-question text-4xl"></i></div>`)
                 const $comments = document.getElementById('comments-modal');
 
                 // options with default values

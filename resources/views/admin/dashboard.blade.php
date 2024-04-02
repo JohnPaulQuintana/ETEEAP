@@ -311,8 +311,9 @@
     </div>
 
     @include('popup.documents')
-    @include('popup.iframe')
-
+    {{-- @include('popup.iframe') --}}
+    @include('department.modal.iframe')
+    @include('admin.modal.forward')
     @section('scripts')
         {{-- datatables --}}
         {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-responsive-bs4/3.0.0/responsive.bootstrap4.min.js"></script> --}}
@@ -332,6 +333,8 @@
 
                 const $requirementU = document.getElementById('select-modal');
                 const $requirementI = document.getElementById('static-modal');
+                const $requirement = document.getElementById('iframe-modal');
+                const $forward = document.getElementById('forward-modal');
 
                 // options with default values
                 const options = {
@@ -366,6 +369,39 @@
                         console.log('modal has been toggled');
                     },
                 };
+
+                const options2 = {
+                    placement: 'right',
+                    backdrop: 'static',
+                    backdropClasses: 'bg-blue-900/50 dark:bg-blue-900/80 fixed inset-0 z-40',
+                    closable: true,
+                    onHide: () => {
+                        console.log('modal is hidden');
+                        $('#fileViewer').attr('src', ``)
+                    },
+                    onShow: () => {
+                        console.log('modal is shown');
+                    },
+                    onToggle: () => {
+                        console.log('modal has been toggled');
+                    },
+                };
+                // forward
+                const optionsFoward = {
+                    placement: 'right',
+                    backdrop: 'static',
+                    backdropClasses: 'bg-blue-900/50 dark:bg-blue-900/80 fixed inset-0 z-40',
+                    closable: true,
+                    onHide: () => {
+                        console.log('modal is hidden');
+                    },
+                    onShow: () => {
+                        console.log('modal is shown');
+                    },
+                    onToggle: () => {
+                        console.log('modal has been toggled');
+                    },
+                };
                 // instance options object
                 const instanceOptions = {
                     id: 'select-modal',
@@ -376,67 +412,106 @@
                     id: 'static-modal',
                     override: true
                 };
+                const instanceOptions2 = {
+                    id: 'iframe-modal',
+                    override: true
+                };
+                // instance options object
+                const instanceOptionsForward = {
+                    id: 'forward-modal',
+                    override: true
+                };
 
                 const dqu = new Modal($requirementU, options, instanceOptions);
                 const Iqu = new Modal($requirementI, optionsI, instanceOptionsI);
+                const rq = new Modal($requirement, options2, instanceOptions2);
+                const fr = new Modal($forward, optionsFoward, instanceOptionsForward);
+                // new open
+                 // open the docx
+                 $('.docx').on('click', function() {
+                    // alert('dawdwa')
+                    let isReturning = $(this).attr('data-return_docs');
+                    if (isReturning !== undefined && isReturning !== null) {
+                        console.log(isReturning);
+
+                    } else {
+                        isReturning = false;
+                        // Handle case when data-return_docs is undefined
+                    }
+
+                    let file = $(this).data('doc').replace(/^public\//, 'storage/')
+                    let fileName = $(this).data('filename')
+                    let subName = $(this).data('sub_name')
+                    let user_id = $(this).data('user_id');
+
+                    updateStatus(`/admin-update-status/${user_id}`)
+
+                    $('.btn-iframe-accepted').attr('data-user_id', user_id);
+                    $('.btn-iframe-declined').attr('data-user_id', user_id);
+
+                    $('#filename').text(fileName)
+                    $('#filename-orig').val(fileName)
+                    $('#subname').val(subName)
+                    $('#isReturned').val(isReturning)
+                    // console.log($(this).data('doc'))
+                    $('#fileViewer').attr('src', `{{ asset('${file}') }}`)
+                    rq.show()
 
 
-                // $('#rejected-table').DataTable({
-                //     data: dataToRender,
-                //     "order": [],
-                //     "columnDefs": [{
-                //         "targets": 'no-sort',
-                //         "orderable": false,
-                //     }],
+                })
+                $('.stClose').on('click', function() {
+                    rq.hide()
+                })
 
-                //     columns: [{
-                //             title: 'Type',
-                //             data: null,
-                //             render(data, type, row) {
-                //                 return `<span class="text-blue-900 font-bold">ETEEAP Application</span>`
-                //             }
-                //         },
-                //         {
-                //             title: 'Name',
-                //             data: 'name'
-                //         },
-                //         {
-                //             title: 'Email',
-                //             data: 'email'
-                //         },
-                //         {
-                //             title: 'Documents',
-                //             data: null,
-                //             render: function(data, type, row) {
-                //                 return `
-                //                 <div class="docsbtn hover:cursor-pointer hover:text-blue-700" data-user_id="${row.id}">
-                //                     <i class="fa-sharp fa-solid fa-folder-open text-md text-blue-500 hover:cursor-pointer"></i>
-                //                     <span>view documents</span>
-                //                 </div>
-                //             `
-                //             }
-                //         },
-                //         {
-                //             title: 'Status',
-                //             data: null,
-                //             render: function(data, type, row) {
-                //                 console.log(row.documents[0].status[0].status)
-                //                 return `<span class="p-1 rounded-md bg-yellow-300 lowercase text-black text-sm">${row.documents[0].status[0].status}</span>`
-                //             }
-                //         },
-                //         {
-                //             title: 'Date',
-                //             data: null,
-                //             render: function(data, type, row) {
-                //                 return `${row.documents[0].created_at}`
-                //             }
-                //         }
-                //     ],
-                //     reponsive: true,
-                //     "initComplete": function(settings, json) {
-                //         $(this.api().table().container()).addClass('bs4');
-                //     },
-                // })
+                // forward docs
+                $(document).on('click', '.ftd', function() {
+                    var di = $(this).data('document_id')
+                    // alert(di)
+                    // Include the CSRF token in the headers
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        }
+                    });
+
+                    $.ajax({
+                        url: '/admin-forward',
+                        type: 'get', // Change the type if needed
+                        dataType: 'json',
+                        success: function(data) {
+                            // Handle the data as needed
+                            // console.log(data.departmentUsers);
+                            var renderUsers =
+                                `<option value="">Choose a department with associated user's</option>`
+                            data.departmentUsers.forEach(users => {
+                                console.log(users)
+                                if (users.role === 1) {
+                                    renderUsers += `
+                                        <option class="p-2" value="${users.id}|ETEEAP Director">ETEEAP Director - ${users.name}</option>
+                                    `
+                                } else {
+                                    renderUsers += `
+                                        <option class="p-2" value="${users.id}|${users.department.department_name}">${users.department.department_name} - ${users.name}</option>
+                                    `
+                                }
+
+                            });
+                            $('.user_lists').html(renderUsers)
+                            $('#forwarded_document_id').val(di)
+                            // $('#forwarded_department_name').val(users.department.department_name)
+                            fr.show();
+                        },
+                        error: function(error) {
+                            console.error('Error fetching data:', error);
+                        }
+                    });
+                })
+
+                $('.frClose').on('click', function() {
+                    $('#forwarded_document_id').val('')
+                    fr.hide();
+                })
+
 
                 // open documents
                 $(document).on('click', '.docsbtn', function() {

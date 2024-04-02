@@ -24,12 +24,24 @@ class CheckingDocumentController extends Controller
                     ->where('action', 'accepted')
                     ->first();
                 if(!$existingRecord && $isReturned !== 'true'){
+
+                    $m = "";
+                    if ($request->input('type') !== 'declined') {
+                       $m = "This document is passed the validation by ".Auth::user()->name;
+                    }else{
+                       $m = $request->input('description');
+                       if($request->input('description') === null){
+                            $m = "This document is failed the validation by ".Auth::user()->name;
+                       }else{
+                            $m = $request->input('description');
+                       }
+                    }
                     CheckingDocument::create(
                         [
                             'document_id'=>$document->id, 
                             'sub_name'=>$request->input('subname'), 
                             'requirements'=>$request->input('filename'), 
-                            'description'=>($request->input('description') === null) ? "This document is passed the validation by ".Auth::user()->name : $request->input('description'), 
+                            'description'=> $m, 
                             'action'=>$request->input('type')
                         ]
                     );
@@ -54,7 +66,7 @@ class CheckingDocumentController extends Controller
                 }else{
                     if($isReturned === 'true'){
                         $existingRecord->update([
-                            'description'=>($request->input('description') === null) ? "This document is failed the validation by ".Auth::user()->name : $request->input('description'), 
+                            'description'=>($request->input('description') === null) ? "This application is failed the validation by ".Auth::user()->name : $request->input('description'), 
                             'action'=>$request->input('type')
                         ]);
 

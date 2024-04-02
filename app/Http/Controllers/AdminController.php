@@ -12,6 +12,7 @@ use App\Models\ForwardToDept;
 use App\Models\CheckingDocument;
 use App\Models\DepartmentComment;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use App\Notifications\SendEmailNotification;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\SendRejectedNotification;
@@ -62,7 +63,7 @@ class AdminController extends Controller
         // $userId = Auth::user()->id; // Retrieve the current user's ID
         $forwardedToMe = Document::join('forward_to_depts', 'forward_to_depts.document_id', '=', 'documents.id')
             // ->join('department_comments', 'department_comments.forward_to_depts_id', '=', 'forward_to_depts.id')
-            ->where('forward_to_depts.receiver_id', Auth::id())
+            ->where('forward_to_depts.receiver_id', Auth::user()->id)
             ->where('forward_to_depts.isForwarded', 0)
             ->select(
                 'forward_to_depts.receiver_id as forward_to',
@@ -79,9 +80,14 @@ class AdminController extends Controller
 
         // dd($forwardedToMe);
         foreach ($forwardedToMe as $key => $value) {
-            $comments = DepartmentComment::join('users', 'users.id', '=', 'department_comments.sender_id')
+            // $comments = DepartmentComment::join('users', 'users.id', '=', 'department_comments.sender_id')
+            //     ->select('department_comments.*', 'users.name')
+            //     ->where('forward_to_depts_id', $value->ftd_id)->get();
+                $comments = DepartmentComment::join('users', 'users.id', '=', 'department_comments.sender_id')
                 ->select('department_comments.*', 'users.name')
-                ->where('forward_to_depts_id', $value->ftd_id)->get();
+                ->where('document_id', $value->document_id)
+                ->orderByDesc('created_at')
+                ->get();
             foreach ($value->checked as $key => $v) {
                 $resubmitted = CheckingDocument::where('action', 'declined')->where('document_id', $v->document_id)->with('reupload')->get();
             }
@@ -209,6 +215,32 @@ class AdminController extends Controller
 
         // If no documents were found
         return response()->json(['status' => 'error', 'message' => 'No documents found for the user.']);
+    }
+
+    public function departmentUser()
+    {
+        $departmentUsers = User::where('role', '!=', 0)->where('name', '!=', Auth::user()->name)->with('department')->get();
+        // dd($departmentUsers);
+        return response()->json(['departmentUsers' => $departmentUsers]);
+    }
+
+    // outgoing document's 
+    public function outgoing(Request $request)
+    {
+        // dd($request);
+        // this is the prpoblem on forwarding
+        $markAsForwarded = ForwardToDept::where('document_id', $request->input('document_id'))->where('receiver_id', Auth::user()->id)->where('isForwarded', 0)->first();
+        if ($markAsForwarded) {
+            $markAsForwarded->update(['isForwarded' => true]);
+        }
+        [$userId, $dept] = explode("|", $request->input('user_id'));
+        $ftp = ForwardToDept::create(['sender_id' => Auth::user()->id, 'receiver_id' => $userId, 'document_id' => $request->input('document_id')]);
+        DepartmentComment::create(['forward_to_depts_id' => $ftp->id, 'department_comment' => $request->input('message'), 'sender_id' => Auth::user()->id, 'receiver_id' => $userId, 'document_id' => $request->input('document_id')]);
+        Document::where('id', $request->input('document_id'))->update(['isForwarded' => 1]);
+        History::create(['document_id' => $request->input('document_id'), 'status' => 'forwarded', 'notes' => "Your application is forwarded to department name " . $dept]);
+        Status::where('id', $request->input('document_id'))->update(['status' => 'forwarded']);
+        Session::flash('pop-message', 'Your successfully sent this document to ' . $dept);
+        return redirect()->back()->withInput();
     }
 
     public function delete(Request $request){
