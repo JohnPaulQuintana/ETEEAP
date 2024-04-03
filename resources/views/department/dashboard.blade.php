@@ -31,7 +31,7 @@
                         data-tabs-target="#applicant" type="button" role="tab" aria-controls="applicant"
                         aria-selected="false">
 
-                        {{ __('Applicants') }} <span
+                        {{ __('New Application') }} <span
                             class="text-red-500">{{ isset($documents) ? count($documents) : 0 }}</span>
                     </button>
                 </li>
@@ -40,7 +40,7 @@
                         data-tabs-target="#returned" type="button" role="tab" aria-controls="returned"
                         aria-selected="false">
 
-                        {{ __('Returned Documents') }} <span
+                        {{ __('Pending Application') }} <span
                             class="text-red-500">{{ isset($forwardedDocuments) ? count($forwardedDocuments) : '' }}</span>
                     </button>
                 </li>
