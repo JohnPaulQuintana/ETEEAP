@@ -40,7 +40,7 @@ class DocumentController extends Controller
             // ->where('status', ['approved', 'pending', 'in-review']) // Adjust the desired status
             ->first();
         if($existingDocument){
-            return response()->json(['status'=>"error", 'message' => "We found out that your already sent a document's to us, please wait for the authorized personel to reviewed it."]);
+            return response()->json(['status'=>"error", 'message' => "We found out that your already sent an application to us, please wait for the authorized personel to reviewed it."]);
             // return "Document with ID already exists and has an approved status. Upload not allowed.";
         }
 
@@ -99,10 +99,10 @@ class DocumentController extends Controller
         // Insert into the database
         $insertedDocs = Document::create($dataToInsert);
         // history
-        History::create(['document_id' => $insertedDocs->id, 'status'=>'pending', 'notes' => "Your Document's is successfully sent"]);
+        History::create(['document_id' => $insertedDocs->id, 'status'=>'pending', 'notes' => "Your application is successfully sent"]);
         Status::create(['document_id'=>$insertedDocs->id, 'status'=>'pending']);
 
-        Note::create(['status_id'=>$insertedDocs->id, 'notes'=>"Document's is sumitted successfully, we will send a notification once its reviewed."]);
+        Note::create(['status_id'=>$insertedDocs->id, 'notes'=>"Application is sumitted successfully, we will send a notification once its reviewed."]);
         // return response()->json(['status'=>'success', 'message'=>"Your document's successfully submitted, hava a nice day!"]);
        
         // Get the administrator user
@@ -114,7 +114,7 @@ class DocumentController extends Controller
         // Prepare the notification details
         $details = [
             'greetings' => "Hello ".$notifyUser->name."!",
-            'body' => "A new application form has been submitted and is currently awaiting review by our team.",
+            'body' => "A new application has been submitted and is currently awaiting review by our team.",
             'body1' => "Please ensure to review the application promptly and thoroughly.",
             'body2' => "Sender Name: ". Auth::user()->name,
             'body3' => "Date: ". date('Y-m-d'),

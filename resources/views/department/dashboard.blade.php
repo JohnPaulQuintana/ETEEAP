@@ -19,7 +19,7 @@
                     {{ $department->department_name }} Dashboard </h1>
 
             </div>
-            @include('partials.breadcrumb')
+            {{-- @include('partials.breadcrumb') --}}
         </div>
 
         <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
@@ -31,7 +31,7 @@
                         data-tabs-target="#applicant" type="button" role="tab" aria-controls="applicant"
                         aria-selected="false">
 
-                        {{ __("Applicants") }} <span
+                        {{ __('Applicants') }} <span
                             class="text-red-500">{{ isset($documents) ? count($documents) : 0 }}</span>
                     </button>
                 </li>
@@ -40,7 +40,7 @@
                         data-tabs-target="#returned" type="button" role="tab" aria-controls="returned"
                         aria-selected="false">
 
-                        {{ __("Returned Documents") }} <span
+                        {{ __('Returned Documents') }} <span
                             class="text-red-500">{{ isset($forwardedDocuments) ? count($forwardedDocuments) : '' }}</span>
                     </button>
                 </li>
@@ -56,12 +56,15 @@
                             aria-labelledby="applicant-tab">
 
                             <div class="mb-1  border-gray-200 dark:border-gray-700">
+                                
                                 <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="applicant-tab"
                                     data-tabs-toggle="#applicant-tab-content" role="tablist">
                                     @if (isset($documents) && count($documents) > 0)
+                                    
                                         @foreach ($documents as $document)
                                             <li class="me-2" role="presentation">
-                                                <button class="inline-block p-4 rounded-t-lg"
+                                                <button data-tabname="{{ str_replace(' ', '', $document->name) }}"
+                                                    class="inline-block p-4 rounded-t-lg tab-btn tab-{{ str_replace(' ', '', $document->name) }}"
                                                     id="{{ str_replace(' ', '', $document->name) }}-tab"
                                                     data-tabs-target="#{{ str_replace(' ', '', $document->name) }}"
                                                     type="button" role="tab"
@@ -79,11 +82,13 @@
 
                             <div class="sm:rounded-lg overflow-hidden">
                                 <!-- Main modal -->
+                                <span class="mx-5"><span class="text-red-500">Note:</span> click the active name tab to change the selected application for evaluation</span>
                                 @if (isset($documents) && count($documents) > 0)
                                     <div id="applicant-tab-content">
                                         @foreach ($documents as $document)
                                             {{-- {{ $document->documents[0] }} --}}
-                                            <div class="hidden p-2 rounded-lg bg-gray-50 dark:bg-gray-800"
+                                            <div data-card="{{ str_replace(' ', '', $document->name) }}"
+                                                class="hidden p-2 rounded-lg bg-gray-50 dark:bg-gray-800 tabcard tabcard-{{ str_replace(' ', '', $document->name) }}"
                                                 id="{{ str_replace(' ', '', $document->name) }}" role="tabpanel"
                                                 aria-labelledby="{{ str_replace(' ', '', $document->name) }}-tab">
 
@@ -99,25 +104,25 @@
                                                             {{-- documents --}}
                                                             <div>
                                                                 @php
-                                                                        $textColor = 'text-yellow-500';
-                                                                        switch (
-                                                                            $document->documents[0]->status[0]->status
-                                                                        ) {
-                                                                            case 'rejected':
-                                                                                $textColor = 'text-red-500';
-                                                                                break;
-                                                                            case 'accepted':
-                                                                                $textColor = 'text-green-500';
-                                                                                break;
-                                                                            case 'pending':
-                                                                                $textColor = 'text-red-500';
-                                                                                break;
+                                                                    $textColor = 'text-yellow-500';
+                                                                    switch (
+                                                                        $document->documents[0]->status[0]->status
+                                                                    ) {
+                                                                        case 'rejected':
+                                                                            $textColor = 'text-red-500';
+                                                                            break;
+                                                                        case 'accepted':
+                                                                            $textColor = 'text-green-500';
+                                                                            break;
+                                                                        case 'pending':
+                                                                            $textColor = 'text-red-500';
+                                                                            break;
 
-                                                                            default:
-                                                                                # code...
-                                                                                break;
-                                                                        }
-                                                                    @endphp
+                                                                        default:
+                                                                            # code...
+                                                                            break;
+                                                                    }
+                                                                @endphp
 
                                                                 <span
                                                                     class="absolute flex items-center justify-center w-6 h-6 bg-gray-100 rounded-full -start-3.5 ring-8 ring-white dark:ring-gray-700 dark:bg-gray-600">
@@ -128,7 +133,7 @@
                                                                     class="flex items-start mb-1 text-lg font-semibold text-blue-900 dark:text-white">
                                                                     ETEEAP APPLICATION
 
-                                                                    
+
 
                                                                     <span
                                                                         class="bg-gray {{ $textColor }} text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
@@ -266,7 +271,10 @@
                                                                                         $isText = 'Evaluated';
                                                                                         $icons = 'fa-check';
                                                                                         $bgColor = 'bg-green-500';
-                                                                                        foreach ($document->checked as $check) {
+                                                                                        foreach (
+                                                                                            $document->checked
+                                                                                            as $check
+                                                                                        ) {
                                                                                             if (
                                                                                                 $columnKey[$key] ===
                                                                                                 $check->sub_name
@@ -332,7 +340,7 @@
                                                                                 {{-- {{ $dec }} --}}
                                                                                 <span
                                                                                     class="block text-left border rounded-md bg-white p-1 mb-2">
-                                                                                    
+
                                                                                     <div
                                                                                         class="flex items-start gap-2.5">
                                                                                         <div
@@ -423,8 +431,6 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         @endforeach
-
-                                                                                    
                                                                                     @endif
                                                                                 </span>
 
@@ -458,7 +464,7 @@
                                     <div
                                         class="flex items-center justify-between p-4 md:p-5 rounded-t dark:border-gray-600">
                                         <h3 class="text-lg font-semibold dark:text-white">
-                                        There are no applications to review at the moment.
+                                            There are no applications to review at the moment.
                                         </h3>
 
                                     </div>
@@ -477,7 +483,9 @@
 
                                     @foreach ($forwardedDocuments as $fdName)
                                         <li class="me-2" role="presentation">
-                                            <button class="inline-block p-4 rounded-t-lg"
+                                            <button 
+                                                data-tabname="{{ str_replace(' ', '', $fdName->user->name) }}"
+                                                class="inline-block p-4 rounded-t-lg tab-btn tab-{{ str_replace(' ', '', $fdName->user->name) }}"
                                                 id="{{ str_replace(' ', '', $fdName->user->name) }}-tab"
                                                 data-tabs-target="#{{ str_replace(' ', '', $fdName->user->name) }}"
                                                 type="button" role="tab"
@@ -486,6 +494,8 @@
                                                 <i class="fa-sharp fa-solid fa-circle-user text-2xl text-blue-900"></i>
                                                 {{ $fdName->user->name }}
                                             </button>
+
+                                            
                                         </li>
                                     @endforeach
                                 </ul>
@@ -496,7 +506,8 @@
                                     <div id="returned-tab-content">
 
                                         @foreach ($forwardedDocuments as $forwarded)
-                                            <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800"
+                                            <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tabcard tabcard-{{ str_replace(' ', '', $forwarded->user->name) }}"
+                                                data-card="{{ str_replace(' ', '', $forwarded->user->name) }}"
                                                 id="{{ str_replace(' ', '', $forwarded->user->name) }}"
                                                 role="tabpanel"
                                                 aria-labelledby="{{ str_replace(' ', '', $forwarded->user->name) }}-tab">
@@ -737,7 +748,7 @@
                                     <div
                                         class="flex items-center justify-between p-4 md:p-5 rounded-t dark:border-gray-600">
                                         <h3 class="text-lg font-semibold dark:text-white">
-                                        No documents have been returned.
+                                            No documents have been returned.
                                         </h3>
 
                                     </div>
@@ -766,6 +777,39 @@
             var message = @json(session('pop-message'));
             $(document).ready(function() {
 
+                var activeTabs = localStorage.getItem('active-tabs')
+                // alert(activeTabs)
+               
+                $(`.tabcard`).each(function() {
+                    var ca = $(this).data('card')
+                    console.log(ca, activeTabs)
+                    if ($(this).hasClass(`tabcard-${activeTabs}`)) {
+                        $(this).removeClass('hidden')
+                    }else{
+                        $(this).addClass('hidden')
+                    }
+                })
+
+                $(`.tab-btn`).each(function() {
+                    if ($(this).hasClass(`tab-${activeTabs}`)) {
+                        // alert('yes')
+                        $(this)
+                            .removeClass(
+                                `inline-block p-4 rounded-t-lg tab-btn tab-${activeTabs} dark:border-transparent text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300`
+                                )
+                            .addClass(
+                                `inline-block p-4 rounded-t-lg tab-btn tab-${activeTabs} text-blue-600 hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-500 border-blue-600 dark:border-blue-500`
+                                )
+                        $(this).attr('aria-selected', true);
+
+
+                    } else {
+                        // $(`.tabcard-${activeTabs}`).addClass('hidden')
+                        // $(`.tabcard-${activeTabs}`).removeClass('hidden')
+                        $(this).attr('aria-selected', false).removeClass('text-blue-600').addClass(
+                            'text-gray-500');
+                    }
+                });
                 if (message !== null) {
                     flashAlert(message)
                 }
@@ -1091,6 +1135,12 @@
                         icon: "success"
                     });
                 }
+
+                $(document).on('click', '.tab-btn', function() {
+                    // alert($(this).data('tabname'))
+                    localStorage.setItem('active-tabs', $(this).data('tabname'))
+                    window.location.reload();
+                })
 
             })
         </script>
