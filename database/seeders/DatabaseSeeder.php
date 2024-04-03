@@ -15,6 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         \App\Models\User::factory(3)->create();
 
+
+
         \App\Models\User::factory()->create([
             'role' => 1,
             'name' => "Administrator",
@@ -22,6 +24,15 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
+        ]);
+
+        \App\Models\Department::factory()->create([
+            'department_name' => 'ETEEAP Department',
+            'status' => 1,
+        ]);
+        \App\Models\Department::factory()->create([
+            'department_name' => 'ETEEAP Assessor',
+            'status' => 1,
         ]);
     }
 }

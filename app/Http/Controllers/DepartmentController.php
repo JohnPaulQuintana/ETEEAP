@@ -41,7 +41,7 @@ class DepartmentController extends Controller
 
         $forwardedToMe = Document::join('forward_to_depts', 'forward_to_depts.document_id', '=', 'documents.id')
             // ->join('department_comments', 'department_comments.forward_to_depts_id', '=', 'forward_to_depts.id')
-            ->where('forward_to_depts.receiver_id', Auth::id())
+            ->where('forward_to_depts.receiver_id', Auth::user()->id)
             ->where('forward_to_depts.isForwarded', 0)
             ->select(
                 'forward_to_depts.receiver_id as forward_to',
@@ -97,24 +97,29 @@ class DepartmentController extends Controller
 
                         $alldoc->declined = $declined;
 
+                        $subNames = $checked->pluck('sub_name')->toArray();
+                        $subNameCounts = array_count_values($subNames);
+                        // dd($subNameCounts);
+                        $acceptedRecords = collect(); // Initialize an empty collection to hold the accepted records
+
+                        foreach ($subNameCounts as $subName => $count) {
+                            if ($count >= 2) {
+                                $acceptedRecords = $acceptedRecords->merge(
+                                    CheckingDocument::where('sub_name', $subName)
+                                        ->where('action', 'accepted')
+                                        ->latest()
+                                        ->get()
+                                );
+                                // Now you have $acceptedRecords containing records with sub_name occurring 2 or more times and action as 'accepted'
+                            }
+                        }
+                        $alldoc->resubmittedDocument = $acceptedRecords;
+                        
+
                     }
                 }
 
-                $subNames = $checked->pluck('sub_name')->toArray();
-                $subNameCounts = array_count_values($subNames);
-                $acceptedRecords = collect(); // Initialize an empty collection to hold the accepted records
-
-                foreach ($subNameCounts as $subName => $count) {
-                    if ($count >= 2) {
-                        $acceptedRecords = $acceptedRecords->merge(
-                            CheckingDocument::where('sub_name', $subName)
-                                ->where('action', 'accepted')
-                                ->latest()
-                                ->get()
-                        );
-                        // Now you have $acceptedRecords containing records with sub_name occurring 2 or more times and action as 'accepted'
-                    }
-                }
+                
 
                 // dd($acceptedRecords);
 

@@ -30,10 +30,12 @@ class InterviewController extends Controller
 
         ]);
 
-        $markAsForwarded = ForwardToDept::where('document_id', $request->input('document_id'))->where('receiver_id',Auth::user()->id)->first();
+        $markAsForwarded = ForwardToDept::where('document_id', $request->input('document_id'))->where('receiver_id',Auth::user()->id)->where('isForwarded', 0)->first();
         if($markAsForwarded){
             $markAsForwarded->update(['isForwarded'=>true]);
         }
+
+        // dd($markAsForwarded);
 
         // Build the email notification details
             $details = [

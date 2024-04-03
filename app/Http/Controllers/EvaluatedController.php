@@ -17,7 +17,7 @@ class EvaluatedController extends Controller
         $department = Department::where('id', Auth::user()->department_id)->first();
         $forwardedToMe = Document::join('forward_to_depts', 'forward_to_depts.document_id', '=', 'documents.id')
             // ->join('department_comments', 'department_comments.forward_to_depts_id', '=', 'forward_to_depts.id')
-            ->where('forward_to_depts.receiver_id', Auth::id())
+            ->where('forward_to_depts.receiver_id', Auth::user()->id)
             ->where('forward_to_depts.isForwarded', 1)
             ->select(
                 'forward_to_depts.receiver_id as forward_to',

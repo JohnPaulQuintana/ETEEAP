@@ -156,9 +156,9 @@
                                                                 {{-- {{ $checked }} --}}
                                                                 <div class="rounded-md p-2">
                                                                     {{-- resubmited documents display first to view --}}
-                                                                    {{-- {{ $resubmittedDocument }} --}}
-                                                                    @if (isset($resubmittedDocument))
-                                                                        @foreach ($resubmittedDocument as $resubDoc)
+                                                                    {{-- {{ $document->resubmittedDocument }} --}}
+                                                                    @if (isset($document->resubmittedDocument))
+                                                                        @foreach ($document->resubmittedDocument as $resubDoc)
                                                                             <div
                                                                                 class="p-5 shadow-md rounded-md mb-2 bg-slate-100">
                                                                                 <div class="flex items-center gap-2">
