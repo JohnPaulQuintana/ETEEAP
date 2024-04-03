@@ -24,7 +24,8 @@
                         </div>
                         
                         <div class="mb-4 border-l-4 shadow-md bg-white p-1">
-                            <label class="block mb-2 text-md text-left font-bold text-bgprimary" for="ce">2.CHED - ETEEAP Application Form: <i class="fa-solid fa-asterisk text-red-500"></i></label>
+                            <label class="block mb-2 text-md text-left font-bold text-bgprimary" for="ce">2.CHED - ETEEAP Application F
+                                orm: <i class="fa-solid fa-asterisk text-red-500"></i></label>
                             <input name="ce" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="ce" type="file" accept=".doc, .pdf, .png, .jpeg" required>
                             <div class="mt-1 text-sm text-left uppercase text-bgprimary dark:text-gray-300" id="user_avatar_help">With 3 pieces of 1x1 picture </div>
                         </div>
