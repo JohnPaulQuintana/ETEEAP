@@ -82,7 +82,7 @@
 
                             <div class="sm:rounded-lg overflow-hidden">
                                 <!-- Main modal -->
-                                <span class="mx-5"><span class="text-red-500">Note:</span> click the active name tab to change the selected application for evaluation</span>
+                                
                                 @if (isset($documents) && count($documents) > 0)
                                     <div id="applicant-tab-content">
                                         @foreach ($documents as $document)
@@ -464,7 +464,7 @@
                                     <div
                                         class="flex items-center justify-between p-4 md:p-5 rounded-t dark:border-gray-600">
                                         <h3 class="text-lg font-semibold dark:text-white">
-                                            There are no applications to review at the moment.
+                                        There are no applications to review at the moment.
                                         </h3>
 
                                     </div>
