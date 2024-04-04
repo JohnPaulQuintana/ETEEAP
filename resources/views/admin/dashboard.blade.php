@@ -315,10 +315,12 @@
                             @endforeach
                         @else
                             <div
-                                class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                                <h3 class="text-lg font-semibold text-blue-900 dark:text-white">
-                                    There are no applications to review at the moment.
-                                </h3>
+                            
+                                        class="flex items-center justify-between p-4 md:p-5 rounded-t dark:border-gray-600">
+                                        <h3 class="text-lg font-semibold dark:text-white">
+                                        There are no applications to review at the moment.
+                                        </h3>
+                                    
                                 <button type="button"
                                     class="t-close text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                                     data-modal-toggle="timeline-modal">

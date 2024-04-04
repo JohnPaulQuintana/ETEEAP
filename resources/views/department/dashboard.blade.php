@@ -455,9 +455,12 @@
                                     </div>
                                 @elseif (isset($forwardedDocuments) && count($forwardedDocuments) === 0 && isset($documents) && count($documents) === 0)
                                     <div id="default-tab-content">
-                                        <div class="p-5">
-                                            <h1 class="text-md">There are no pending applications today.</h1>
-                                        </div>
+                                    <div
+                                        class="flex items-center justify-between p-4 md:p-5 rounded-t dark:border-gray-600">
+                                        <h3 class="text-lg font-semibold dark:text-white">
+                                        There are no applications to review at the moment.
+                                        </h3>
+                                    </div>
                                     </div>
                                 @else
                                     <div
