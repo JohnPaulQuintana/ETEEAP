@@ -38,7 +38,7 @@ class DocumentController extends Controller
             // ->where('status', ['approved', 'pending', 'in-review']) // Adjust the desired status
             ->first();
         if($existingDocument){
-            return response()->json(['status'=>"error", 'message' => "We found out that your already sent an application to us, please wait for the authorized personel to reviewed it."]);
+            return response()->json(['status'=>"error", 'message' => "We have noticed that you have already submitted an application to us. Please await review by the ETEEAP Department."]);
             // return "Document with ID already exists and has an approved status. Upload not allowed.";
         }
 
@@ -97,10 +97,10 @@ class DocumentController extends Controller
         // Insert into the database
         $insertedDocs = Document::create($dataToInsert);
         // history
-        History::create(['document_id' => $insertedDocs->id, 'status'=>'pending', 'notes' => "Your application is successfully sent"]);
+        History::create(['document_id' => $insertedDocs->id, 'status'=>'pending', 'notes' => "Your application has been successfully sent."]);
         Status::create(['document_id'=>$insertedDocs->id, 'status'=>'pending']);
 
-        Note::create(['status_id'=>$insertedDocs->id, 'notes'=>"Application is sumitted successfully, we will send a notification once its reviewed."]);
+        Note::create(['status_id'=>$insertedDocs->id, 'notes'=>"The application has been submitted successfully. We will notify you once it has been reviewed."]);
         // return response()->json(['status'=>'success', 'message'=>"Your document's successfully submitted, hava a nice day!"]);
        
         // Get the administrator user

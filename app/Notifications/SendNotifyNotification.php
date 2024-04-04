@@ -35,7 +35,7 @@ class SendNotifyNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->subject("Notification: Document's Concerned")
+                    ->subject("Action Required")
                     ->greeting($this->details['greetings'])
                     ->line($this->details['body'])
                     // ->action($this->details['actiontext'],$this->details['actionurl'])

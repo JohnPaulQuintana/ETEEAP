@@ -188,7 +188,7 @@ class AdminController extends Controller
                 Status::where('id', $document->id)->update(['status' => $request->input('type')]);
                 $existingRecord = History::where('document_id', $document->id)->where('status', $request->input('type'))->first();
                 if (!$existingRecord) {
-                    History::create(['document_id' => $document->id, 'status' => $request->input('type'), 'notes' => ($request->input('type') == 'accepted' ? ' Your application has been accepted, we will sending you an email for the interview.' : 'Your application is rejected.')]);
+                    History::create(['document_id' => $document->id, 'status' => $request->input('type'), 'notes' => ($request->input('type') == 'accepted' ? ' Your application has been accepted. An email containing the interview schedule will be sent to you shortly.' : 'Your application is rejected.')]);
                 }
 
                 if($request->input('type') === 'rejected'){
@@ -238,9 +238,9 @@ class AdminController extends Controller
         $ftp = ForwardToDept::create(['sender_id' => Auth::user()->id, 'receiver_id' => $userId, 'document_id' => $request->input('document_id')]);
         DepartmentComment::create(['forward_to_depts_id' => $ftp->id, 'department_comment' => $request->input('message'), 'sender_id' => Auth::user()->id, 'receiver_id' => $userId, 'document_id' => $request->input('document_id')]);
         Document::where('id', $request->input('document_id'))->update(['isForwarded' => 1]);
-        History::create(['document_id' => $request->input('document_id'), 'status' => 'forwarded', 'notes' => "Your application is forwarded to department name " . $dept]);
+        History::create(['document_id' => $request->input('document_id'), 'status' => 'forwarded', 'notes' => "Your application has been forwarded to the " . $dept]);
         Status::where('id', $request->input('document_id'))->update(['status' => 'forwarded']);
-        Session::flash('pop-message', 'Your successfully sent this document to ' . $dept);
+        Session::flash('pop-message', 'Your document has been successfully sent to the ' . $dept);
         return redirect()->back()->withInput();
     }
 

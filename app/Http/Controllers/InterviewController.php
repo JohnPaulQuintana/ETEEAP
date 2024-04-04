@@ -40,13 +40,13 @@ class InterviewController extends Controller
         // Build the email notification details
             $details = [
                 'greetings' => "Dear ms/mr ".$notifyUser->name,
-                'body' => "Thank you for your interest in the ETEEAP.  Please be advised that in line with your application in the program, you are being asked to report for an interview. Details are as follows:",
+                'body' => "Thank you for your interest in the ETEEAP. Please be advised that in line with your application in the program, you are being asked to report for an interview. Details are as follows:",
                 'body1' => "",
                 'body2' => "Date: ". $request->input('date'),
                 'body3' => "Time: ". $formattedTime,
                 'body4' => "Location: ". $request->input('address'),
                 'body5' => "",
-                'body6' => "Please ensure you bring hard copies of the required documents listed in the information sheet provided to you, which are attached below for your reference.",
+                'body6' => "Kindly bring hard copies of your requirements as indicated in the information sheet attached in this email.",
                 'body7' => "Also, please acknowledge receipt of this email and confirm your attendance accordingly.",
                 'body8' => "Do let us know if you have any questions.",
                 'actiontext' => 'Check it out',
@@ -61,6 +61,6 @@ class InterviewController extends Controller
         //send notification to a user 
         Notification::send($notifyUser, new SendEmailNotification($details));
         
-        return response()->json(['status'=>'success', 'message'=>'You have a scheduled an interview on '.$request->input('date'). ' time: '.$formattedTime]);
+        return response()->json(['status'=>'success', 'message'=>'You have an interview scheduled on '.$request->input('date'). ' time: '.$formattedTime]);
     }
 }

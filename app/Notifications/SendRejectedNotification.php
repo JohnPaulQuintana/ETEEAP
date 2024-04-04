@@ -36,7 +36,7 @@ class SendRejectedNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-        ->subject("Notification: Document's Concerned Rejected")
+        ->subject("Important: Application Rejection Notification")
         ->greeting($this->details['greetings'])
         ->line($this->details['body'])
         ->action($this->details['actiontext'],$this->details['actionurl'])

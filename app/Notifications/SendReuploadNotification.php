@@ -36,7 +36,7 @@ class SendReuploadNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject("Notification: Document's Concerned Reupload")
+            ->subject("Action Required")
             ->greeting($this->details['greetings'])
             ->line($this->details['body'])
             ->line($this->details['body2'])
