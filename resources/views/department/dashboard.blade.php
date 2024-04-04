@@ -25,16 +25,19 @@
         <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
             <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab"
                 data-tabs-toggle="#default-tab-content" role="tablist">
+               
+                @if (Auth::user()->isReceiver)
+                    <li class="me-2" role="presentation">
+                        <button class="inline-block p-4 border-b-2 rounded-t-lg" id="applicant-tab"
+                            data-tabs-target="#applicant" type="button" role="tab" aria-controls="applicant"
+                            aria-selected="false">
 
-                {{-- <li class="me-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="applicant-tab"
-                        data-tabs-target="#applicant" type="button" role="tab" aria-controls="applicant"
-                        aria-selected="false">
-
-                        {{ __('New Application') }} <span
-                            class="text-red-500">{{ isset($documents) ? count($documents) : 0 }}</span>
-                    </button>
-                </li> --}}
+                            {{ __('New Application') }} <span
+                                class="text-red-500">{{ isset($documents) ? count($documents) : 0 }}</span>
+                        </button>
+                    </li>
+                @endif
+                
                 <li class="me-2" role="presentation">
                     <button class="inline-block p-4 border-b-2 rounded-t-lg" id="returned-tab"
                         data-tabs-target="#returned" type="button" role="tab" aria-controls="returned"
@@ -52,7 +55,8 @@
                 <div class="bg-white rounded-lg shadow dark:bg-gray-700">
                     <div id="default-tab-content">
                         {{-- applicant tab --}}
-                        {{-- <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="applicant" role="tabpanel"
+                        @if(Auth::user()->isReceiver)
+                        <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="applicant" role="tabpanel"
                             aria-labelledby="applicant-tab">
 
                             <div class="mb-1  border-gray-200 dark:border-gray-700">
@@ -466,7 +470,8 @@
                                 @endif
                             </div>
 
-                        </div> --}}
+                        </div> 
+                        @endif
 
                         {{-- returned tab --}}
                         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="returned" role="tabpanel"

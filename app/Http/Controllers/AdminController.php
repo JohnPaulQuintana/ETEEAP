@@ -188,7 +188,7 @@ class AdminController extends Controller
                 Status::where('id', $document->id)->update(['status' => $request->input('type')]);
                 $existingRecord = History::where('document_id', $document->id)->where('status', $request->input('type'))->first();
                 if (!$existingRecord) {
-                    History::create(['document_id' => $document->id, 'status' => $request->input('type'), 'notes' => ($request->input('type') == 'accepted' ? ' Your application is accepted, we will sending you an email for the interview.' : 'Your application is rejected.')]);
+                    History::create(['document_id' => $document->id, 'status' => $request->input('type'), 'notes' => ($request->input('type') == 'accepted' ? ' Your application has been accepted, we will sending you an email for the interview.' : 'Your application is rejected.')]);
                 }
 
                 if($request->input('type') === 'rejected'){

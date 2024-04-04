@@ -27,11 +27,11 @@ class CheckingDocumentController extends Controller
 
                     $m = "";
                     if ($request->input('type') !== 'declined') {
-                       $m = "This document is passed the validation by ".Auth::user()->name;
+                       $m = "This document has been validated by ".Auth::user()->name;
                     }else{
                        $m = $request->input('description');
                        if($request->input('description') === null){
-                            $m = "This document is failed the validation by ".Auth::user()->name;
+                            $m = "This document has failed validation by ".Auth::user()->name;
                        }else{
                             $m = $request->input('description');
                        }
@@ -62,11 +62,11 @@ class CheckingDocumentController extends Controller
                         Notification::send($notifyUser, new SendReuploadNotification($details));
                     }
     
-                    return response()->json(['status'=>'success','message'=>"document's updated successfully"]);
+                    return response()->json(['status'=>'success','message'=>"The document has been updated successfully."]);
                 }else{
                     if($isReturned === 'true'){
                         $existingRecord->update([
-                            'description'=>($request->input('description') === null) ? "This application is failed the validation by ".Auth::user()->name : $request->input('description'), 
+                            'description'=>($request->input('description') === null) ? "This application has failed validation by ".Auth::user()->name : $request->input('description'), 
                             'action'=>$request->input('type')
                         ]);
 
@@ -87,10 +87,10 @@ class CheckingDocumentController extends Controller
                         //send notification to a user 
                         Notification::send($notifyUser, new SendReuploadNotification($details));
                         
-                        return response()->json(['status'=>'success','message'=>"document's marked as failed the validation."]);
+                        return response()->json(['status'=>'success','message'=>"The document has failed validation."]);
                     }
                     
-                    return response()->json(['status'=>'error','message'=>"document is already checked"]);
+                    return response()->json(['status'=>'error','message'=>"The documents have already been checked."]);
                 }
             }
         }
