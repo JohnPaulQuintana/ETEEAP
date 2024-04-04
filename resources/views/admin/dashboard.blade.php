@@ -2,17 +2,37 @@
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-5">
         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2 mb-2">
             {{-- {{ count($forwardedDocuments) }} --}}
-            @include('partials.header-card', ['ra'=> count($forwardedDocuments), 'acc'=>$accepted, 'dc'=>$declined, 'dept'=>$department])
+            @include('partials.header-card', [
+                'ra' => count($forwardedDocuments),
+                'acc' => $accepted,
+                'dc' => $declined,
+                'dept' => $department,
+            ])
         </div>
-        
+
 
         <div class="flex justify-between mt-5 mb-5">
             <div class="flex">
                 <h1 class="text-blue-900 mx-2 font-bold text-xl border-l-4 pl-2 dark:text-white">Applications </h1>
             </div>
-            {{-- @include('partials.breadcrumb') --}}
-        </div>
+            <div class="max-w-md">
+                <label for="default-search"
+                    class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                        </svg>
+                    </div>
+                    <input type="search" id="default-search"
+                        class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Search applicant's name..." />
+                </div>
+            </div>
 
+        </div>
         <div class="shadow-md sm:rounded-lg overflow-hidden">
             {{-- <table id="rejected-table"
                 class="table activate-select dt-responsive nowrap w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -25,25 +45,25 @@
                         @if (count($forwardedDocuments) !== 0)
 
                             @foreach ($forwardedDocuments as $forwarded)
-                                <div
-                                    class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                                    <h3 class="text-lg font-semibold text-blue-900 dark:text-white">
-                                        {{ $forwarded->user->name }} Application
-                                    </h3>
-                                    <button type="button"
-                                        class="t-close text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                                        data-modal-toggle="timeline-modal">
-                                        <i class="fa-sharp fa-solid fa-circle-user text-2xl text-blue-900"></i>
-                                    </button>
-                                </div>
+                                <div class="searchKey" data-name="{{ $forwarded->user->name }}">
+                                    <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                                        <h3 class="text-lg font-semibold text-blue-900 dark:text-white">
+                                            {{ $forwarded->user->name }} Application
+                                        </h3>
+                                        <button type="button"
+                                            class="t-close text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                            data-modal-toggle="timeline-modal">
+                                            <i class="fa-sharp fa-solid fa-circle-user text-2xl text-blue-900"></i>
+                                        </button>
+                                    </div>
 
-                                <div class="p-4 md:p-5">
-                                    <ol id="history-card"
-                                        class="relative border-s border-gray-200 dark:border-gray-600 ms-3.5 mb-4 md:mb-5">
-                                        <li class="shadow-md p-2 ms-8 grid grid-cols-1 lg:grid-cols-2 gap-2">
-                                            <div>
+                                    <div class="p-4 md:p-5">
+                                        <ol id="history-card"
+                                            class="relative border-s border-gray-200 dark:border-gray-600 ms-3.5 mb-4 md:mb-5">
+                                            <li class="shadow-md p-2 ms-8 grid grid-cols-1 lg:grid-cols-2 gap-2">
+                                                <div>
 
-                                                @php
+                                                    @php
                                                         $textColor = 'text-yellow-500';
                                                         switch ($forwarded->status[0]->status) {
                                                             case 'rejected':
@@ -55,247 +75,249 @@
                                                             case 'pending':
                                                                 $textColor = 'text-red-500';
                                                                 break;
-                                                            
+
                                                             default:
                                                                 # code...
                                                                 break;
                                                         }
                                                     @endphp
-                                                <span
-                                                    class="absolute flex items-center justify-center w-6 h-6 bg-gray-100 rounded-full -start-3.5 ring-8 ring-white dark:ring-gray-700 dark:bg-gray-600">
-                                                    <i
-                                                        class="fa-sharp fa-solid fa-circle w-2.5 h-2.5 {{ $textColor }}"></i>
-                                                </span>
-
-                                                <h3
-                                                    class="flex items-start mb-1 text-lg font-semibold text-blue-900 dark:text-white">
-                                                    ETEEAP APPLICATION
-                                                    
                                                     <span
-                                                        class="bg-gray {{ $textColor }} text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
-                                                        {{ $forwarded->status[0]->status }}
+                                                        class="absolute flex items-center justify-center w-6 h-6 bg-gray-100 rounded-full -start-3.5 ring-8 ring-white dark:ring-gray-700 dark:bg-gray-600">
+                                                        <i
+                                                            class="fa-sharp fa-solid fa-circle w-2.5 h-2.5 {{ $textColor }}"></i>
                                                     </span>
-                                                    <span
-                                                        class="bg-gray text-blue-900 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
-                                                        Date:
-                                                        {{ \Carbon\Carbon::parse($forwarded->date)->format('Y-m-d') }}
-                                                    </span>
-                                                    <span
-                                                        class="bg-gray  text-blue-900 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
-                                                        Time:
-                                                        {{ \Carbon\Carbon::parse($forwarded->date)->format('h:i A') }}
-                                                    </span>
-                                                </h3>
 
-                                                {{-- {{ $checked }} --}}
-                                                <div class="rounded-md p-2">
-                                                    {{-- {{ $forwarded->checked }} --}}
-                                                    {{-- {{ $resubmitted }} --}}
-                                                    @foreach ($forwarded->checked as $resubDoc)
-                                                        <div class="p-5 shadow-md rounded-md mb-2 bg-gray">
-                                                            <div class="flex items-center gap-2">
-                                                                <i
-                                                                    class="fa-solid fa-file-invoice text-4xl text-blue-900"></i>
-                                                                <span
-                                                                    class="col-span-2 text-blue-900">{{ $resubDoc->requirements }}</span>
+                                                    <h3
+                                                        class="flex items-start mb-1 text-lg font-semibold text-blue-900 dark:text-white">
+                                                        ETEEAP APPLICATION
 
-                                                            </div>
-                                                            <div class="w-full flex justify-end gap-2">
+                                                        <span
+                                                            class="bg-gray {{ $textColor }} text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
+                                                            {{ $forwarded->status[0]->status }}
+                                                        </span>
+                                                        <span
+                                                            class="bg-gray text-blue-900 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
+                                                            Date:
+                                                            {{ \Carbon\Carbon::parse($forwarded->date)->format('Y-m-d') }}
+                                                        </span>
+                                                        <span
+                                                            class="bg-gray  text-blue-900 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
+                                                            Time:
+                                                            {{ \Carbon\Carbon::parse($forwarded->date)->format('h:i A') }}
+                                                        </span>
+                                                    </h3>
 
-                                                                <a
-                                                                    class="border rounded-md bg-white text-green-500 p-1">
-                                                                    <i class="fa-solid fa-check"></i>
-                                                                    <span>Evaluated</span>
-                                                                </a>
-                                                                @php
-                                                                    $subname = $resubDoc->sub_name;
-                                                                    $path = $forwarded->$subname;
-                                                                    // echo $subname;
-                                                                @endphp
-
-                                                                @foreach ($resubmitted as $resubmit)
-                                                                    {{-- {{ $resubmit->reupload }} --}}
-                                                                    @if ($resubmit->sub_name === $subname)
-                                                                        @foreach ($resubmit->reupload as $rr)
-                                                                            @php
-                                                                                $path = $rr->path;
-                                                                            @endphp
-                                                                        @endforeach
-                                                                    @endif
-                                                                @endforeach
-                                                                <a data-user_id="{{ $forwarded->user->id }}"
-                                                                    data-doc='{{ $path }}'
-                                                                    data-filename='{{ $resubDoc->requirements }}'
-                                                                    data-sub_name='{{ $resubDoc->sub_name }}'
-                                                                    class="docx border rounded-md bg-blue-500 hover:bg-blue-700 text-white p-1 hover:cursor-pointer">
-                                                                    <i class="fa-solid fa-eye"></i>
-                                                                    view document
-                                                                </a>
-
-
-
-
-                                                            </div>
-
-                                                        </div>
-                                                    @endforeach
-
-
-                                                </div>
-                                            </div>
-
-                                            {{-- comments --}}
-                                            
-                                            <div class="bg-gray p-2">
-                                                <div class="flex items-center mb-1">
-                                                    <span data-document_id="{{ $forwarded->document_id }}"
-                                                        class="ftd bg-blue-500 hover:bg-blue-700 hover:cursor-pointer text-white text-[14px] font-medium mr-2 px-2.5 py-2 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
-                                                        Forward to <i
-                                                            class="fa-sharp fa-solid fa-paper-plane-top text-[10px]"></i>
-                                                    </span>
-                                                    {{-- {{ $forwarded->user_id }} --}}
-                                                    <span 
-                                                        data-document_id="{{ $forwarded->document_id }}"
-                                                        data-user_id="{{ $forwarded->user_id }}"
-                                                        class="forInterview bg-blue-500 hover:bg-blue-700 hover:cursor-pointer text-white text-[14px] font-medium mr-2 px-2.5 py-2 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
-                                                        For Interview <i
-                                                            class="fa-sharp fa-solid fa-paper-plane-top text-[10px]"></i>
-                                                    </span>
-                                                    <span 
-                                                        data-document_id="{{ $forwarded->document_id }}"
-                                                        data-user_id="{{ $forwarded->user_id }}"
-                                                        class="btn-reject bg-red-500 hover:bg-red-700 hover:cursor-pointer text-white text-[14px] font-medium mr-2 px-2.5 py-2 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
-                                                        Reject Application <i
-                                                            class="fa-sharp fa-solid fa-paper-plane-top text-[10px]"></i>
-                                                    </span>
-                                                    
-
-                                                </div>
-                                                <span class="font-bold">Comments</span>
-                                                @if (count($comments) == 0)
-                                                    <div class=" bg-white rounded-md p-2 flex items-center justify-center mt-4 h-28">
-                                                        <h1 class="text-xl">No comments available.</h1>
-                                                    </div>
-                                                @endif
-                                                @foreach ($comments as $comment)
-                                                    {{-- {{ $comment }} --}}
-                                                    <div class="rounded-md w-full">
-
-                                                        <div class="">
-                                                            <div class="text-wrap w-full mt-3">
-                                                                <div class="break-words">
-
+                                                    {{-- {{ $checked }} --}}
+                                                    <div class="rounded-md p-2">
+                                                        {{-- {{ $forwarded->checked }} --}}
+                                                        {{-- {{ $resubmitted }} --}}
+                                                        @foreach ($forwarded->checked as $resubDoc)
+                                                            <div class="p-5 shadow-md rounded-md mb-2 bg-gray">
+                                                                <div class="flex items-center gap-2">
+                                                                    <i
+                                                                        class="fa-solid fa-file-invoice text-4xl text-blue-900"></i>
                                                                     <span
-                                                                        class="block text-left rounded-md bg-white p-1 mb-2">
-
-                                                                        <div class="flex items-start gap-2.5">
-                                                                            <div class="flex flex-col w-full gap-1">
-                                                                                <div
-                                                                                    class="flex flex-col w-full leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
-                                                                                    <div
-                                                                                        class="flex items-center space-x-2 rtl:space-x-reverse">
-                                                                                        <span
-                                                                                            class="text-sm font-semibold text-gray-900 p-1 text-blue-900 dark:text-white">
-                                                                                            <i
-                                                                                                class="fa-sharp fa-solid fa-user flex-shrink-0 text-xl text-blue-900"></i>
-                                                                                            {{ $comment->name }}
-                                                                                        </span>
-                                                                                        <span
-                                                                                            class="text-sm font-normal bg-gray p-[2px] rounded-sm dark:text-gray-400">
-                                                                                            {{ \Carbon\Carbon::parse($comment->created_at)->format('h:i A') }}
-                                                                                        </span>
-
-                                                                                    </div>
-                                                                                    <div
-                                                                                        class="flex justify-between w-full items-start bg-gray-50 dark:bg-gray-600 rounded-xl p-2">
-                                                                                        <div class="me-2">
-
-                                                                                            @if ($comment->document_name !== null)
-                                                                                                <span
-                                                                                                    class="flex items-center gap-2 mb-2 text-md font-medium text-gray-900 capitalize dark:text-white">
-                                                                                                    <i
-                                                                                                        class="fa-sharp fa-solid fa-files flex-shrink-0 text-xl text-blue-900"></i>
-
-                                                                                                    {{ $comment->document_name }}
-                                                                                                </span>
-                                                                                            @endif
-                                                                                            <span class="mt-2 mx-10">
-                                                                                                <i
-                                                                                                    class="fa-solid fa-circle-info text-red-500"></i>
-                                                                                                {{ $comment->department_comment }}
-                                                                                            </span>
-                                                                                        </div>
-                                                                                        {{-- <div
-                                                                                        class="inline-flex self-center items-center">
-                                                                                        <button
-                                                                                            class="reupload border inline-flex bg-blue-900 self-center items-center p-2 text-sm font-medium text-center text-white bg-gray-50 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-600 dark:hover:bg-gray-500 dark:focus:ring-gray-600"
-                                                                                            type="button">
-                                                                                            <i
-                                                                                                class="fa-solid fa-envelope-open-text text-md"></i>
-                                                                                        </button>
-                                                                                    </div> --}}
-                                                                                    </div>
-
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </div>
-
-                                                                        {{-- comments --}}
-                                                                        @if (isset($dec->reupload))
-                                                                            @foreach ($dec->reupload as $reupload_doc)
-                                                                                {{-- {{ $document }} --}}
-                                                                                <div
-                                                                                    class="bg-gray p-2 capitalize text-green-700 mb-2">
-                                                                                    <div class="flex justify-between">
-                                                                                        <span
-                                                                                            class="border rounded-md p-[5px] bg-gray text-green-500">re-uploaded</span>
-                                                                                        <span
-                                                                                            class="border rounded-md p-[5px] bg-gray text-green-500">{{ \Carbon\Carbon::parse($reupload_doc->created_at)->format('h:i A') }}</span>
-                                                                                    </div>
-                                                                                    <div
-                                                                                        class="flex items-center gap-2 my-2">
-                                                                                        <i
-                                                                                            class="fa-solid fa-file-check fa-xl"></i>
-                                                                                        {{-- let file = $(this).data('doc').replace(/^public\//, 'storage/')
-                                                                           let fileName = $(this).data('filename')
-                                                                           let subName = $(this).data('sub_name')
-                                                                           let user_id = $(this).data('user_id'); --}}
-                                                                                        <span
-                                                                                            data-filename="{{ $dec->requirements }}"
-                                                                                            data-path="{{ $reupload_doc->path }}"
-                                                                                            data-sub_name="{{ $dec->sub_name }}"
-                                                                                            data-user_id="{{ $document->id }}"
-                                                                                            class="reuploadView text-blue-900 hover:cursor-pointer hover:text-blue-700">{{ $dec->requirements }}</span>
-                                                                                    </div>
-                                                                                    <div
-                                                                                        class="flex items-center gap-2 mx-15">
-                                                                                        <i
-                                                                                            class="fa-solid fa-circle-info"></i>
-                                                                                        <span>{{ $reupload_doc->reupload_description }}</span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            @endforeach
-                                                                        @endif
-                                                                    </span>
+                                                                        class="col-span-2 text-blue-900">{{ $resubDoc->requirements }}</span>
 
                                                                 </div>
+                                                                <div class="w-full flex justify-end gap-2">
+
+                                                                    <a
+                                                                        class="border rounded-md bg-white text-green-500 p-1">
+                                                                        <i class="fa-solid fa-check"></i>
+                                                                        <span>Evaluated</span>
+                                                                    </a>
+                                                                    @php
+                                                                        $subname = $resubDoc->sub_name;
+                                                                        $path = $forwarded->$subname;
+                                                                        // echo $subname;
+                                                                    @endphp
+
+                                                                    @foreach ($resubmitted as $resubmit)
+                                                                        {{-- {{ $resubmit->reupload }} --}}
+                                                                        @if ($resubmit->sub_name === $subname)
+                                                                            @foreach ($resubmit->reupload as $rr)
+                                                                                @php
+                                                                                    $path = $rr->path;
+                                                                                @endphp
+                                                                            @endforeach
+                                                                        @endif
+                                                                    @endforeach
+                                                                    <a data-user_id="{{ $forwarded->user->id }}"
+                                                                        data-doc='{{ $path }}'
+                                                                        data-filename='{{ $resubDoc->requirements }}'
+                                                                        data-sub_name='{{ $resubDoc->sub_name }}'
+                                                                        class="docx border rounded-md bg-blue-500 hover:bg-blue-700 text-white p-1 hover:cursor-pointer">
+                                                                        <i class="fa-solid fa-eye"></i>
+                                                                        view document
+                                                                    </a>
+
+
+
+
+                                                                </div>
+
                                                             </div>
+                                                        @endforeach
 
 
-                                                        </div>
                                                     </div>
-                                                @endforeach
-                                            </div>
-                                        </li>
-                                    </ol>
+                                                </div>
+
+                                                {{-- comments --}}
+
+                                                <div class="bg-gray p-2">
+                                                    <div class="flex items-center mb-1">
+                                                        <span data-document_id="{{ $forwarded->document_id }}"
+                                                            class="ftd bg-blue-500 hover:bg-blue-700 hover:cursor-pointer text-white text-[14px] font-medium mr-2 px-2.5 py-2 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
+                                                            Forward to <i
+                                                                class="fa-sharp fa-solid fa-paper-plane-top text-[10px]"></i>
+                                                        </span>
+                                                        {{-- {{ $forwarded->user_id }} --}}
+                                                        <span data-document_id="{{ $forwarded->document_id }}"
+                                                            data-user_id="{{ $forwarded->user_id }}"
+                                                            class="forInterview bg-blue-500 hover:bg-blue-700 hover:cursor-pointer text-white text-[14px] font-medium mr-2 px-2.5 py-2 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
+                                                            For Interview <i
+                                                                class="fa-sharp fa-solid fa-paper-plane-top text-[10px]"></i>
+                                                        </span>
+                                                        <span data-document_id="{{ $forwarded->document_id }}"
+                                                            data-user_id="{{ $forwarded->user_id }}"
+                                                            class="btn-reject bg-red-500 hover:bg-red-700 hover:cursor-pointer text-white text-[14px] font-medium mr-2 px-2.5 py-2 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
+                                                            Reject Application <i
+                                                                class="fa-sharp fa-solid fa-paper-plane-top text-[10px]"></i>
+                                                        </span>
+
+
+                                                    </div>
+                                                    <span class="font-bold">Comments</span>
+                                                    @if (count($comments) == 0)
+                                                        <div
+                                                            class=" bg-white rounded-md p-2 flex items-center justify-center mt-4 h-28">
+                                                            <h1 class="text-xl">No comments available.</h1>
+                                                        </div>
+                                                    @endif
+                                                    @foreach ($comments as $comment)
+                                                        {{-- {{ $comment }} --}}
+                                                        <div class="rounded-md w-full">
+
+                                                            <div class="">
+                                                                <div class="text-wrap w-full mt-3">
+                                                                    <div class="break-words">
+
+                                                                        <span
+                                                                            class="block text-left rounded-md bg-white p-1 mb-2">
+
+                                                                            <div class="flex items-start gap-2.5">
+                                                                                <div class="flex flex-col w-full gap-1">
+                                                                                    <div
+                                                                                        class="flex flex-col w-full leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
+                                                                                        <div
+                                                                                            class="flex items-center space-x-2 rtl:space-x-reverse">
+                                                                                            <span
+                                                                                                class="text-sm font-semibold text-gray-900 p-1 text-blue-900 dark:text-white">
+                                                                                                <i
+                                                                                                    class="fa-sharp fa-solid fa-user flex-shrink-0 text-xl text-blue-900"></i>
+                                                                                                {{ $comment->name }}
+                                                                                            </span>
+                                                                                            <span
+                                                                                                class="text-sm font-normal bg-gray p-[2px] rounded-sm dark:text-gray-400">
+                                                                                                {{ \Carbon\Carbon::parse($comment->created_at)->format('h:i A') }}
+                                                                                            </span>
+
+                                                                                        </div>
+                                                                                        <div
+                                                                                            class="flex justify-between w-full items-start bg-gray-50 dark:bg-gray-600 rounded-xl p-2">
+                                                                                            <div class="me-2">
+
+                                                                                                @if ($comment->document_name !== null)
+                                                                                                    <span
+                                                                                                        class="flex items-center gap-2 mb-2 text-md font-medium text-gray-900 capitalize dark:text-white">
+                                                                                                        <i
+                                                                                                            class="fa-sharp fa-solid fa-files flex-shrink-0 text-xl text-blue-900"></i>
+
+                                                                                                        {{ $comment->document_name }}
+                                                                                                    </span>
+                                                                                                @endif
+                                                                                                <span
+                                                                                                    class="mt-2 mx-10">
+                                                                                                    <i
+                                                                                                        class="fa-solid fa-circle-info text-red-500"></i>
+                                                                                                    {{ $comment->department_comment }}
+                                                                                                </span>
+                                                                                            </div>
+                                                                                            {{-- <div
+                                                                                    class="inline-flex self-center items-center">
+                                                                                    <button
+                                                                                        class="reupload border inline-flex bg-blue-900 self-center items-center p-2 text-sm font-medium text-center text-white bg-gray-50 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-600 dark:hover:bg-gray-500 dark:focus:ring-gray-600"
+                                                                                        type="button">
+                                                                                        <i
+                                                                                            class="fa-solid fa-envelope-open-text text-md"></i>
+                                                                                    </button>
+                                                                                </div> --}}
+                                                                                        </div>
+
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+
+                                                                            {{-- comments --}}
+                                                                            @if (isset($dec->reupload))
+                                                                                @foreach ($dec->reupload as $reupload_doc)
+                                                                                    {{-- {{ $document }} --}}
+                                                                                    <div
+                                                                                        class="bg-gray p-2 capitalize text-green-700 mb-2">
+                                                                                        <div
+                                                                                            class="flex justify-between">
+                                                                                            <span
+                                                                                                class="border rounded-md p-[5px] bg-gray text-green-500">re-uploaded</span>
+                                                                                            <span
+                                                                                                class="border rounded-md p-[5px] bg-gray text-green-500">{{ \Carbon\Carbon::parse($reupload_doc->created_at)->format('h:i A') }}</span>
+                                                                                        </div>
+                                                                                        <div
+                                                                                            class="flex items-center gap-2 my-2">
+                                                                                            <i
+                                                                                                class="fa-solid fa-file-check fa-xl"></i>
+                                                                                            {{-- let file = $(this).data('doc').replace(/^public\//, 'storage/')
+                                                                       let fileName = $(this).data('filename')
+                                                                       let subName = $(this).data('sub_name')
+                                                                       let user_id = $(this).data('user_id'); --}}
+                                                                                            <span
+                                                                                                data-filename="{{ $dec->requirements }}"
+                                                                                                data-path="{{ $reupload_doc->path }}"
+                                                                                                data-sub_name="{{ $dec->sub_name }}"
+                                                                                                data-user_id="{{ $document->id }}"
+                                                                                                class="reuploadView text-blue-900 hover:cursor-pointer hover:text-blue-700">{{ $dec->requirements }}</span>
+                                                                                        </div>
+                                                                                        <div
+                                                                                            class="flex items-center gap-2 mx-15">
+                                                                                            <i
+                                                                                                class="fa-solid fa-circle-info"></i>
+                                                                                            <span>{{ $reupload_doc->reupload_description }}</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                @endforeach
+                                                                            @endif
+                                                                        </span>
+
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </li>
+                                        </ol>
+                                    </div>
                                 </div>
                             @endforeach
                         @else
                             <div
                                 class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                                 <h3 class="text-lg font-semibold text-blue-900 dark:text-white">
-                                There are no applications to review at the moment.
+                                    There are no applications to review at the moment.
                                 </h3>
                                 <button type="button"
                                     class="t-close text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
@@ -327,7 +349,7 @@
             // // Add more objects as needed
             // ];
 
-           
+
             $(document).ready(function() {
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
@@ -427,8 +449,8 @@
                 const rq = new Modal($requirement, options2, instanceOptions2);
                 const fr = new Modal($forward, optionsFoward, instanceOptionsForward);
                 // new open
-                 // open the docx
-                 $('.docx').on('click', function() {
+                // open the docx
+                $('.docx').on('click', function() {
                     // alert('dawdwa')
                     let isReturning = $(this).attr('data-return_docs');
                     if (isReturning !== undefined && isReturning !== null) {
@@ -622,7 +644,7 @@
                     acceptOrReject('/accept', 'post', data)
                         .then(function(data) {
                             console.log(data)
-                            if(data.status === 'success'){
+                            if (data.status === 'success') {
                                 setInterview(data.user_id, document_id)
                             }
                             // Handle the data or perform additional actions if needed
@@ -643,11 +665,11 @@
                     acceptOrReject('/accept', 'post', data)
                         .then(function(data) {
                             console.log(data)
-                            if(data.status === 'success'){
+                            if (data.status === 'success') {
                                 setTimeout(() => {
-                                // if(result.value.refresh){
+                                    // if(result.value.refresh){
                                     window.location.reload()
-                                // }
+                                    // }
                                 }, 1000);
                             }
                             // Handle the data or perform additional actions if needed
@@ -800,8 +822,7 @@
                 function setInterview(id, document_id) {
                     Swal.fire({
                         title: "Setup the interview",
-                        html:
-                            `<div class="border rounded-md p-3">
+                        html: `<div class="border rounded-md p-3">
                                 <div class="mb-2 hidden">
                                     <label for="user_id" class="text-left block mb-2 text-md font-bold text-gray-900 dark:text-white">Interviewer Name</label>
                                     <input type="text" id="documentID" value="${document_id}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -843,7 +864,7 @@
                             var user_id = $('#user_id').val()
                             var document_id = $('#documentID').val()
                             // console.log(interviewer, date, time, address, details, user_id)
-                            if(date == '' || time == '' || address == ''){
+                            if (date == '' || time == '' || address == '') {
                                 return Swal.showValidationMessage(`All field is required to fill`)
                             }
 
@@ -855,16 +876,22 @@
                                         'Content-Type': 'application/json',
                                         'X-CSRF-TOKEN': csrfToken
                                     },
-                                    body: JSON.stringify({'document_id':document_id,'user_id': user_id, 'date':date, 'time':time, 'address':address}),
+                                    body: JSON.stringify({
+                                        'document_id': document_id,
+                                        'user_id': user_id,
+                                        'date': date,
+                                        'time': time,
+                                        'address': address
+                                    }),
                                 });
 
                                 if (!response.ok) {
-                                return Swal.showValidationMessage(`
+                                    return Swal.showValidationMessage(`
                                     ${JSON.stringify(await response.json())}
                                     `);
                                 }
                                 return response.json();
-                             
+
                             } catch (error) {
                                 Swal.showValidationMessage(`
                                     Request failed: ${error}
@@ -883,12 +910,26 @@
 
                             setTimeout(() => {
                                 // if(result.value.refresh){
-                                    window.location.reload()
+                                window.location.reload()
                                 // }
                             }, 3000);
                         }
                     });
                 }
+
+                $('#default-search').on('input', function() {
+                    var searchTerm = $(this).val().toLowerCase(); // Convert search query to lowercase
+                   
+                    $('.searchKey').each(function() {
+                        var k = $(this).data('name').toLowerCase();
+                        // console.log(searchTerm, k)
+                        if (k.includes(searchTerm)) {
+                            $(this).show(); // Show list item if it contains the search query
+                        } else {
+                            $(this).hide(); // Hide list item if it does not contain the search query
+                        }
+                    })
+                })
             })
         </script>
     @endsection

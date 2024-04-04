@@ -76,6 +76,7 @@ class AdminController extends Controller
             ->with(['checked' => function ($query) {
                 $query->where('action', 'accepted');
             }, 'user', 'status'])
+            ->orderByDesc('created_at')
             ->get();
 
         // dd($forwardedToMe);
