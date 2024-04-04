@@ -92,7 +92,7 @@ class DocumentController extends Controller
         $dataToInsert['user_id'] = Auth::user()->id; // sender_id
 
         // get the first destination
-        $firstDesitination = User::where('department_id', 1)->first();
+        $firstDesitination = User::where('isReceiver', 1)->first();
         $dataToInsert['reciever_id'] = $firstDesitination->id; // eteeap
 
 

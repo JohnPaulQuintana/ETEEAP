@@ -92,6 +92,9 @@
                                             Verified
                                         </th>
                                         <th scope="col" class="px-6 py-3">
+                                            1st Receiver
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
                                             Date
                                         </th>
                                         <th scope="col" class="px-6 py-3">
@@ -116,6 +119,16 @@
                                             </td>
                                             <td class="px-6 py-4">
                                                 @if ($user->email_verified_at == null)
+                                                    <span
+                                                        class="bg-red-100 text-red-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">No</span>
+                                                @else
+                                                    <span
+                                                        class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">Yes</span>
+                                                @endif
+
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                @if (!$user->isReceiver)
                                                     <span
                                                         class="bg-red-100 text-red-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">No</span>
                                                 @else
@@ -471,6 +484,15 @@
                                     
                                 </div>
 
+                                <div class="mb-2">
+                                    <label for="isReceiver" class="block text-left mb-2 text-md font-bold text-gray-900 dark:text-white">Set User</label>
+                                    <select id="isReceiver" name="isReceiver" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="0">2nd Receiver</option>
+                                        <option value="1">1st Receiver</option>
+                                    </select>
+                                    
+                                </div>
+
                                 
                                
                             </div>`,
@@ -486,7 +508,7 @@
                             var name = $('#name').val()
                             var email = $('#email').val()
                             var dept = $('#dept').val()
-                            
+                            var isReceiver = $('#isReceiver').val()
                             var user_id = $('#user_id').val()
                            
                             if (name == '' || email == '' || dept == '') {
@@ -505,7 +527,8 @@
                                         'user_id': user_id,
                                         'name': name,
                                         'email': email,
-                                        'dept': dept
+                                        'dept': dept,
+                                        'isReceiver': isReceiver,
                                     }),
                                 });
 

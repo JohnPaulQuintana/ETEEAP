@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('department_id')->nullable();
             $table->foreign('department_id')->references('id')->on('users')->onDelete('cascade');
+            $table->boolean('isReceiver')->default(false);
         });
     }
 

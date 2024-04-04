@@ -271,8 +271,14 @@ class AdminController extends Controller
 
     public function update(Request $request){
         // dd($request);
+        $isReceiver = User::where('isReceiver', 1)->update(['isReceiver'=>0]);
+        // dd($isReceiver);
+
+       
+        // $isReceiver->update(['isReceiver',0]);
+       
         $updated = User::where('id', $request->input('user_id'))
-            ->update(['name'=>$request->input('name'), 'email'=>$request->input('email'), 'department_id'=>$request->input('dept')]);
+            ->update(['name'=>$request->input('name'), 'email'=>$request->input('email'), 'department_id'=>$request->input('dept'), 'isReceiver'=>$request->input('isReceiver')]);
 
         if($updated){
             return response()->json(['status'=>'success', 'message'=>'Successfully Updated']);
