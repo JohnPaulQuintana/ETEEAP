@@ -258,7 +258,7 @@
                 // hide all the passed history
                 $('#history-card li div h3 span.noti').not(':first').hide();
                 $('.c-con > content').not(':first').hide();
-                $('.c-con').not(':first').html(`<div class="text-slate-400 flex flex-col justify-center items-center p-5"><h1>Comment's not available right now!</h1><i class="fa-solid fa-square-question text-4xl"></i></div>`)
+                $('.c-con').not(':first').html(`<div class="text-slate-400 flex flex-col justify-center items-center p-5"><h1>No comments available.</h1></div>`)
                 const $comments = document.getElementById('comments-modal');
 
                 // options with default values
