@@ -10,7 +10,7 @@
             <div class="flex">
                 <h1 class="text-blue-900 mx-2 font-bold text-xl border-l-4 pl-2 dark:text-white">Applications </h1>
             </div>
-            @include('partials.breadcrumb')
+            {{-- @include('partials.breadcrumb') --}}
         </div>
 
         <div class="shadow-md sm:rounded-lg overflow-hidden">

@@ -33,7 +33,7 @@
                         <div class="tooltip-arrow" data-popper-arrow></div>
                     </div>
                 </div>
-                @include('partials.breadcrumb')
+                {{-- @include('partials.breadcrumb') --}}
             </div>
 
             <div class="grid grid-cols-1 gap-4 p-2 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">

@@ -26,7 +26,7 @@
             <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab"
                 data-tabs-toggle="#default-tab-content" role="tablist">
 
-                <li class="me-2" role="presentation">
+                {{-- <li class="me-2" role="presentation">
                     <button class="inline-block p-4 border-b-2 rounded-t-lg" id="applicant-tab"
                         data-tabs-target="#applicant" type="button" role="tab" aria-controls="applicant"
                         aria-selected="false">
@@ -34,7 +34,7 @@
                         {{ __('New Application') }} <span
                             class="text-red-500">{{ isset($documents) ? count($documents) : 0 }}</span>
                     </button>
-                </li>
+                </li> --}}
                 <li class="me-2" role="presentation">
                     <button class="inline-block p-4 border-b-2 rounded-t-lg" id="returned-tab"
                         data-tabs-target="#returned" type="button" role="tab" aria-controls="returned"
@@ -52,7 +52,7 @@
                 <div class="bg-white rounded-lg shadow dark:bg-gray-700">
                     <div id="default-tab-content">
                         {{-- applicant tab --}}
-                        <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="applicant" role="tabpanel"
+                        {{-- <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="applicant" role="tabpanel"
                             aria-labelledby="applicant-tab">
 
                             <div class="mb-1  border-gray-200 dark:border-gray-700">
@@ -81,12 +81,12 @@
                             </div>
 
                             <div class="sm:rounded-lg overflow-hidden">
-                                <!-- Main modal -->
+                               
                                 
                                 @if (isset($documents) && count($documents) > 0)
                                     <div id="applicant-tab-content">
                                         @foreach ($documents as $document)
-                                            {{-- {{ $document->documents[0] }} --}}
+                                           
                                             <div data-card="{{ str_replace(' ', '', $document->name) }}"
                                                 class="hidden p-2 rounded-lg bg-gray-50 dark:bg-gray-800 tabcard tabcard-{{ str_replace(' ', '', $document->name) }}"
                                                 id="{{ str_replace(' ', '', $document->name) }}" role="tabpanel"
@@ -101,7 +101,7 @@
                                                             class="shadow-md p-2 ms-8 grid grid-cols-1 lg:grid-cols-2 gap-2">
 
 
-                                                            {{-- documents --}}
+                                                            
                                                             <div>
                                                                 @php
                                                                     $textColor = 'text-yellow-500';
@@ -153,10 +153,9 @@
 
 
 
-                                                                {{-- {{ $checked }} --}}
+                                                               
                                                                 <div class="rounded-md p-2">
-                                                                    {{-- resubmited documents display first to view --}}
-                                                                    {{-- {{ $document->resubmittedDocument }} --}}
+                                                                    
                                                                     @if (isset($document->resubmittedDocument))
                                                                         @foreach ($document->resubmittedDocument as $resubDoc)
                                                                             <div
@@ -230,10 +229,10 @@
                                                                             'cer',
                                                                         ];
                                                                     @endphp
-                                                                    {{-- {{ $document->checked }} --}}
+                                                                    
                                                                     @foreach ($originalName as $key => $doc)
                                                                         @if ($document->documents[0][$columnKey[$key]] !== null)
-                                                                            {{-- {{ $count++ }} {{ isset($checked[$count++]->action) }} --}}
+                                                                            
                                                                             @php
                                                                                 $borderClass = '';
 
@@ -292,7 +291,7 @@
                                                                                                 }
                                                                                             }
                                                                                         }
-                                                                                        // echo $icons;
+                                                                                        
                                                                                     @endphp
 
                                                                                     <a
@@ -319,8 +318,7 @@
 
                                                             </div>
 
-                                                            {{--  comments --}}
-                                                            {{-- {{ $document->documents[0] }} --}}
+                                                           
                                                             <div
                                                                 class="border border-gray-2 rounded-md bg-gray-2 p-2 text-blue-900 w-full">
                                                                 <span class="font-bold">Comments
@@ -333,11 +331,11 @@
 
                                                                 </span>
                                                                 <div class="">
-                                                                    {{-- list of resubmit docs --}}
+                                                                    
                                                                     @foreach ($document->declined as $dec)
                                                                         <div class="text-wrap w-full mt-3">
                                                                             <div class="break-words">
-                                                                                {{-- {{ $dec }} --}}
+                                                                                
                                                                                 <span
                                                                                     class="block text-left border rounded-md bg-white p-1 mb-2">
 
@@ -395,10 +393,10 @@
 
                                                                                     </div>
 
-                                                                                    {{-- comments --}}
+                                                                                    
                                                                                     @if (isset($dec->reupload))
                                                                                         @foreach ($dec->reupload as $reupload_doc)
-                                                                                            {{-- {{ $document }} --}}
+                                                                                            
                                                                                             <div
                                                                                                 class="bg-gray p-2 capitalize mb-2">
                                                                                                 <div
@@ -412,10 +410,7 @@
                                                                                                     class="flex items-center gap-2 my-2">
                                                                                                     <i
                                                                                                         class="fa-solid fa-file-check fa-xl"></i>
-                                                                                                    {{-- let file = $(this).data('doc').replace(/^public\//, 'storage/')
-                                                                                                   let fileName = $(this).data('filename')
-                                                                                                   let subName = $(this).data('sub_name')
-                                                                                                   let user_id = $(this).data('user_id'); --}}
+                                                                                                    
                                                                                                     <span
                                                                                                         data-filename="{{ $dec->requirements }}"
                                                                                                         data-path="{{ $reupload_doc->path }}"
@@ -471,7 +466,7 @@
                                 @endif
                             </div>
 
-                        </div>
+                        </div> --}}
 
                         {{-- returned tab --}}
                         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="returned" role="tabpanel"

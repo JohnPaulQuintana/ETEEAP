@@ -34,8 +34,6 @@ class DocumentController extends Controller
         // Get the user's name or any unique identifier
         $userName = Auth::user()->name;
 
-        
-        
         $existingDocument = Document::where('user_id', Auth::user()->id)
             // ->where('status', ['approved', 'pending', 'in-review']) // Adjust the desired status
             ->first();
