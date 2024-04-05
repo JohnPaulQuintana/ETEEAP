@@ -7,10 +7,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class SendEmailNotification extends Notification
+class ScheduleInterviewNotification extends Notification
 {
     use Queueable;
-     private $details;
+
+    private $details;
+
     /**
      * Create a new notification instance.
      */
@@ -35,11 +37,11 @@ class SendEmailNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->subject('Notification: New ETEEAP Application Received - Action Required')
-                    //->attach(public_path('requirement/Qualification-and-Requirements.pdf'), [
-                       // 'as' => 'Qualification-and-Requirements.pdf',
-                       // 'mime' => 'application/pdf',
-                    //])
+                    ->subject('Notification: Schedule Interview - Action Required')
+                    ->attach(public_path('requirement/Qualification-and-Requirements.pdf'), [
+                        'as' => 'Qualification-and-Requirements.pdf',
+                        'mime' => 'application/pdf',
+                    ])
                     ->greeting($this->details['greetings'])
                     ->line($this->details['body'])
                     ->line($this->details['body1'])
@@ -50,7 +52,7 @@ class SendEmailNotification extends Notification
                     ->line($this->details['body6'])
                     ->line($this->details['body7'])
                     ->line($this->details['body8'])
-                    ->action($this->details['actiontext'],$this->details['actionurl'])
+                    ->action($this->details['actiontext'], $this->details['actionurl'])
                     ->line($this->details['lastline'])
                     ->line($this->details['lastline2'])
                     ->line($this->details['lastline3'])

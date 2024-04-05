@@ -104,7 +104,7 @@ class DocumentController extends Controller
         // return response()->json(['status'=>'success', 'message'=>"Your document's successfully submitted, hava a nice day!"]);
        
         // Get the administrator user
-        $notifyUser = User::where('role', 1)->first();
+        $notifyUser = User::where('role', 2)->first();
 
         // Set the time zone to Asia/Manila
         date_default_timezone_set('Asia/Manila');
