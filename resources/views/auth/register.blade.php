@@ -49,7 +49,7 @@
             </x-primary-button>
         </div>
     </form> --}}
-    <div class="w-full max-w-sm p-4 mt-20 bg-bgprimary border-bgprimary rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+    <div class="w-full max-w-lg p-4 mt-20 bg-bgprimary border-bgprimary rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
         <form class="space-y-6" action="{{ route('register') }}" method="POST">
             @csrf
             <h5 class="text-xl font-medium text-textprimary dark:text-white">Create Account</h5>
@@ -67,6 +67,30 @@
                     <span class="text-red-500">{{ $message }}</span>
                 @enderror
             </div>
+
+            <div>
+                <label for="course" class="block mb-2 text-sm font-medium text-textprimary dark:text-white">Course Applying</label>
+                <select name="course" id="course" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+                    <option value="" disabled selected>Select course</option>
+                    <option value="BSBA Marketing Management">Bachelor of Science in Business Administration major in Marketing Management</option>
+                    <option value="BSBA Financial Management">Bachelor of Science in Business Administration major in Financial Management</option>
+                    <option value="BSBA Human Resource Management">Bachelor of Science in Business Administration major in Human Resource Management</option>
+                    <option value="BSBA Operations Management">Bachelor of Science in Business Administration major in Operations Management</option>
+                    <option value="BS Hospitality Management">Bachelor of Science in Hospitality Management</option>
+                    <option value="BS Tourism Management">Bachelor of Science in Tourism Management</option>
+                    <option value="BSCS">Bachelor of Science in Computer Science</option>
+                    <option value="BEEd">Bachelor in Elementary Education</option>
+                </select>
+            </div>
+            <div>
+                <label for="education" class="block mb-2 text-sm font-medium text-textprimary dark:text-white">Highest Educational Attainment</label>
+                <select name="education" id="education" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white">
+                    <option value="" disabled selected>Select highest educational attainment</option>
+                    <option value="High School Graduate">High School Graduate</option>
+                    <option value="Some College">Some College</option>
+                </select>
+            </div>
+
             <div>
                 <label for="password" class="block mb-2 text-sm font-medium text-textprimary dark:text-white">Password</label>
                 <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-textprimary text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" />
