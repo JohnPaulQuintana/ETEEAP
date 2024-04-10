@@ -12,7 +12,7 @@
                 <i class="fa-sharp fa-regular fa-circle-check mx-auto mb-2 text-gray-400 w-12 h-12 text-5xl text-bgprimary"></i>
                
                 <h3 class="text-lg font-bold text-bgprimary dark:text-gray-400 uppercase">Upload your requirements to ETEEAP.</h3>
-                <span class="text-bgprimary"><i class="fa-solid fa-asterisk text-red-500"></i> REQUIRED TO SUBMIT</span>
+                
                 <div class="">
                    
                     <form class="max-w-lg mx-auto text-black h-115 overflow-auto" enctype="multipart/form-data" action="{{ route('store') }}" method="post">
@@ -43,13 +43,13 @@
                         
                         <div class="mb-4 border-l-4 shadow-md bg-white p-1">
                             <label class="block mb-2 text-md text-left font-bold text-bgprimary" for="hdt">5.Honorable Dismissal and TOR:</label>
-                            <input name="hdt" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="hdt" type="file" accept=".doc, .pdf, .png, .jpeg">
+                            <input name="hdt" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="hdt" type="file" accept=".doc, .pdf, .png, .jpeg" required>
                             <div class="mt-1 text-sm text-left uppercase text-bgprimary dark:text-gray-300" id="user_avatar_help">for undergraduate and for vocational courses </div>
                         </div>
                         
                         <div class="mb-4 border-l-4 shadow-md bg-white p-1">
                             <label class="block mb-2 text-md text-left font-bold text-bgprimary" for="f137_8">6.Form 137–A and Form 138:</label>
-                            <input name="f137_8" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="f137_8" type="file" accept=".doc, .pdf, .png, .jpeg">
+                            <input name="f137_8" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="f137_8" type="file" accept=".doc, .pdf, .png, .jpeg" required>
                             <div class="mt-1 text-sm text-left uppercase text-bgprimary dark:text-gray-300" id="user_avatar_help">for High School Graduate or PEPT/ALS Certificates </div>
                             <div class="mt-1 text-sm text-left uppercase text-bgprimary dark:text-gray-300" id="user_avatar_help">for those who took the acceleration test, must be DepEd certified true copy </div>
                         </div>
@@ -134,4 +134,3 @@
         </div>
     </div>
 </div>
-
