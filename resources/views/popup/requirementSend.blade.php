@@ -42,13 +42,13 @@
                         </div>
                         
                         <div class="mb-4 border-l-4 shadow-md bg-white p-1">
-                            <label class="block mb-2 text-md text-left font-bold text-bgprimary" for="hdt">5.Honorable Dismissal and TOR:</label>
+                            <label class="block mb-2 text-md text-left font-bold text-bgprimary" for="hdt">5.Honorable Dismissal and TOR:<i class="fa-solid fa-asterisk text-red-500"></i></label>
                             <input name="hdt" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="hdt" type="file" accept=".doc, .pdf, .png, .jpeg" required>
                             <div class="mt-1 text-sm text-left uppercase text-bgprimary dark:text-gray-300" id="user_avatar_help">for undergraduate and for vocational courses </div>
                         </div>
                         
                         <div class="mb-4 border-l-4 shadow-md bg-white p-1">
-                            <label class="block mb-2 text-md text-left font-bold text-bgprimary" for="f137_8">6.Form 137–A and Form 138:</label>
+                            <label class="block mb-2 text-md text-left font-bold text-bgprimary" for="f137_8">6.Form 137–A and Form 138:<i class="fa-solid fa-asterisk text-red-500"></i></label>
                             <input name="f137_8" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="f137_8" type="file" accept=".doc, .pdf, .png, .jpeg" required>
                             <div class="mt-1 text-sm text-left uppercase text-bgprimary dark:text-gray-300" id="user_avatar_help">for High School Graduate or PEPT/ALS Certificates </div>
                             <div class="mt-1 text-sm text-left uppercase text-bgprimary dark:text-gray-300" id="user_avatar_help">for those who took the acceleration test, must be DepEd certified true copy </div>

@@ -28,12 +28,14 @@ class AdminController extends Controller
     public function accepted()
     {
 
-        $alldocs = User::whereHas('documents', function ($query) {
-            $query->whereHas('status', function ($subquery) {
-                $subquery->whereNotIn('status', ['pending', 'rejected', 'in-review', 'forwarded']);
-            });
-        })->with(['documents.status', 'interview'])->get();
-
+        //$alldocs = User::whereHas('documents', function ($query) {
+            //$query->whereHas('status', function ($subquery) {
+                //$subquery->whereNotIn('status', ['pending', 'rejected', 'in-review', 'forwarded']);
+            //});
+        //})->with(['documents.status', 'interview'])->get();
+        $alldocs = User::whereNotIn('role', [1, 2]) // Exclude users with roles 1 and 2
+        ->with(['documents.status', 'interview'])
+        ->get();
 
         return view('admin.accepted', ['documents' => $alldocs]);
     }

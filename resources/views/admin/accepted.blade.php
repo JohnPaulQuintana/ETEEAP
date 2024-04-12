@@ -19,63 +19,65 @@
     <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script>
-         var dataToRender = @json($documents);
-         console.log(dataToRender)
-         $(document).ready(function(){
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            $('#users-table').DataTable({
-                    data: dataToRender,
-                    "order": [],
-                    "columnDefs": [{
-                        "targets": 'no-sort',
-                        "orderable": false,
-                    }],
-                    columns: [
-                        {
-                            title: 'Applicant ID',
-                            data: 'id'
-                        },
-                        {
-                            title: 'Name',
-                            data: 'name'
-                        },
-                        {
-                            title: 'Course',
-                            data: 'course'
-                        },
-                        {
-                            title: 'Date Submitted',
-                            data: 'date_submitted'
-                        },
-                        {
-                            title: 'Status',
-                            data: 'status'
-                        },
-                        {
-                            title: 'Action Required',
-                            data: 'action_required',
-                            render: function(data, type, row) {
-                                if (data === 'Additional Documents Required' || data === 'Applicant Response Needed') {
-                                    return `<span class="text-red-500">${data}</span>`;
-                                } else {
-                                    return data;
-                                }
-                            }
-                        },
-                        {
-                            title: 'Details',
-                            data: null,
-                            render: function(data, type, row) {
-                                return `<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View Details</button>`;
-                            }
+    var dataToRender = @json($documents);
+    console.log(dataToRender); // Log the data to verify that 'date_submitted' is present
+
+    $(document).ready(function(){
+        $('#users-table').DataTable({
+            data: dataToRender,
+            "order": [],
+            "columnDefs": [{
+                "targets": 'no-sort',
+                "orderable": false,
+            }],
+            columns: [
+                {
+                    title: 'Applicant ID',
+                    data: 'id'
+                },
+                {
+                    title: 'Name',
+                    data: 'name'
+                },
+                {
+                    title: 'Course',
+                    data: 'course'
+                },
+                {
+                    title: 'Date Submitted',
+                    data: 'date_submitted'
+                },
+                {
+                    title: 'Status',
+                    data: 'status'
+                },
+                {
+                    title: 'Action Required',
+                    data: 'action_required',
+                    render: function(data, type, row) {
+                        if (data === 'Additional Documents Required' || data === 'Applicant Response Needed') {
+                            return `<span class="text-red-500">${data}</span>`;
+                        } else {
+                            return data;
                         }
-                    ],
-                    responsive: true,
-                    "initComplete": function(settings, json) {
-                        $(this.api().table().container()).addClass('bs4');
-                    },
-                })
-         })
-    </script>
+                    }
+                },
+                {
+                    title: 'Details',
+                    data: null,
+                    render: function(data, type, row) {
+                        return `<button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">View Details</button>`;
+                    }
+                }
+            ],
+            responsive: true,
+            "initComplete": function(settings, json) {
+                $(this.api().table().container()).addClass('bs4');
+            },
+        });
+    });
+</script>
+
+
     @endsection
 </x-app-layout>
