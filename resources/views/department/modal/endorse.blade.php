@@ -1,5 +1,5 @@
-<div class="backdrop"></div>
-<div class="endorse_user_modal rounded-md border-none w-[40%]">
+<div class="backdrop hidden"></div>
+<div class="endorse_user_modal rounded-md border-none w-[40%] hidden">
     <div class="flex justify-between border-b-2">
         <h1 class="mb-2">Endorse Application</h1>
         <button type="button" class="endorse-close rounded-md bg-red-500 px-2 text-white hover:bg-red-800 mb-2">X</button>

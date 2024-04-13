@@ -13,12 +13,7 @@ class Document extends Model
 {
     use HasFactory;
 
-<<<<<<< Updated upstream
-    protected $fillable = ['user_id', 'receiver_id', 'isForwarded', 'loi', 'ce', 'cr', 'nce', 'hdt', 'f137_8', 'abcb', 'mc', 'nbc', 'ge', 'pc', 'rl', 'cgmc', 'cer', 'date_submitted'];
-
-=======
     protected $fillable = ['user_id', 'reciever_id','course_id','educational_attainment','isForwarded' ,'loi', 'ce', 'cr', 'nce','hdt','f137_8','abcb','mc','nbc','ge','pc','rl','cgmc', 'cer'];
->>>>>>> Stashed changes
 
     public function user() : BelongsTo{
         return $this->belongsTo(User::class);
