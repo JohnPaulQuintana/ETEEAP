@@ -2,17 +2,23 @@
 
 namespace App\Models;
 
+use App\Models\ActionRequired;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Document extends Model
 {
     use HasFactory;
 
+<<<<<<< Updated upstream
     protected $fillable = ['user_id', 'receiver_id', 'isForwarded', 'loi', 'ce', 'cr', 'nce', 'hdt', 'f137_8', 'abcb', 'mc', 'nbc', 'ge', 'pc', 'rl', 'cgmc', 'cer', 'date_submitted'];
 
+=======
+    protected $fillable = ['user_id', 'reciever_id','course_id','educational_attainment','isForwarded' ,'loi', 'ce', 'cr', 'nce','hdt','f137_8','abcb','mc','nbc','ge','pc','rl','cgmc', 'cer'];
+>>>>>>> Stashed changes
 
     public function user() : BelongsTo{
         return $this->belongsTo(User::class);
@@ -32,7 +38,11 @@ class Document extends Model
         return $this->hasMany(CheckingDocument::class);
     }
 
-    // public function forwarded() :HasMany{
-    //     return $this->hasMany(ForwardToDept::class);
-    // }
+    public function internal() :HasMany{
+        return $this->hasMany(InternalMessage::class);
+    }
+
+    public function action() :HasOne{
+        return $this->hasOne(ActionRequired::class);
+    }
 }

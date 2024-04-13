@@ -1,17 +1,23 @@
 <?php
 
+use App\Http\Controllers\AdditionalDocumentController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CheckingDocumentController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\EteeapController;
 use App\Http\Controllers\EvaluatedController;
 use App\Http\Controllers\ForwardToDeptController;
+use App\Http\Controllers\InternalMessageController;
 use App\Http\Controllers\InterviewController;
 use App\Http\Controllers\NotifyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReuploadDocumentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +50,7 @@ Route::middleware(['checkUserRole:0','auth','verified'])->group(function(){
     Route::get('/timeline/{id}', [UserController::class, 'timeline'])->name('timeline');
 
     Route::post('/reupload', [ReuploadDocumentController::class, 'reupload'])->name('reupload');
+    Route::post('/additional-documents', [AdditionalDocumentController::class, 'additionalDocument'])->name('additional');
 
     Route::post('/notify', [NotifyController::class, 'notify'])->name('notify');
 });
@@ -83,8 +90,19 @@ Route::middleware(['checkUserRole:2','auth','verified'])->group(function(){
     Route::get('/forward',[DepartmentController::class, 'departmentUser'])->name('departmentUser');
     Route::post('/outgoing',[DepartmentController::class, 'outgoing'])->name('outgoing');
 
-    Route::get('/evaluated', [EvaluatedController::class, 'evaluated'])->name('evaluated');
+    // Route::get('/evaluated', [EvaluatedController::class, 'evaluated'])->name('evaluated');
+    Route::get('/eteeap-department', [EteeapController::class, 'index'])->name('eteeap.department');
+    Route::get('/eteeap-users/{id}', [EteeapController::class, 'users'])->name('eteeap.users');
+    Route::post('/eteeap-add-department', [EteeapController::class, 'departmentStore'])->name('eteeap.add.department');
+    Route::post('/eteeap-add-user', [EteeapController::class, 'userStore'])->name('eteeap.add.user');
+    Route::post('/eteeap-edit-user', [EteeapController::class, 'userEdit'])->name('eteeap.edit.user');
+    Route::post('/eteeap-delete-user', [EteeapController::class, 'userDelete'])->name('eteeap.delete.user');
 
+    Route::get('/eteeap-dashboard', [EteeapController::class, 'dashboardV2'])->name('eteeap.dashboard');
+    Route::get('/eteeap-document/{id}', [EteeapController::class, 'document'])->name('eteeap.document');
+
+    // send message with action required
+    Route::post('/internal-message', [InternalMessageController::class, 'storeMessage'])->name('eteeap.internal');
 });
 
 Route::middleware('auth')->group(function () {

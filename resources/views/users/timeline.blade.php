@@ -119,8 +119,111 @@
                                         <span class="font-bold">Comments</span>
                                         <div class="">
                                             {{-- list of resubmit docs --}}
+                                            {{-- {{ $internalMessages }} --}}
+                                            @if (isset($internalMessages) && count($internalMessages) > 0)
+                                                @foreach ($internalMessages as $im)
+                                                {{-- {{ $im }} --}}
+                                                    <div class="text-wrap w-full mt-3">
+                                                        <div class="break-words">
 
-                                            @if (isset($declined) && count($declined) > 0)
+                                                            <span
+                                                                class="block text-left border rounded-md bg-white p-1 mb-2">
+
+                                                                <div class="flex items-start gap-2.5 content">
+                                                                    <div class="flex flex-col w-full gap-1">
+                                                                        <div
+                                                                            class="flex flex-col w-full leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
+                                                                            <div
+                                                                                class="flex items-center space-x-2 rtl:space-x-reverse">
+                                                                                <span
+                                                                                    class="text-sm font-semibold text-gray-900 p-1 dark:text-white">
+                                                                                    {{ __('ETEEAP Department') }}
+                                                                                </span>
+                                                                                <span
+                                                                                    class="text-sm font-normal bg-gray p-[2px] rounded-sm dark:text-gray-400">
+                                                                                    {{ \Carbon\Carbon::parse($im->created_at)->format('h:i A') }}
+                                                                                </span>
+                                                                                <span
+                                                                                    class="text-sm font-normal bg-gray p-[2px] rounded-sm text-red-500 dark:text-gray-400">{{ $im->action_required }}</span>
+                                                                            </div>
+                                                                            <div
+                                                                                class="flex justify-between w-full items-start bg-gray-50 dark:bg-gray-600 rounded-xl p-2">
+                                                                                <div class="me-2">
+
+                                                                                    {{-- <span
+                                                                                        class="flex items-center gap-2 mb-2 text-md font-medium text-gray-900 capitalize dark:text-white">
+                                                                                        <i
+                                                                                            class="fa-sharp fa-solid fa-files flex-shrink-0 text-2xl"></i>
+
+                                                                                        {{ $dec->requirements }}
+                                                                                    </span> --}}
+                                                                                    <span
+                                                                                        class="mt-2 text-slate-900">
+                                                                                        <i class="fa-solid fa-chevrons-right"></i>
+                                                                                        {{ $im->message }}
+                                                                                    </span>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="inline-flex self-center items-center">
+                                                                                    @if ($im->action_required === 'Additional Documents Required')
+                                                                                        <button
+                                                                                            data-document_id="{{ $im->document->id }}"
+                                                                                            data-sender_id="{{ $im->sender_id }}"
+                                                                                            {{-- data-id="{{ $dec->id }}"
+                                                                                            data-document_id="{{ $dec->document_id }}"
+                                                                                            data-subname="{{ $dec->sub_name }}"
+                                                                                            data-document_name="{{ $dec->requirements }}" --}}
+                                                                                            class="reupload inline-flex bg-blue-900 self-center items-center p-2 text-sm font-medium text-center text-white bg-gray-50 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-600 dark:hover:bg-gray-500 dark:focus:ring-gray-600"
+                                                                                            type="button">
+                                                                                            <i
+                                                                                                class="fa-solid fa-envelope-open-text text-md"></i>
+                                                                                        </button>
+                                                                                    @endif
+
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+                                                                
+                                                                {{-- @if (isset($dec->reupload))
+                                                                    @foreach ($dec->reupload as $reupload_doc)
+                                                                        
+                                                                        <div class="bg-slate-50 p-2 capitalize mb-2">
+                                                                            <div class="flex justify-between">
+                                                                                <span
+                                                                                    class="rounded-md p-[5px] bg-white text-blue-900">re-uploaded</span>
+                                                                                <span
+                                                                                    class="rounded-md p-[5px] bg-white text-blue-900">{{ \Carbon\Carbon::parse($reupload_doc->created_at)->format('h:i A') }}</span>
+                                                                            </div>
+                                                                            <div class="flex items-center gap-2 my-2">
+                                                                                <i
+                                                                                    class="fa-solid fa-file-check fa-xl"></i>
+                                                                                <span
+                                                                                    class="text-blue-900">{{ $dec->requirements }}</span>
+                                                                            </div>
+                                                                            <div class="flex items-center gap-2 mx-15">
+                                                                                <i
+                                                                                    class="fa-solid fa-circle-info text-red-700"></i>
+                                                                                <span>{{ $reupload_doc->reupload_description }}</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endforeach
+                                                                @endif --}}
+
+
+                                                            </span>
+
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            @else
+                                                
+                                            @endif
+                                            {{-- @if (isset($declined) && count($declined) > 0)
                                                 @foreach ($declined as $dec)
                                                     <div class="text-wrap w-full mt-3">
                                                         <div class="break-words">
@@ -186,11 +289,10 @@
 
                                                                 </div>
 
-                                                                {{-- reupload record --}}
-                                                                {{-- {{ $dec->reupload }} --}}
+                                                                
                                                                 @if (isset($dec->reupload))
                                                                     @foreach ($dec->reupload as $reupload_doc)
-                                                                        {{-- {{ $reupload_doc }} --}}
+                                                                        
                                                                         <div class="bg-slate-50 p-2 capitalize mb-2">
                                                                             <div class="flex justify-between">
                                                                                 <span
@@ -223,7 +325,7 @@
                                                 <div class="rounded-md bg-white text-center p-10">
                                                     <p>No comments available.</p>
                                                 </div>
-                                            @endif
+                                            @endif --}}
 
 
 
@@ -292,10 +394,11 @@
                     let documentId = $(this).data('document_id')
                     let checkedName = $(this).data('document_name')
                     let checkedSubName = $(this).data('subname')
-
-                    $('#reuploadLable').text('1. ' + checkedName)
+                    let senderId = $(this).data('sender_id')
+                    // $('#reuploadLable').text('1. ' + checkedName)
                     $('#checkedId').val(parseInt(checkedId))
                     $('#documentId').val(parseInt(documentId))
+                    $('#senderId').val(parseInt(senderId))
                     $('#checkedName').val(checkedName)
                     $('#checkedSubName').val(checkedSubName)
                     cm.show()

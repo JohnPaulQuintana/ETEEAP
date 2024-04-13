@@ -1,26 +1,6 @@
 <x-app-layout>
     <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-5">
 
-        {{-- <div class="mb-2">
-            @foreach ($documents as $document)
-                
-                @foreach ($document->documents as $doc)
-                        
-
-                    @foreach ($doc->status as $status)
-                      
-                        @foreach ($status->notes as $note)
-                            @include('partials.anouncement', ['data'=>$note])
-                        @endforeach
-                        
-                    @endforeach
-                    
-                @endforeach
-
-            @endforeach
-            
-        </div> --}}
-
         <div class="mt-10">
             <div class="flex justify-between">
                 <div class="flex">
@@ -52,7 +32,7 @@
                 {{-- create documents --}}
 
                 <!-- Card Item Start -->
-
+                {{-- {{ $availableCourses }} --}}
                 <a
                     class="sendDocs flex flex-col items-center px-5 bg-white border-dotted border-2 rounded-lg shadow md:max-w-xl hover:cursor-pointer hover:bg-slate-100 dark:bg-black">
                     <div class="p-4 leading-normal w-full">
@@ -95,8 +75,6 @@
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 // set the modal menu element
                 const $requirementU = document.getElementById('requirementUpload-modal');
-                // const $timeline = document.getElementById('timeline-modal');
-                // const $comments = document.getElementById('comments-modal');
                 // options with default values
                 const options = {
                     placement: 'bottom-right',
@@ -130,74 +108,35 @@
                     },
                 };
                 // options with default values
-                // const optionComments = {
-                //     placement: 'bottom-right',
-                //     backdrop: 'static',
-                //     backdropClasses: 'bg-blue-900/50 dark:bg-blue-900/80 fixed inset-0 z-40',
-                //     closable: true,
-                //     onHide: () => {
-                //         console.log('modal is hidden');
-
-                        
-                //     },
-                //     onShow: () => {
-                //         console.log('modal is shown');
-                //     },
-                //     onToggle: () => {
-                //         console.log('modal has been toggled');
-                //     },
-                // };
+                
 
                 // instance options object
                 const instanceOptions = {
                     id: 'requirementUpload-modal',
                     override: true
                 };
-                // instance options object
-                // const instanceOptionsT = {
-                //     id: 'timeline-modal',
-                //     override: true
-                // };
-                // // instance options object
-                // const instanceOptionsC = {
-                //     id: 'comments-modal',
-                //     override: true
-                // };
+                
                 // on load
                 const rqu = new Modal($requirementU, options, instanceOptions);
-                // const tm = new Modal($timeline, options, instanceOptionsT);
-                // const cm = new Modal($comments, optionComments, instanceOptionsC);
 
                 if(response === 'success'){
                     window.location.reload()
                 }
 
                 $(document).on('click', '.sendDocs', function() {
+                    var availableCourses = @json($availableCourses);
+                    var courseRender = '<option value="">Select your course:</option>'
+                    // console.log(availableCourses)
+                    availableCourses.forEach(course => {
+                        courseRender += `<option value="${course.id}">${course.available_course}</option>`
+                    });
+                    $('#course_applying').html(courseRender)
                     rqu.show()
                 })
 
                 $(document).on('click', '.rs-close', function(){
                     rqu.hide()
                 })
-
-                // $(document).on('click', '.reupload', function() {
-                //     cm.show()
-                // })
-
-                // $(document).on('click', '.checkStatus', function(){
-                //     var docId = $(this).data('id')
-                //     fetchHistory('/history/'+docId)
-                //     tm.show()
-                //     // alert(docId)
-                // })
-
-                // $(document).on('click', '.t-close', function(){
-                //     tm.hide()
-                // })
-                
-                // $(document).on('click', '.c-close', function(){
-                //     cm.hide()
-                // })
 
 
                 // Function to make the Ajax request
@@ -316,71 +255,46 @@
                             });
 
                             $('#history-card').html(lists)
-                            // var lists = ''
-                            // var count = 0;
-                            // $('#doc_name').text(data.documents[0].name)
-
-                            // const fileNames = [
-                            //     'loi', 'ce', 'cr', 'nce', 'hdt', 'f137_8', 'abcb', 'mc', 'nbc', 'tvid', 'ge', 'pc', 'rl', 'cgmc', 'cer',
-                            // ];
-                            // const originalNames = [
-                            //     'Letter of Intent addressed to: Mr. Philip M. Flores, Director, ETEEAP, Arellano University, 2600 Legarda St., Sampaloc, Manila 1008',
-                            //     'CHED - ETEEAP Application form with 3 pieces of 1x1 picture', 
-                            //     'Comprehensive Resume (original)', 
-                            //     'Notarized Certificate of Employment with job description (with at least 5 years of working experience)', 
-                            //     'Honorable Dismissal and TOR (for undergraduate and for vocational courses)', 
-                            //     'Form 137–A and Form 138 (for High School Graduate) or PEPT/ALS Certificate', 
-                            //     'Authenticated Birth Certificate/Affidavit of Birth (original)', 
-                            //     'Marriage Certificate (for female, if married - photocopy)', 
-                            //     'NBI or Barangay clearance (original)', 
-                            //     '2 valid IDs (photocopy)', 
-                            //     'Government eligibility', 
-                            //     'Proficiency Certificate', 
-                            //     'Recommendation Letter from immediate superior to undergo ETEEAP (original)', 
-                            //     'Certificate of Good Moral Character from previous school (original)', 
-                            //     'Certificates of Trainings, Seminars and Workshops attended (photocopy)',
-                            // ];
-                            // data.documents[0].documents.forEach(doc => {
-                            //     // console.log(doc)
-                            //     const filteredObject = Object.fromEntries(
-                            //         Object.entries(doc).filter(([key]) => fileNames.includes(key))
-                            //     );
-                            //     for (const key in filteredObject) {
-                            //         if(doc.hasOwnProperty(key)){
-                            //             console.log(filteredObject[key])
-
-                            //             // Create a mapping object
-                            //             const mapping = {};
-                            //             fileNames.forEach((fileName, index) => {
-                            //                 mapping[fileName] = originalNames[index];
-                            //             });
-                            //             count++;
-                            //             lists += `
-                            //                 <li class="list-data" data-filename="${mapping[key]}" data-file="${filteredObject[key]}"data-modal-target="select-modal">
-                            //                     <input type="radio" id="job-${count}" name="job" value="job-1" class="hidden peer" required />
-                            //                     <label for="job-${count}" class="inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-500 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-900 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-500">                           
-                            //                         <div class="block">
-                            //                             <div class="w-full text-lg font-semibold">REQUIREMENTS - ${count}</div>
-                            //                             <div class="w-full text-gray-500 dark:text-gray-400 text-sm">${mapping[key]}</div>
-                            //                         </div>
-                            //                         <svg class="w-4 h-4 ms-3 rtl:rotate-180 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/></svg>
-                            //                     </label>
-                            //                 </li>
-                            //             `
-                            //         }
-                                    
-                            //     }
-                            // });
-
-                            // $('.doc-list').html(lists)
-                            // dqu.show()
+                            
                         },
                         error: function (error) {
                             console.error('Error fetching data:', error);
                         }
                     });
                 }
+
+                
             })
+            function handleChange(selectElement) {
+                    // Get the selected value
+                    var selectedValue = selectElement.value;      
+                    // Do something with the selected value
+                    console.log("Selected value: ", selectedValue);
+                    switch (selectedValue) {
+                        case "HSG":
+                            $('#hdt').removeAttr('required').prop('disabled', true) 
+                            $('.tor').addClass('hidden');
+
+                            $('#f137_8').removeAttr('disabled').prop('required', true) 
+                            $('.form137').removeClass('hidden');
+
+                            break;
+                        case "SC":
+                            $('#f137_8').removeAttr('required').prop('disabled', true) 
+                            $('.form137').addClass('hidden');
+
+                            $('#hdt').removeAttr('disabled').prop('required', true) 
+                            $('.tor').removeClass('hidden');
+                            break;
+                    
+                        default:
+                            $('#f137_8').removeAttr('disabled').prop('required', true) 
+                            $('.form137').removeClass('hidden');
+                            $('#hdt').removeAttr('disabled').prop('required', true) 
+                            $('.tor').removeClass('hidden');
+                            break;
+                    }
+                }
         </script>
     @endsection
 </x-app-layout>

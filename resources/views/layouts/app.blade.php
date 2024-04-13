@@ -9,13 +9,20 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- DataTables -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.1/css/responsive.dataTables.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.dataTables.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.jqueryui.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.1/css/buttons.jqueryui.css">
     <style>
         select[name=rejected-table_length]:not([size]){
             background-image: none;
         }
         select[name=accepted-table_length]:not([size]){
+            background-image: none;
+        }
+        select[name=department-table_length]:not([size]){
             background-image: none;
         }
     </style>

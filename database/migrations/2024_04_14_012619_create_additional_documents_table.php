@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('additional_documents', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->unsignedBigInteger('course_id')->nullable();
-            $table->rememberToken();
+            $table->unsignedBigInteger('document_id');
+            $table->foreign('document_id')->references('id')->on('documents')->onDelete('cascade');
+            $table->text('document_name')->nullable();
+            $table->text('path')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('additional_documents');
     }
 };

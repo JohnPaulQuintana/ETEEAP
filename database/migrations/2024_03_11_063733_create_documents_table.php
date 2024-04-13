@@ -19,6 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('reciever_id')->default(1);
             $table->foreign('reciever_id')->references('id')->on('users')->onDelete('cascade');
 
+            $table->unsignedBigInteger('course_id');
+            $table->string('educational_attainment');
+            
             $table->string('loi')->nullable();
             $table->string('ce')->nullable();
             $table->string('cr')->nullable();

@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Note;
-use App\Models\User;
-use App\Models\Status;
-use App\Models\History;
 use App\Models\Document;
+use App\Models\History;
+use App\Models\Note;
+use App\Models\Status;
+use App\Models\User;
+use App\Notifications\SendEmailNotification;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 // use Illuminate\Notifications\Notification;
 
-use App\Notifications\SendEmailNotification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Redirect;
 
 class DocumentController extends Controller
 {
@@ -92,6 +93,8 @@ class DocumentController extends Controller
         // get the first destination
         $firstDesitination = User::where('isReceiver', 1)->first();
         $dataToInsert['reciever_id'] = $firstDesitination->id; // eteeap
+        $dataToInsert['course_id'] = $request->input('course_applying'); // eteeap
+        $dataToInsert['educational_attainment'] = $request->input('HEA'); // eteeap
 
 
         // Insert into the database
@@ -137,6 +140,7 @@ class DocumentController extends Controller
          //for user 
          $mydocs = User::with(['documents.status','documents.status.notes', 'documents.tvids'])->where('id',Auth::user()->id)->get();
          // dd($mydocs);
-         return view('users.dashboard', ['documents' => $mydocs]);
+        //  return view('users.dashboard', ['documents' => $mydocs]);
+         return Redirect::route('user-dashboard')->with(['status' => 'success', 'message' => 'Rest assured that you will be notified promptly once a decision has been made regarding the application.!']);
     }
 }
