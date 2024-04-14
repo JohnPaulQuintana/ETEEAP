@@ -34,10 +34,10 @@ class UserController extends Controller
         // dd($id);
         $history = History::with('document')->where('document_id', $id)->orderByDesc('created_at')->get();
 
-        $internalMessages = InternalMessage::where('document_id', $id)
+        $internalMessages = InternalMessage::where('document_id', $id)->where('message_type', 'internal')
             ->with(['document'=> function ($query) {
                 $query->select('documents.id')
-                    ->latest(); // Orders the internal relationship from latest to oldest
+                    ->orderByDesc('created_at'); // Orders the internal relationship from latest to oldest
             }])
             ->orderByDesc('created_at')->get();
         // dd($history);

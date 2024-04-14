@@ -47,6 +47,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\Course::factory()->create([
+            'available_course'=> 'ETEEAP Director'
+        ]);
+        \App\Models\Course::factory()->create([
             'available_course'=> 'Bachelor of Science in Business Administration major in Marketing Management'
         ]);
         \App\Models\Course::factory()->create([

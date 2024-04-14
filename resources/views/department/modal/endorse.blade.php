@@ -6,7 +6,7 @@
     </div>
 
     <div class="shadow-md p-2">
-        <form action="#" method="post">
+        <form action="{{ route('eteeap.endorse.application') }}" method="post">
             @csrf     
             
             <div class="mt-2">
@@ -14,8 +14,8 @@
                 <div class="border border-dashed relative p-2">
                     <span class="absolute top-[-12px] bg-white font-bold">Department Information</span>
                     <div class="mt-2 hidden">
-                        <input type="number" id="edit_department_id" name="department_id" class="w-full rounded-md tracking-wide focus:ring-offset-2 focus:ring-2" required>
-                        <input type="number" id="edit_user_id" name="user_id" class="w-full rounded-md tracking-wide focus:ring-offset-2 focus:ring-2" required>
+                        <input type="number" id="endorse_department_id" name="document_id" class="w-full rounded-md tracking-wide focus:ring-offset-2 focus:ring-2" required>
+                        {{-- <input type="number" id="edit_user_id" name="user_id" class="w-full rounded-md tracking-wide focus:ring-offset-2 focus:ring-2" required> --}}
                     </div>
                     <div class="mt-2">
                         <label for="name">Select a department:</label>

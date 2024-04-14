@@ -13,7 +13,7 @@ class AddDateSubmittedToDocumentsTable extends Migration
     {
         Schema::table('documents', function (Blueprint $table) {
             // Add the date_submitted column with a default value of the current timestamp
-            $table->timestamp('date_submitted')->default(now());
+            $table->timestamp('date_submitted')->default(now())->nullable();
         });
     }
 

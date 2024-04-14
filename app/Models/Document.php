@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\ActionRequired;
+use App\Models\MarkAsEndorsed;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -39,5 +40,8 @@ class Document extends Model
 
     public function action() :HasOne{
         return $this->hasOne(ActionRequired::class);
+    }
+    public function forwardedTo() :HasMany{
+        return $this->hasMany(MarkAsEndorsed::class);
     }
 }

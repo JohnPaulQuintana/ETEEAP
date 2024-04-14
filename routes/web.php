@@ -100,6 +100,9 @@ Route::middleware(['checkUserRole:2','auth','verified'])->group(function(){
 
     Route::get('/eteeap-dashboard', [EteeapController::class, 'dashboardV2'])->name('eteeap.dashboard');
     Route::get('/eteeap-document/{id}', [EteeapController::class, 'document'])->name('eteeap.document');
+    Route::get('/eteeap-endorse/{id}', [EteeapController::class, 'endorse'])->name('eteeap.endorse');
+    Route::post('/eteeap-endorse-application', [EteeapController::class, 'endorseApplication'])->name('eteeap.endorse.application');
+    Route::post('/eteeap-director-action', [EteeapController::class, 'Application'])->name('eteeap.director.application');
 
     // send message with action required
     Route::post('/internal-message', [InternalMessageController::class, 'storeMessage'])->name('eteeap.internal');

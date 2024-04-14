@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Document;
 use App\Models\History;
+use App\Models\MarkAsEndorsed;
 use App\Models\Note;
 use App\Models\Status;
 use App\Models\User;
 use App\Notifications\SendEmailNotification;
-use Illuminate\Http\Request;
 
 // use Illuminate\Notifications\Notification;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redirect;
@@ -99,6 +100,8 @@ class DocumentController extends Controller
 
         // Insert into the database
         $insertedDocs = Document::create($dataToInsert);
+        // forwarded to
+        MarkAsEndorsed::create(['document_id'=>$insertedDocs->id, 'receiver_id'=>$firstDesitination->id]);
         // history
         History::create(['document_id' => $insertedDocs->id, 'status'=>'pending', 'notes' => "Your application has been successfully sent."]);
         Status::create(['document_id'=>$insertedDocs->id, 'status'=>'pending']);

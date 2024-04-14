@@ -95,6 +95,7 @@
                 };
 
                 $('#department-table').DataTable({
+                    
                     layout: {
                         top1Start: {
                             buttons: [
@@ -129,11 +130,39 @@
                         "targets": 'no-sort',
                         "orderable": false,
                     }],
-                    columns: [{
+                    columns: [
+                        {
                             title: 'Applicant No.',
                             data: null,
                             render: function(type, data, row) {
                                 return `<span class="font-bold text-blue-900">${uniqueId(row.id)}</span>`
+                            }
+                        },
+                        {
+                            title: 'Status',
+                            data: null,
+                            render: function(type, data, row) {
+                                let span = ''
+                                switch (row.status[0].status) {
+                                    // 'pending', 'accepted', 'in-review', 'forwarded', rejected
+                                    case 'in-review':
+                                        span = `<span class="capitalize font-bold text-orange-400 bg-slate-100 p-[4px] rounded-md">Under Review</span>`
+                                        break;
+                                    case 'pending':
+                                        span = `<span class="capitalize font-bold text-yellow-400 bg-slate-100 p-[4px] rounded-md">Pending</span>`
+                                        break;
+                                    case 'accepted':
+                                        span = `<span class="capitalize font-bold text-green-400 bg-slate-100 p-[4px] rounded-md">Approved</span>`
+                                        break;
+                                    case 'rejected':
+                                        span = `<span class="capitalize font-bold text-red-500 bg-slate-100 p-[4px] rounded-md">Rejected</span>`
+                                        break;
+                                
+                                    default:
+                                        span = `<span class="capitalize font-bold text-red-500 bg-slate-100 p-[4px] rounded-md">On Hold</span>`
+                                        break;
+                                }
+                                return span;
                             }
                         },
                         {
@@ -154,22 +183,19 @@
                             title: 'Date Submitted',
                             data: null,
                             render: function(type, data, row) {
-                                return `<span>${new Date(row.created_at).toLocaleString()}</span>`
+                                return `<span>${new Date(row.date_submitted).toLocaleString()}</span>`
                             }
                         },
-                        {
-                            title: 'Status',
-                            data: null,
-                            render: function(type, data, row) {
-                                return `<span class="capitalize">${row.status[0].status}</span>`
-                            }
-                        },
+                        
                         {
                             title: 'Action Required',
                             data: null,
                             render: function(type, data, row) {
-                                if(row.action){
+                                console.log(row.action)
+                                if(row.action !== null && row.action.action_required !== null ){
                                     return `<span class="text-red-500">${row.action.action_required}</span>`
+                                }else{
+                                    return `<span class="text-red-500"></span>`
                                 }
                                
                             }

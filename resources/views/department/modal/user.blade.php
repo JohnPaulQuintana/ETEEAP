@@ -40,6 +40,13 @@
                         <label for="password">Password:</label>
                         <input type="password" id="password" name="password" class="w-full rounded-md tracking-wide focus:ring-offset-2 focus:ring-2" required>
                     </div>
+                    <div class="mt-2">
+                        <label for="password" class="text-red-700">End User:(if this user is the director set it to true)</label>
+                        <select name="end_user" class="w-full rounded-md tracking-wide focus:ring-offset-2 focus:ring-2" required>
+                            <option value="0">False</option>
+                            <option value="1">True</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
