@@ -105,15 +105,17 @@
                                 },
                                 {
                                     extend: 'csvHtml5',
+                                    text: `<i class="fa-solid fa-file-csv text-blue-700 hover:text-blue-800 text-[19px]"></i>`,
                                     exportOptions: exportFormatter
                                 },
                                 {
                                     extend: 'excelHtml5',
+                                    text: `<i class="fa-solid fa-file-xls text-blue-700 hover:text-blue-800 text-[19px]"></i>`,
                                     exportOptions: exportFormatter
                                 },
                                 // { extend: 'pdfHtml5', exportOptions: exportFormatter },
                                 {
-                                    text: 'Add User',
+                                    text: '<i class="fa-solid fa-user-plus text-blue-700 hover:text-blue-800 text-[19px]"></i>',
                                     action: function(e, dt, node, config) {
                                         triggerAddingUser();
                                     }

@@ -1,7 +1,9 @@
 <div class="backdrop hidden"></div>
-<div class="add_department rounded-md border-none w-[50%] hidden">
+<div class="add_department rounded-md border-none w-[30%] hidden">
     <div class="flex justify-between border-b-2">
-        <h1 class="mb-2">Add Department</h1>
+        <h1 class="mb-2">
+            <i class="fa-solid fa-building-circle-check text-blue-700 hover:text-blue-800 text-[18px]"></i>
+            Add Department</h1>
         <button type="button" class="department-close rounded-md bg-red-500 px-2 text-white hover:bg-red-800 mb-2">X</button>
     </div>
 

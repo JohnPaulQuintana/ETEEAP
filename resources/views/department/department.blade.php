@@ -95,15 +95,17 @@
                         top1Start: {
                             buttons: [{
                                     extend: 'csvHtml5',
+                                    text: `<i class="fa-solid fa-file-csv text-blue-700 hover:text-blue-800 p-1 text-[22px]"></i>`,
                                     exportOptions: exportFormatter
                                 },
                                 {
                                     extend: 'excelHtml5',
+                                    text: `<i class="fa-solid fa-file-xls text-blue-700 hover:text-blue-800 p-1 text-[22px]"></i>`,
                                     exportOptions: exportFormatter
                                 },
                                 // { extend: 'pdfHtml5', exportOptions: exportFormatter },
                                 {
-                                    text: 'Add Department',
+                                    text: '<i class="fa-solid fa-building-circle-check text-blue-700 hover:text-blue-800 p-1 text-[22px]"></i>',
                                     action: function(e, dt, node, config) {
                                         triggerAddingDept();
                                     }
