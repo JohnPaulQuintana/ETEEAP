@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AlertMessage;
 use App\Models\Document;
 use App\Models\History;
 use App\Models\MarkAsEndorsed;
@@ -107,6 +108,9 @@ class DocumentController extends Controller
         Status::create(['document_id'=>$insertedDocs->id, 'status'=>'pending']);
 
         Note::create(['status_id'=>$insertedDocs->id, 'notes'=>"The application has been submitted successfully. We will notify you once it has been reviewed."]);
+
+        //create a alert message to eteeap department
+        AlertMessage::create(['reciever_id'=>$firstDesitination->id, 'sender_id'=>Auth::user()->id, 'notification'=>'A new application submission has been received. Please review at your earliest convenience.']);
         // return response()->json(['status'=>'success', 'message'=>"Your document's successfully submitted, hava a nice day!"]);
        
         // Get the administrator user

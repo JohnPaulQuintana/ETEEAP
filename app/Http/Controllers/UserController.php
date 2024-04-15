@@ -48,6 +48,7 @@ class UserController extends Controller
         // dd($declined[0]->reuploadDocuments);
         return view('users.timeline', ['histories'=>$history, 'declined'=>$declined, 'internalMessages'=>$internalMessages]);
     }
+    
     // get the history with documents
     public function ajaxCallHistory($id){
         $history = History::with('document')->where('document_id', $id)->latest()->get();

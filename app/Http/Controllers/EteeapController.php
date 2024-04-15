@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AdditionalDocument;
+use App\Models\AlertMessage;
 use App\Models\Course;
 use App\Models\Department;
 use App\Models\Document;
@@ -10,6 +11,7 @@ use App\Models\EndorseApplication;
 use App\Models\ForwardToDept;
 use App\Models\History;
 use App\Models\InternalMessage;
+use App\Models\LastSender;
 use App\Models\MarkAsEndorsed;
 use App\Models\Status;
 use App\Models\User;
@@ -21,12 +23,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class EteeapController extends Controller
 {
     // go to dashboard v2
     public function dashboardV2(){
         if (Auth::user()->isReceiver) {
+            // dd($latestMessages);
             $application = Document::with(['user', 'status', 'action', 'forwardedTo' => function ($query) {
                 $query->latest()->first();
             }])
@@ -49,9 +53,18 @@ class EteeapController extends Controller
             ->orderByDesc('created_at')
             ->get();
         }
-        
 
-        return view('department.document', compact('application'));
+        $latestMessages = AlertMessage::leftJoin('users', 'alert_messages.sender_id', '=', 'users.id')
+                ->where('reciever_id', Auth::user()->id)
+                ->select('alert_messages.*', 'users.name')
+                ->latest()
+                ->get()
+                ->groupBy('sender_id')
+                ->map(function ($messages) {
+                    return $messages->first();
+                });
+
+        return view('department.document', compact('application', 'latestMessages'));
     }
 
     // document opem
@@ -168,6 +181,10 @@ class EteeapController extends Controller
     public function endorseApplication(Request $request){
         // dd($request);
         EndorseApplication::create(['document_id'=>$request->input('document_id'), 'receiver_id'=>$request->input('endorse_user')]);
+        AlertMessage::create(['reciever_id'=>$request->input('endorse_user'), 'sender_id'=>Auth::user()->id, 'notification'=>'A new application has been submitted for your consideration. Please review it at your earliest convenience.']);
+        
+        //Last department sender of application
+        LastSender::create(['last_sender'=>Auth::user()->id, 'document_id'=>$request->input('document_id')]);
         // forwarded to
         MarkAsEndorsed::create(['document_id'=>$request->input('document_id'), 'receiver_id'=>$request->input('endorse_user')]);
         // update the forwarded columns 

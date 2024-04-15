@@ -67,9 +67,29 @@
                                         <h3
                                             class="flex items-start mb-1 text-lg font-semibold text-blue-900 dark:text-white">
                                             ETEEAP APPLICATION
+                                            @php
+                                                $statusText = '';
+
+                                                switch ($history->status) {
+                                                    case 'accepted':
+                                                        $statusText = 'Approved';
+                                                        break;
+                                                    case 'rejected':
+                                                        $statusText = 'Rejected';
+                                                        break;
+                                                    case 'pending':
+                                                        $statusText = 'Pending';
+                                                        break;
+                                                    case 'in-review':
+                                                        $statusText = 'Under Review';
+                                                        break;
+                                                    default:
+                                                        $statusText = 'On-Hold';
+                                                }
+                                            @endphp
                                             <span
                                                 class="bg-gray {{ $classNameBg }} text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 ms-3">
-                                                {{ $history->status }}
+                                                {{ $statusText }}
                                             </span>
                                             {{-- @if ($history->status !== 'accepted') --}}
                                             <span
@@ -93,7 +113,7 @@
                                             <div
                                                 class="rounded-md p-2 mb-3 text-blue-900 text-md font-normal text-center leading-none bg-gray-2 dark:text-gray-400">
                                                 <i class="fa-solid fa-envelope-circle-check text-4xl"></i>
-                                                <p class="mb-5 text-green-500 text-2xl">Application Accepted</p>
+                                                <p class="mb-5 text-green-500 text-2xl">Application Approved</p>
                                                 <p>Thank you for your patience. Kindly follow the instructions listed
                                                 on the program details provided on the main page.</p>
 
@@ -127,10 +147,10 @@
                                                         <div class="break-words">
 
                                                             <span
-                                                                class="block text-left border rounded-md bg-white p-1 mb-2">
+                                                                class="block text-left rounded-md bg-white mb-1">
 
-                                                                <div class="flex items-start gap-2.5 content">
-                                                                    <div class="flex flex-col w-full gap-1">
+                                                                <div class="flex items-start gap-1.5 content">
+                                                                    <div class="flex flex-col w-full">
                                                                         <div
                                                                             class="flex flex-col w-full leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
                                                                             <div
@@ -150,13 +170,7 @@
                                                                                 class="flex justify-between w-full items-start bg-gray-50 dark:bg-gray-600 rounded-xl p-2">
                                                                                 <div class="me-2">
 
-                                                                                    {{-- <span
-                                                                                        class="flex items-center gap-2 mb-2 text-md font-medium text-gray-900 capitalize dark:text-white">
-                                                                                        <i
-                                                                                            class="fa-sharp fa-solid fa-files flex-shrink-0 text-2xl"></i>
-
-                                                                                        {{ $dec->requirements }}
-                                                                                    </span> --}}
+                                                                                    
                                                                                     <span
                                                                                         class="mt-2 text-slate-900">
                                                                                         <i class="fa-solid fa-chevrons-right"></i>
@@ -180,104 +194,14 @@
                                                                                         </button>
                                                                                     @endif
 
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </div>
-                                                                    </div>
-
-                                                                </div>
-
-                                                                
-                                                                {{-- @if (isset($dec->reupload))
-                                                                    @foreach ($dec->reupload as $reupload_doc)
-                                                                        
-                                                                        <div class="bg-slate-50 p-2 capitalize mb-2">
-                                                                            <div class="flex justify-between">
-                                                                                <span
-                                                                                    class="rounded-md p-[5px] bg-white text-blue-900">re-uploaded</span>
-                                                                                <span
-                                                                                    class="rounded-md p-[5px] bg-white text-blue-900">{{ \Carbon\Carbon::parse($reupload_doc->created_at)->format('h:i A') }}</span>
-                                                                            </div>
-                                                                            <div class="flex items-center gap-2 my-2">
-                                                                                <i
-                                                                                    class="fa-solid fa-file-check fa-xl"></i>
-                                                                                <span
-                                                                                    class="text-blue-900">{{ $dec->requirements }}</span>
-                                                                            </div>
-                                                                            <div class="flex items-center gap-2 mx-15">
-                                                                                <i
-                                                                                    class="fa-solid fa-circle-info text-red-700"></i>
-                                                                                <span>{{ $reupload_doc->reupload_description }}</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    @endforeach
-                                                                @endif --}}
-
-
-                                                            </span>
-
-                                                        </div>
-                                                    </div>
-                                                @endforeach
-                                            @else
-                                                
-                                            @endif
-                                            {{-- @if (isset($declined) && count($declined) > 0)
-                                                @foreach ($declined as $dec)
-                                                    <div class="text-wrap w-full mt-3">
-                                                        <div class="break-words">
-
-                                                            <span
-                                                                class="block text-left border rounded-md bg-white p-1 mb-2">
-
-                                                                <div class="flex items-start gap-2.5 content">
-                                                                    <div class="flex flex-col w-full gap-1">
-                                                                        <div
-                                                                            class="flex flex-col w-full leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
-                                                                            <div
-                                                                                class="flex items-center space-x-2 rtl:space-x-reverse">
-                                                                                <span
-                                                                                    class="text-sm font-semibold text-gray-900 p-1 dark:text-white">
-                                                                                    {{ __('ETEEAP Department') }}
-                                                                                </span>
-                                                                                <span
-                                                                                    class="text-sm font-normal bg-gray p-[2px] rounded-sm dark:text-gray-400">
-                                                                                    {{ \Carbon\Carbon::parse($dec->created_at)->format('h:i A') }}
-                                                                                </span>
-                                                                                <span
-                                                                                    class="text-sm font-normal bg-gray p-[2px] rounded-sm text-red-500 dark:text-gray-400">re-submit</span>
-                                                                            </div>
-                                                                            <div
-                                                                                class="flex justify-between w-full items-start bg-gray-50 dark:bg-gray-600 rounded-xl p-2">
-                                                                                <div class="me-2">
-
-                                                                                    <span
-                                                                                        class="flex items-center gap-2 mb-2 text-md font-medium text-gray-900 capitalize dark:text-white">
-                                                                                        <i
-                                                                                            class="fa-sharp fa-solid fa-files flex-shrink-0 text-2xl"></i>
-
-                                                                                        {{ $dec->requirements }}
-                                                                                    </span>
-                                                                                    <span
-                                                                                        class="mt-2 text-red-700 mx-10">
-                                                                                        <i
-                                                                                            class="fa-solid fa-circle-info"></i>
-                                                                                        {{ $dec->description }}
-                                                                                    </span>
-                                                                                </div>
-                                                                                <div
-                                                                                    class="inline-flex self-center items-center">
-                                                                                    @if ($history->status !== 'accepted')
+                                                                                    @if ($im->action_required === 'Applicant Response Needed')
                                                                                         <button
-                                                                                            data-id="{{ $dec->id }}"
-                                                                                            data-document_id="{{ $dec->document_id }}"
-                                                                                            data-subname="{{ $dec->sub_name }}"
-                                                                                            data-document_name="{{ $dec->requirements }}"
-                                                                                            class="reupload inline-flex bg-blue-900 self-center items-center p-2 text-sm font-medium text-center text-white bg-gray-50 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-600 dark:hover:bg-gray-500 dark:focus:ring-gray-600"
+                                                                                            data-document_id="{{ $im->document->id }}"
+                                                                                            data-sender_id="{{ $im->sender_id }}"
+                                                                                            
+                                                                                            class="remessage inline-flex bg-blue-900 self-center items-center p-2 text-sm font-medium text-center text-white bg-gray-50 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-600 dark:hover:bg-gray-500 dark:focus:ring-gray-600"
                                                                                             type="button">
-                                                                                            <i
-                                                                                                class="fa-solid fa-envelope-open-text text-md"></i>
+                                                                                            <i class="fa-sharp fa-solid fa-paper-plane-top text-md"></i>
                                                                                         </button>
                                                                                     @endif
 
@@ -289,31 +213,6 @@
 
                                                                 </div>
 
-                                                                
-                                                                @if (isset($dec->reupload))
-                                                                    @foreach ($dec->reupload as $reupload_doc)
-                                                                        
-                                                                        <div class="bg-slate-50 p-2 capitalize mb-2">
-                                                                            <div class="flex justify-between">
-                                                                                <span
-                                                                                    class="rounded-md p-[5px] bg-white text-blue-900">re-uploaded</span>
-                                                                                <span
-                                                                                    class="rounded-md p-[5px] bg-white text-blue-900">{{ \Carbon\Carbon::parse($reupload_doc->created_at)->format('h:i A') }}</span>
-                                                                            </div>
-                                                                            <div class="flex items-center gap-2 my-2">
-                                                                                <i
-                                                                                    class="fa-solid fa-file-check fa-xl"></i>
-                                                                                <span
-                                                                                    class="text-blue-900">{{ $dec->requirements }}</span>
-                                                                            </div>
-                                                                            <div class="flex items-center gap-2 mx-15">
-                                                                                <i
-                                                                                    class="fa-solid fa-circle-info text-red-700"></i>
-                                                                                <span>{{ $reupload_doc->reupload_description }}</span>
-                                                                            </div>
-                                                                        </div>
-                                                                    @endforeach
-                                                                @endif
 
 
                                                             </span>
@@ -322,10 +221,9 @@
                                                     </div>
                                                 @endforeach
                                             @else
-                                                <div class="rounded-md bg-white text-center p-10">
-                                                    <p>No comments available.</p>
-                                                </div>
-                                            @endif --}}
+                                                
+                                            @endif
+                                           
 
 
 
@@ -338,9 +236,7 @@
 
 
                         </ol>
-                        {{-- <button class="text-white inline-flex w-full justify-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                        My Downloads
-                        </button> --}}
+                       
 
 
                     </div>
@@ -353,6 +249,7 @@
 
     </div>
     @include('popup.comments')
+    @include('popup.user-response')
     @section('scripts')
         <script>
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -361,7 +258,9 @@
                 $('#history-card li div h3 span.noti').not(':first').hide();
                 $('.c-con > content').not(':first').hide();
                 $('.c-con').not(':first').html(`<div class="text-slate-400 flex flex-col justify-center items-center p-5"><h1>No comments available.</h1></div>`)
+
                 const $comments = document.getElementById('comments-modal');
+                const $message = document.getElementById('message-modal');
 
                 // options with default values
                 const optionComments = {
@@ -387,7 +286,31 @@
                     override: true
                 };
 
+                // options with default values
+                const optionMessage = {
+                    placement: 'bottom-right',
+                    backdrop: 'static',
+                    backdropClasses: 'bg-blue-900/50 dark:bg-blue-900/80 fixed inset-0 z-40',
+                    closable: true,
+                    onHide: () => {
+                        console.log('modal is hidden');
+                        $('#sendMessage').val('')
+
+                    },
+                    onShow: () => {
+                        console.log('modal is shown');
+                    },
+                    onToggle: () => {
+                        console.log('modal has been toggled');
+                    },
+                };
+                const instanceOptionsM = {
+                    id: 'message-modal',
+                    override: true
+                };
+
                 const cm = new Modal($comments, optionComments, instanceOptionsC);
+                const m = new Modal($message, optionMessage, instanceOptionsM);
 
                 $(document).on('click', '.reupload', function() {
                     let checkedId = $(this).data('id')
@@ -404,6 +327,21 @@
                     cm.show()
                 })
 
+                $(document).on('click', '.remessage', function(){
+                    // let checkedId = $(this).data('id')
+                    let documentId = $(this).data('document_id')
+                    // let checkedName = $(this).data('document_name')
+                    // let checkedSubName = $(this).data('subname')
+                    let senderId = $(this).data('sender_id')
+
+                    // $('#checkedId').val(parseInt(checkedId))
+                    $('#m_documentId').val(parseInt(documentId))
+                    $('#m_senderId').val(parseInt(senderId))
+                    // $('#checkedName').val(checkedName)
+                    // $('#checkedSubName').val(checkedSubName)
+                    m.show()
+                })
+
                 $(document).on('click', '.c-close', function() {
                     $('#reuploadLable').text('')
                     $('#reuploadDocs').text('')
@@ -412,6 +350,16 @@
                     $('#checkedName').val('')
                     $('#checkedSubName').val('')
                     cm.hide()
+                })
+                $(document).on('click', '.m-close', function() {
+                   
+                    
+                   
+                    $('#m_documentId').val('')
+                    $('#m_senderId').val('')
+                    $('#sendMessage').val('')
+
+                    m.hide()
                 })
 
                 $(document).on('click', '.noti', function() {

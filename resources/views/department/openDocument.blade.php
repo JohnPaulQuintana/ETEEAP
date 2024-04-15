@@ -16,7 +16,7 @@
             .add_user_modal,
             .edit_user_modal,
             .delete_user_modal,
-            .endorse_user_modal {
+            .endorse_user_modal{
                 position: fixed;
 
                 top: 50%;
@@ -58,23 +58,23 @@
                             <span class="absolute top-[-12px] bg-white font-bold">Applicant Information</span>
                             <div class="mt-2 px-2">
                                 <span>Applicant ID/No. : </span>
-                                <span id="d_id" class="font-bold">XXXX2202020</span>
+                                <span id="d_id" class="text-blue-900">XXXX2202020</span>
                             </div>
                             <div class="mt-2 px-2">
                                 <span>Name : </span>
-                                <span id="d_name" class="font-bold capitalize"></span>
+                                <span id="d_name" class="text-blue-900 capitalize"></span>
                             </div>
                             <div class="mt-2 px-2">
                                 <span>Email : </span>
-                                <span id="d_email" class="font-bold capitalize"></span>
+                                <span id="d_email" class="text-blue-900 capitalize"></span>
                             </div>
                             <div class="mt-2 px-2">
                                 <span>Course Applied : </span>
-                                <span id="d_course_applied" class="font-bold capitalize"></span>
+                                <span id="d_course_applied" class="text-blue-900 capitalize"></span>
                             </div>
                             <div class="mt-2 px-2">
                                 <span>Application Status : </span>
-                                <span id="d_status" class="font-bold capitalize"></span>
+                                <span id="d_status" class="text-blue-900 capitalize"></span>
                             </div>
 
                             {{-- comment --}}
@@ -103,21 +103,30 @@
 
                                         <li class="me-2">
                                             <button data-type="in-review"
-                                                class="rejected-tabs tabs-btn inline-block p-2 border-b-2 rounded-t-lg text-orange-400 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                                                class="in-review-tabs tabs-btn inline-block p-2 border-b-2 rounded-t-lg text-orange-400 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                                                 type="button">Under Review</button>
                                         </li>
 
-                                        <li class="me-2">
+                                        <li class="me-2 rejected-tabs">
                                             <button data-type="rejected"
                                                 class="rejected-tabs tabs-btn inline-block p-2 border-b-2 rounded-t-lg text-red-500 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                                                 type="button">Rejected</button>
                                         </li>
 
-                                        <li class="me-2">
-                                            <button data-type="accepted"
-                                                class="approved-tabs tabs-btn inline-block p-2 border-b-2 rounded-t-lg text-blue-700 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                                                type="button">Approved</button>
+                                        <li class="me-2 on-hold-tabs">
+                                            <button data-type="on-hold"
+                                                class="on-hold-tabs tabs-btn inline-block p-2 border-b-2 rounded-t-lg text-red-500 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                                                type="button">On Hold</button>
                                         </li>
+                                        {{-- {{ Auth::user()->end_user }} --}}
+                                        @if (Auth::user()->end_user)
+                                            <li class="me-2 approved-tabs">
+                                                <button data-type="accepted"
+                                                    class="approved-tabs tabs-btn inline-block p-2 border-b-2 rounded-t-lg text-blue-700 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                                                    type="button">Approved</button>
+                                            </li>
+                                        @endif
+                                        
 
                                     </ul>
                                 </div>
@@ -325,19 +334,39 @@
             let application = @json($documentsArray);
             let myID = @json($myID);
             // let users = @json(Auth::user());
-            console.log(application.status[0].status)
+            // console.log(application)
             let externalMsg = @json($externalMessages);
             // console.log(externalMsg)
             $(document).ready(function() {
                 // if forwarded to another dept
-                console.log(application.forwarded_to[0].receiver_id)
+                // console.log(application.forwarded_to[0].receiver_id)
+                
+                
                 if (myID !== application.forwarded_to[0].receiver_id || application.status[0].status === 'rejected' || application.status[0].status === 'accepted') {
                     $('#endorse_btn').attr('hidden', true);
                     $('.tabs-btn').addClass('hidden');
+                    
                 } else {
                     $('#endorse_btn').removeAttr('hidden');
                     $('.tabs-btn').removeClass('hidden');
+                    $('.approved-tabs').removeClass('hidden')
                 }
+
+                switch (application.status[0].status) {
+                    case 'on-hold':
+                        $('.approved-tabs').addClass('hidden')
+                        $('.on-hold-tabs').addClass('hidden')
+                        break;
+                    case 'in-review':
+                        $('.in-review-tabs').addClass('hidden')
+                        break;
+                
+                    default:
+                        break;
+                }
+                
+
+                $('#d_id').text(uniqueId(application.user_id))
 
                 // Get only the document fields
                 var documentFields = filterDocuments(application);
@@ -484,7 +513,7 @@
                                     // }
                                 }, 1000);
                             }else{
-                                 // setInterview(data.user_id, document_id)
+                                 setInterview(data.user_id, document_id)
                             }
                             // Handle the data or perform additional actions if needed
                         })
@@ -590,7 +619,7 @@
                 if (!isMatched) {
                     $('#d_title').text(key[currentIndex]);
                 }
-                $('#d_id').text(uniqueId(applicant.user_id))
+               
                 // internal
                 $('#u_id').val(parseInt(applicant.user_id))
                 // external
@@ -739,6 +768,104 @@
                     });
                 });
             }
+
+            function setInterview(id, document_id) {
+                    Swal.fire({
+                        title: "Setup the interview",
+                        html: `<div class="border rounded-md p-3">
+                                <div class="mb-2 hidden">
+                                    <label for="user_id" class="text-left block mb-2 text-md font-bold text-gray-900 dark:text-white">Interviewer Name</label>
+                                    <input type="text" id="documentID" value="${document_id}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                </div>
+                                <div class="mb-2 hidden">
+                                    <label for="user_id" class="text-left block mb-2 text-md font-bold text-gray-900 dark:text-white">Interviewer Name</label>
+                                    <input type="text" id="user_id" value="${id}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                </div>
+                               
+                                <div class="mb-2 flex w-full gap-2">
+                                    <div class="w-full">
+                                        <label for="date" class="block text-left mb-2 text-md font-bold text-gray-900 dark:text-white">Date Interview</label>
+                                        <input type="date" id="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                                    </div>
+                                    <div class="w-full">
+                                        <label for="time" class="block text-left mb-2 text-md font-bold text-gray-900 dark:text-white">Time Interview</label>
+                                        <input type="time" id="time" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />    
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="address" class="block text-left mb-2 text-md font-bold text-gray-900 dark:text-white">Location:</label>
+                                    <textarea id="address" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write details here..."></textarea>
+                                </div>
+                               
+                            </div>`,
+                        inputAttributes: {
+                            autocapitalize: "off"
+                        },
+                        showCancelButton: true,
+                        confirmButtonText: "Setup interview",
+                        showLoaderOnConfirm: true,
+                        allowOutsideClick: false,
+                        preConfirm: async () => {
+                            // var interviewer = $('#interviewer').val()
+                            var date = $('#date').val()
+                            var time = $('#time').val()
+                            var address = $('#address').val()
+                            // var details = $('#details').val()
+                            var user_id = $('#user_id').val()
+                            var document_id = $('#documentID').val()
+                            // console.log(interviewer, date, time, address, details, user_id)
+                            if (date == '' || time == '' || address == '') {
+                                return Swal.showValidationMessage(`All field is required to fill`)
+                            }
+
+                            try {
+                                // let data = {'user_id': user_id, 'interviewer': interviewer, 'date':date, 'time':time, 'address':address, 'message':message}
+                                const response = await fetch(`{{ route('interview') }}`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': csrfToken
+                                    },
+                                    body: JSON.stringify({
+                                        'document_id': document_id,
+                                        'user_id': user_id,
+                                        'date': date,
+                                        'time': time,
+                                        'address': address
+                                    }),
+                                });
+
+                                if (!response.ok) {
+                                    return Swal.showValidationMessage(`
+                                    ${JSON.stringify(await response.json())}
+                                    `);
+                                }
+                                return response.json();
+
+                            } catch (error) {
+                                Swal.showValidationMessage(`
+                                    Request failed: ${error}
+                                `);
+                            }
+                        },
+                        // allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            console.log(result)
+                            Swal.fire({
+                                title: "Interview is successfully created!",
+                                text: `${result.value.message}`,
+                                icon: "success"
+                            });
+
+                            setTimeout(() => {
+                                // if(result.value.refresh){
+                                window.location.reload()
+                                // }
+                            }, 3000);
+                        }
+                    });
+                }
         </script>
     @endsection
 </x-app-layout>
