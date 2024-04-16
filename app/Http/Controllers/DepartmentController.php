@@ -199,6 +199,7 @@ class DepartmentController extends Controller
                 $existingRecord = History::where('document_id', $document->id)->where('status', 'in-review')->first();
                 if (!$existingRecord) {
                     History::create(['document_id' => $document->id, 'status' => 'in-review', 'notes' => 'Your application is under review. Thank you for your patience.']);
+            
                     // Build the email notification details
                     // Set the time zone to Asia/Manila
                     date_default_timezone_set('Asia/Manila');
