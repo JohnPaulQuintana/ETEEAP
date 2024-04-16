@@ -155,10 +155,21 @@
                                                                             class="flex flex-col w-full leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700">
                                                                             <div
                                                                                 class="flex items-center space-x-2 rtl:space-x-reverse">
-                                                                                <span
+                                                                                {{-- <span
                                                                                     class="text-sm font-semibold text-gray-900 p-1 dark:text-white">
                                                                                     {{ __('ETEEAP Department') }}
+                                                                                </span> --}}
+                                                                                @if (Auth::user()->id === $im->sender_id)
+                                                                                <span
+                                                                                    class="text-sm font-semibold text-gray-900 p-1 dark:text-white">
+                                                                                    {{ Auth::user()->name }}
                                                                                 </span>
+                                                                                @else
+                                                                                <span
+                                                                                        class="text-sm font-semibold text-gray-900 p-1 dark:text-white">
+                                                                                        {{ __('ETEEAP Department') }}
+                                                                                </span>
+                                                                                @endif
                                                                                 <span
                                                                                     class="text-sm font-normal bg-gray p-[2px] rounded-sm dark:text-gray-400">
                                                                                     {{ \Carbon\Carbon::parse($im->created_at)->format('h:i A') }}
