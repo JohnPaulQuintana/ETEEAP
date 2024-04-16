@@ -905,7 +905,7 @@
                         if (result.isConfirmed) {
                             console.log(result)
                             Swal.fire({
-                                title: "Interview is successfully created!",
+                                title: "Interview invitation sent successfully!",
                                 text: `${result.value.message}`,
                                 icon: "success"
                             });
