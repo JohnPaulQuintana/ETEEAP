@@ -179,14 +179,14 @@
                                                             </div>
                                                             <input type="text" id="message" name="message"
                                                                 class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                                placeholder="Send a message to applicant..."
+                                                                placeholder="Type your message here"
                                                                 required />
                                                             <button type="submit"
                                                                 class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                                 <i class="fa-solid fa-paper-plane-top text-[16px]"></i>
                                                             </button>
                                                         </div>
-                                                        {{-- <input type="text" name="message" id="message" class="col-span-2 rounded-md" placeholder="Send a message to applicant">
+                                                        {{-- <input type="text" name="message" id="message" class="col-span-2 rounded-md" placeholder="Type your message here">
                                                         <button type="submit" class="col-start-3"><i class="fa-solid fa-paper-plane-top text-xl border p-2 rounded-md text-blue-700 hover:text-blue-800 hover:cursor-pointer"></i></button> --}}
                                                     </div>
 
@@ -264,13 +264,13 @@
                                                         </div>
                                                         <input type="text" id="e_message" name="message"
                                                             class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                            placeholder="Send a message to applicant..." required />
+                                                            placeholder="Type your message here" required />
                                                         <button type="submit"
                                                             class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                             <i class="fa-solid fa-paper-plane-top text-[16px]"></i>
                                                         </button>
                                                     </div>
-                                                    {{-- <input type="text" name="message" id="message" class="col-span-2 rounded-md" placeholder="Send a message to applicant">
+                                                    {{-- <input type="text" name="message" id="message" class="col-span-2 rounded-md" placeholder="Type your message here">
                                                         <button type="submit" class="col-start-3"><i class="fa-solid fa-paper-plane-top text-xl border p-2 rounded-md text-blue-700 hover:text-blue-800 hover:cursor-pointer"></i></button> --}}
                                                 </div>
 

@@ -1,8 +1,7 @@
 <div class="backdrop hidden"></div>
 <div class="notification_modal rounded-md border-none w-[30%] hidden">
     <div class="flex justify-between items-center mb-5">
-        <h1 class="font-bold text-[20px] md:text-[16px]"><i class="fa-solid fa-envelope text-blue-700 hover:text-blue-800 mr-2"></i> New
-            Application Received</h1>
+        <h1 class="font-bold text-[20px] md:text-[16px]"><i class="fa-solid fa-envelope text-blue-700 hover:text-blue-800 mr-2"></i> Notifications</h1>
         <button class="n-close"><i
                 class="fa-sharp fa-solid fa-xmark font-bold text-[20px] text-red-500 hover:text-red-700"></i></button>
     </div>
@@ -22,6 +21,4 @@
             </div>
         </form>
 
-    </div>
-    <h6 class="text-center mt-3 text-slate-300">This is the available new application received</h6>
-</div>
+    

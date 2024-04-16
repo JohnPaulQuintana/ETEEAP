@@ -110,7 +110,7 @@ class DocumentController extends Controller
         Note::create(['status_id'=>$insertedDocs->id, 'notes'=>"The application has been submitted successfully. We will notify you once it has been reviewed."]);
 
         //create a alert message to eteeap department
-        AlertMessage::create(['reciever_id'=>$firstDesitination->id, 'sender_id'=>Auth::user()->id, 'notification'=>'A new application submission has been received. Please review at your earliest convenience.']);
+        AlertMessage::create(['reciever_id'=>$firstDesitination->id, 'sender_id'=>Auth::user()->id, 'notification'=>'A new application has been received. Please review at your earliest convenience.']);
         // return response()->json(['status'=>'success', 'message'=>"Your document's successfully submitted, hava a nice day!"]);
        
         // Get the administrator user

@@ -42,7 +42,7 @@ class AdditionalDocumentController extends Controller
 
             InternalMessage::create(['document_id'=>$documentId,'user_id'=>$senderId, 'sender_id'=>Auth::user()->id, 'message'=>$reuploadComment, 'action_required'=>'Additional Documents Uploaded', "message_type"=>"internal"]);
             //create a alert message to eteeap department
-            AlertMessage::create(['reciever_id'=>$senderId, 'sender_id'=>Auth::user()->id, 'notification'=>'A new application submission has been reuploaded. Please review it at your earliest convenience.']);
+            AlertMessage::create(['reciever_id'=>$senderId, 'sender_id'=>Auth::user()->id, 'notification'=>'Applicant submitted requested document. Please review.']);
 
             return Redirect::route('timeline', $documentId)->with(['status' => 'success', 'message' => 'Successfully']);
         }
