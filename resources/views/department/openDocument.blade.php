@@ -88,7 +88,7 @@
                                                 <button class="inline-block p-2 border-b-2 rounded-t-lg"
                                                     id="internal-tab" data-tabs-target="#internal" type="button"
                                                     role="tab" aria-controls="internal"
-                                                    aria-selected="false">Internal Message</button>
+                                                    aria-selected="false">Appicant Message</button>
                                             </li>
                                         @endif
 
@@ -97,32 +97,31 @@
                                             <button
                                                 class="inline-block p-2 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                                                 id="external-tab" data-tabs-target="#external" type="button"
-                                                role="tab" aria-controls="external" aria-selected="false">External
-                                                Message</button>
+                                                role="tab" aria-controls="external" aria-selected="false">Internal Message</button>
                                         </li>
 
                                         <li class="me-2">
                                             <button data-type="in-review"
-                                                class="in-review-tabs tabs-btn inline-block p-2 border-b-2 rounded-t-lg text-orange-400 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                                                class="in-review-tabs tabs-btn inline-block p-2 border rounded-t-lg text-orange-400 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                                                 type="button">Under Review</button>
                                         </li>
 
                                         <li class="me-2 rejected-tabs">
                                             <button data-type="rejected"
-                                                class="rejected-tabs tabs-btn inline-block p-2 border-b-2 rounded-t-lg text-red-500 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                                                class="rejected-tabs tabs-btn inline-block p-2 border rounded-t-lg text-red-500 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                                                 type="button">Rejected</button>
                                         </li>
 
                                         <li class="me-2 on-hold-tabs">
                                             <button data-type="on-hold"
-                                                class="on-hold-tabs tabs-btn inline-block p-2 border-b-2 rounded-t-lg text-red-500 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                                                class="on-hold-tabs tabs-btn inline-block p-2 border rounded-t-lg text-red-500 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                                                 type="button">On Hold</button>
                                         </li>
                                         {{-- {{ Auth::user()->end_user }} --}}
                                         @if (Auth::user()->end_user)
                                             <li class="me-2 approved-tabs">
                                                 <button data-type="accepted"
-                                                    class="approved-tabs tabs-btn inline-block p-2 border-b-2 rounded-t-lg text-blue-700 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                                                    class="approved-tabs tabs-btn inline-block p-2 border rounded-t-lg text-blue-700 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                                                     type="button">Approved</button>
                                             </li>
                                         @endif
