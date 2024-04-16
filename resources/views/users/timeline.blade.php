@@ -40,7 +40,7 @@
                                         @endphp
                                     @break
 
-                                    @case('in-review')
+                                    @case('under-review')
                                         @php
                                             $classNameBg = 'text-orange-400';
                                         @endphp
@@ -80,7 +80,7 @@
                                                     case 'pending':
                                                         $statusText = 'Pending';
                                                         break;
-                                                    case 'in-review':
+                                                    case 'under-review':
                                                         $statusText = 'Under Review';
                                                         break;
                                                     default:

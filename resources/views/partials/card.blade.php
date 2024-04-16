@@ -21,7 +21,7 @@
                         @case('accepted')
                             <h1 class="text-[13px] bg-green-400 rounded-lg text-center p-[2px]">
                             @break
-                        @case('in-review')
+                        @case('under-review')
                             <h1 class="text-[13px] bg-blue-900 rounded-lg text-center p-[2px]">
                             @break
                     

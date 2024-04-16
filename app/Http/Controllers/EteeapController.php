@@ -181,7 +181,7 @@ class EteeapController extends Controller
     public function endorseApplication(Request $request){
         // dd($request);
         EndorseApplication::create(['document_id'=>$request->input('document_id'), 'receiver_id'=>$request->input('endorse_user')]);
-        AlertMessage::create(['reciever_id'=>$request->input('endorse_user'), 'sender_id'=>Auth::user()->id, 'notification'=>'A new application has been submitted for your consideration. Please review it at your earliest convenience.']);
+        AlertMessage::create(['reciever_id'=>$request->input('endorse_user'), 'sender_id'=>Auth::user()->id, 'notification'=>'A new application has been submitted for your review.']);
         
         //Last department sender of application
         LastSender::create(['last_sender'=>Auth::user()->id, 'document_id'=>$request->input('document_id')]);
@@ -192,54 +192,130 @@ class EteeapController extends Controller
         return Redirect::route('eteeap.dashboard')->with(['status' => 'success', 'message' => 'Successfully forwarded']);
     }
 
-    public function updateStatusApplication($id){
-        // dd($id);
-        $notifyUser = User::where('id', $id)->first();
-        // dd($notifyUser);
-        $documents = User::has('documents')->with('documents.status', 'documents.status.notes', 'documents.tvids')->find($id);
-        // dd($documents);
-        // Assuming there's a single document associated with the user
-        // $document = $documents->documents->first();
+    public function updateStatusApplication($id)
+{
+    $notifyUser = User::where('id', $id)->first();
+    $documents = User::has('documents')->with('documents.status', 'documents.status.notes', 'documents.tvids')->find($id);
 
-        if ($documents) {
-            foreach ($documents->documents as $document) {
-                Status::where('id', $document->id)->update(['status' => 'in-review']);
-                $existingRecord = History::where('document_id', $document->id)->where('status', 'in-review')->first();
-                if (!$existingRecord) {
-                    History::create(['document_id' => $document->id, 'status' => 'in-review', 'notes' => 'Your application is under review. Thank you for your patience.']);
-                    // Build the email notification details
-                    // Set the time zone to Asia/Manila
-                    date_default_timezone_set('Asia/Manila');
-                    $details = [
-                        'subject' => "Notification: Your Application is Under Review.",
-                        'greetings' => "Hi " . $notifyUser->name,
-                        'body' => "We wanted to inform you that your application is currently under review by our team.",
-                        'body1' => "This process may take some time as we carefully evaluate each application to ensure the best possible outcome.",
-                        'body2' => "Date: " . date('Y-m-d'),
-                        'body3' => "Time: " . date('h:i A'),
-                        'body4' => "Rest assured that we will notify you promptly once a decision has been made regarding your application.",
-                        'body5' => "In the meantime, we encourage you to explore our website for more information about our organization and the opportunities we offer.",
-                        'body6' => "If you have any questions or concerns regarding your application, please feel free to contact us. Our team is here to assist you throughout the process.",
-                        'body7' => "",
-                        'body8' => "",
-                        'actiontext' => 'Go to Dashboard',
-                        'actionurl' => route('user-dashboard'),
-                        'lastline' => 'Thank you for your patience and understanding. We appreciate your interest in our organization.',
-                        'lastline2' => '',
-                        'lastline3' => '',
-                        'lastline4' => '',
-                        'lastline5' => '',
-                    ];
+    if ($documents) {
+        foreach ($documents->documents as $document) {
+            // Check the intended status based on some condition (you need to define this condition)
+            $intendedStatus = 'on-hold'; // Example condition, replace with your actual condition
 
-                    //send notification to a user 
-                    Notification::send($notifyUser, new SendEmailNotification($details));
-                }
+            // Check the current status of the document
+            $currentStatus = $document->status->status;
 
-                // dd($document->id);
-                return response()->json(['status' => 'success']);
+            // Update status and notes based on current status
+            switch ($currentStatus) {
+                case 'under-review':
+                    // Only update to 'on-hold' if it's intended, otherwise keep as 'under-review'
+                    if ($intendedStatus === 'on-hold') {
+                        Status::where('id', $document->id)->update(['status' => 'on-hold']);
+                        History::create([
+                            'document_id' => $document->id,
+                            'status' => 'on-hold',
+                            'notes' => 'Your application is currently on hold. Thank you for your patience.'
+                        ]);
+
+                        // Build and send notification for 'on-hold' status
+                        date_default_timezone_set('Asia/Manila');
+                        $details = [
+                            'subject' => "Notification: Your Application is On Hold.",
+                            'greetings' => "Hi " . $notifyUser->name,
+                            'body' => "We wanted to inform you that your application is currently on hold.",
+                            'body1' => "This may be due to additional information required or other reasons.",
+                            'body2' => "Date: " . date('Y-m-d'),
+                            'body3' => "Time: " . date('h:i A'),
+                            'body4' => "Rest assured, we will reach out to you as soon as there are updates on your application status.",
+                            'actiontext' => 'Go to Dashboard',
+                            'actionurl' => route('user-dashboard'),
+                            'lastline' => 'Thank you for your patience and understanding.',
+                        ];
+                        Notification::send($notifyUser, new SendEmailNotification($details));
+                    } else {
+                        // Keep the status as 'under-review' and create corresponding notes
+                        History::create([
+                            'document_id' => $document->id,
+                            'status' => 'under-review',
+                            'notes' => 'Your application is under review. Thank you for your patience.'
+                        ]);
+
+                        // Build and send notification for 'under-review' status
+                        date_default_timezone_set('Asia/Manila');
+                        $details = [
+                            'subject' => "Notification: Your Application is Under Review.",
+                            'greetings' => "Hi " . $notifyUser->name,
+                            'body' => "We wanted to inform you that your application is currently under review by our team.",
+                            'body1' => "This process may take some time as we carefully evaluate each application to ensure the best possible outcome.",
+                            'body2' => "Date: " . date('Y-m-d'),
+                            'body3' => "Time: " . date('h:i A'),
+                            'body4' => "Rest assured that we will notify you promptly once a decision has been made regarding your application.",
+                            'body5' => "In the meantime, we encourage you to explore our website for more information about our organization and the opportunities we offer.",
+                            'body6' => "If you have any questions or concerns regarding your application, please feel free to contact us. Our team is here to assist you throughout the process.",
+                            'body7' => "",
+                            'body8' => "",
+                            'actiontext' => 'Go to Dashboard',
+                            'actionurl' => route('user-dashboard'),
+                            'lastline' => 'Thank you for your patience and understanding. We appreciate your interest in our organization.',
+                            'lastline2' => '',
+                            'lastline3' => '',
+                            'lastline4' => '',
+                            'lastline5' => '',
+                        ];
+                        Notification::send($notifyUser, new SendEmailNotification($details));
+                    }
+                    break;
+
+                // Add more cases for other statuses if needed
+
+                default:
+                    // Handle other status cases if needed
+                    break;
             }
         }
     }
+}
+
+    
+    
+
+
+    //public function updateStatusApplication($id){
+        //$notifyUser = User::where('id', $id)->first();
+        //$documents = User::has('documents')->with('documents.status', 'documents.status.notes', 'documents.tvids')->find($id);
+    
+        //if ($documents) {
+            //foreach ($documents->documents as $document) {
+                //Status::where('id', $document->id)->update(['status' => 'on-hold']);
+                //$existingRecord = History::where('document_id', $document->id)->where('status', 'on-hold')->first();
+    
+                //if (!$existingRecord) {
+                    //History::create(['document_id' => $document->id, 'status' => 'on-hold', 'notes' => 'Your application is currently on hold.']);
+                    
+                    // Build the email notification details
+                    //date_default_timezone_set('Asia/Manila');
+                    //$details = [
+                        //'subject' => "Notification: Your Application is On Hold.",
+                        //'greetings' => "Hi " . $notifyUser->name,
+                        //'body' => "We wanted to inform you that your application is currently on hold.",
+                        //'body1' => "This may be due to additional information required or other reasons.",
+                        //'body2' => "Date: " . date('Y-m-d'),
+                       // 'body3' => "Time: " . date('h:i A'),
+                        //'body4' => "Rest assured, we will reach out to you as soon as there are updates on your application status.",
+                        //'actiontext' => 'Go to Dashboard',
+                        //'actionurl' => route('user-dashboard'),
+                       // 'lastline' => 'Thank you for your patience and understanding.',
+                    //];
+    
+                    // Send email notification to the user 
+                    //Notification::send($notifyUser, new SendEmailNotification($details));
+               // }
+    
+                //return response()->json(['status' => 'success']);
+           // }
+        //}
+   // }
+
 
     public function Application(Request $request)
     {
@@ -271,7 +347,7 @@ class EteeapController extends Controller
                             //send notification to a user 
                             Notification::send($notifyUser, new SendRejectedNotification($details));
                             break;
-                        case 'in-review':
+                        case 'under-review':
                             $notes = 'Your application is under review. Thank you for your patience.';
 
                            
@@ -300,9 +376,28 @@ class EteeapController extends Controller
                             Notification::send($notifyUser, new SendEmailNotification($details));
                             
                             break;
-                        
-                        default:
-                            # code...
+                            case 'on-hold':
+                                $notes = 'Your application is currently on hold. Thank you for your patience.';
+                                
+                                // Build and send notification for 'on-hold' status
+                                $details = [
+                                    'subject' => "Notification: Your Application is On Hold.",
+                                    'greetings' => "Hi " . $notifyUser->name,
+                                    'body' => "We wanted to inform you that your application is currently on hold.",
+                                    'body1' => "This may be due to additional information required or other reasons.",
+                                    'body2' => "Date: " . date('Y-m-d'),
+                                    'body3' => "Time: " . date('h:i A'),
+                                    'body4' => "Rest assured, we will reach out to you as soon as there are updates on your application status.",
+                                    'actiontext' => 'Go to Dashboard',
+                                    'actionurl' => route('user-dashboard'),
+                                    'lastline' => 'Thank you for your patience and understanding.',
+                                ];
+        
+                                // Send email notification for 'on-hold' status
+                                Notification::send($notifyUser, new SendEmailNotification($details));
+                                break;
+                            default:
+                                // Handle other status cases if needed
                             break;
                     }
                     

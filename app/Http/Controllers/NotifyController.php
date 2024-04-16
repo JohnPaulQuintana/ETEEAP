@@ -22,7 +22,7 @@ class NotifyController extends Controller
         // notify this user department
         $notifyUser = user::where('id', $locationNow->receiver_id)->first();
         $details = [
-            "greetings"=>"Dear ms/mr ".$notifyUser->name,
+            "greetings"=>"Dear Ms/Mr ".$notifyUser->name,
             "body" => $message,
             "lastline" => "Thank you for your attention to this matter.",
             

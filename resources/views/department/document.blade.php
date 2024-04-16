@@ -172,7 +172,7 @@
                                 let span = ''
                                 switch (row.status[0].status) {
                                     // 'pending', 'accepted', 'in-review', 'forwarded', rejected
-                                    case 'in-review':
+                                    case 'under-review':
                                         span = `<span class="capitalize font-bold text-orange-400 bg-slate-100 p-[4px] rounded-md">Under Review</span>`
                                         break;
                                     case 'pending':

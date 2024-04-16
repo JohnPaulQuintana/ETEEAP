@@ -66,7 +66,7 @@
                             </div>
                             <div class="mt-2 px-2">
                                 <span>Email : </span>
-                                <span id="d_email" class="text-blue-900 capitalize"></span>
+                                <span id="d_email" class="text-blue-900 capitalize" style="text-transform: lowercase;"></span>
                             </div>
                             <div class="mt-2 px-2">
                                 <span>Course Applied : </span>
@@ -101,8 +101,8 @@
                                         </li>
 
                                         <li class="me-2">
-                                            <button data-type="in-review"
-                                                class="in-review-tabs tabs-btn inline-block p-2 border rounded-t-lg text-orange-400 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                                            <button data-type="under-review"
+                                                class="under-review-tabs tabs-btn inline-block p-2 border rounded-t-lg text-orange-400 hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                                                 type="button">Under Review</button>
                                         </li>
 
@@ -356,8 +356,8 @@
                         $('.approved-tabs').addClass('hidden')
                         $('.on-hold-tabs').addClass('hidden')
                         break;
-                    case 'in-review':
-                        $('.in-review-tabs').addClass('hidden')
+                    case 'under-review':
+                        $('.under-review-tabs').addClass('hidden')
                         break;
                 
                     default:
@@ -637,8 +637,8 @@
                 $('.tabs-btn').attr('data-user_id', application.user_id)
                 let span = ''
                 switch (applicant.status[0].status) {
-                    // 'pending', 'accepted', 'in-review', 'forwarded', rejected
-                    case 'in-review':
+                    // 'pending', 'accepted', 'under-review', 'forwarded', rejected
+                    case 'under-review':
                         span =
                             `<span class="capitalize font-bold text-orange-400 bg-slate-100 p-[4px] rounded-md">Under Review</span>`
                         break;

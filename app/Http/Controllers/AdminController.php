@@ -30,7 +30,7 @@ class AdminController extends Controller
 
         //$alldocs = User::whereHas('documents', function ($query) {
             //$query->whereHas('status', function ($subquery) {
-                //$subquery->whereNotIn('status', ['pending', 'rejected', 'in-review', 'forwarded']);
+                //$subquery->whereNotIn('status', ['pending', 'rejected', 'under-review', 'forwarded']);
             //});
         //})->with(['documents.status', 'interview'])->get();
         $alldocs = User::whereNotIn('role', [1, 2]) // Exclude users with roles 1 and 2
@@ -44,7 +44,7 @@ class AdminController extends Controller
 
         $alldocs = User::whereHas('documents', function ($query) {
             $query->whereHas('status', function ($subquery) {
-                $subquery->whereNotIn('status', ['pending', 'accepted', 'in-review', 'forwarded']);
+                $subquery->whereNotIn('status', ['pending', 'accepted', 'under-review', 'forwarded']);
             });
         })->with(['documents.status', 'interview'])->get();
 
@@ -98,13 +98,13 @@ class AdminController extends Controller
 
         $acceptedApplicants = User::whereHas('documents', function ($query) {
             $query->whereHas('status', function ($subquery) {
-                $subquery->whereNotIn('status', ['pending', 'rejected', 'in-review']);
+                $subquery->whereNotIn('status', ['pending', 'rejected', 'under-review']);
             });
         })->with(['documents.status', 'interview'])->get();
 
         $declinedApplicants = User::whereHas('documents', function ($query) {
             $query->whereHas('status', function ($subquery) {
-                $subquery->whereNotIn('status', ['pending', 'accepted', 'in-review']);
+                $subquery->whereNotIn('status', ['pending', 'accepted', 'under-review']);
             });
         })->with(['documents.status', 'interview'])->get();
 
@@ -130,55 +130,68 @@ class AdminController extends Controller
     }
 
 
-    // call from ajax
-    public function ajaxCall(Request $request, $id)
-    {
-        // dd($id);
-        $documents = User::has('documents')->with('documents.status', 'documents.status.notes', 'documents.tvids')->where('id', $id)->get();
-        // dd($documents);
-        return response()->json(['documents' => $documents]);
-    }
-    // call from ajax update
     public function ajaxCallUpdate(Request $request, $id)
-    {
-        // dd($id);
-        $notifyUser = User::where('id', $id)->first();
-        $documents = User::has('documents')->with('documents.status', 'documents.status.notes', 'documents.tvids')->find($id);
-        // Assuming there's a single document associated with the user
-        // $document = $documents->documents->first();
+{
+    $notifyUser = User::where('id', $id)->first();
+    $documents = User::has('documents')->with('documents.status', 'documents.status.notes', 'documents.tvids')->find($id);
 
-        if ($documents) {
-            foreach ($documents->documents as $document) {
-                Status::where('id', $document->id)->update(['status' => 'in-review']);
-                $existingRecord = History::where('document_id', $document->id)->where('status', 'in-review')->first();
-                if (!$existingRecord) {
-                    History::create(['document_id' => $document->id, 'status' => 'in-review', 'notes' => Auth::user()->name . ' is viewing your documents.']);
-                    // Build the email notification details
-                    // Set the time zone to Asia/Manila
-                    date_default_timezone_set('Asia/Manila');
-                    $details = [
-                        'greetings' => "Hi " . $notifyUser->name,
-                        'body' => "We wanted to inform you that your application is currently under review by our team.",
-                        'body1' => "This process may take some time as we carefully evaluate each application to ensure the best possible outcome.",
-                        'body2' => "Date: " . date('Y-m-d'),
-                        'body3' => "Time: " . date('h:i A'),
-                        'body4' => "Rest assured that we will notify you promptly once a decision has been made regarding your application.",
-                        'body5' => "In the meantime, we encourage you to explore our website for more information about our organization and the opportunities we offer.",
-                        'body6' => "If you have any questions or concerns regarding your application, please feel free to contact us. Our team is here to assist you throughout the process.",
-                        'actiontext' => 'Go to Dashboard',
-                        'actionurl' => route('user-dashboard'),
-                        'lastline' => 'Thank you for your patience and understanding. We appreciate your interest in our organization.',
-                    ];
+    if ($documents) {
+        foreach ($documents->documents as $document) {
+            // Update status to 'under-review'
+            Status::where('id', $document->id)->update(['status' => 'under-review']);
 
-                    //send notification to a user 
-                    Notification::send($notifyUser, new SendEmailNotification($details));
-                }
+            // Check if the record already exists in History
+            $existingRecord = History::where('document_id', $document->id)->where('status', 'under-review')->first();
+            if (!$existingRecord) {
+                // Create note for 'under-review' status
+                History::create([
+                    'document_id' => $document->id,
+                    'status' => 'under-review',
+                    'notes' => 'Your application is currently under review. Thank you for your patience.'
+                ]);
 
-                // dd($document->id);
-                return response()->json(['status' => 'success']);
+                // Build and send notification for 'under-review' status
+                date_default_timezone_set('Asia/Manila');
+                $details = [
+                    'subject' => "Notification: Your Application is Under Review.",
+                    'greetings' => "Hi " . $notifyUser->name,
+                    'body' => "We wanted to inform you that your application is currently under review.",
+                    'body1' => "This may take some time as we carefully evaluate each application.",
+                    'body2' => "Date: " . date('Y-m-d'),
+                    'body3' => "Time: " . date('h:i A'),
+                    'body4' => "Rest assured, we will notify you promptly once a decision has been made.",
+                    'actiontext' => 'Go to Dashboard',
+                    'actionurl' => route('user-dashboard'),
+                    'lastline' => 'Thank you for your patience and understanding.',
+                ];
+                Notification::send($notifyUser, new SendEmailNotification($details));
+            }
+
+            // Update status to 'on-hold'
+            Status::where('id', $document->id)->update(['status' => 'on-hold']);
+
+            // Check if the record already exists in History
+            $existingRecord = History::where('document_id', $document->id)->where('status', 'on-hold')->first();
+            if (!$existingRecord) {
+                // Create note for 'on-hold' status
+                History::create([
+                    'document_id' => $document->id,
+                    'status' => 'on-hold',
+                    'notes' => 'Your application is currently on hold. Thank you for your patience.'
+                ]);
+
+                // Build and send notification for 'on-hold' status
+                $details['subject'] = "Notification: Your Application is On Hold.";
+                $details['body'] = "We wanted to inform you that your application is currently on hold.";
+                $details['body1'] = "This may be due to additional information required or other reasons.";
+                Notification::send($notifyUser, new SendEmailNotification($details));
             }
         }
+
+        return response()->json(['status' => 'success']);
     }
+}
+
 
     // accept document
     public function acceptDocs(Request $request)
