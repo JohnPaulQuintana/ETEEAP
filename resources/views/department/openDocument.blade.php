@@ -666,7 +666,7 @@
                     console.log('no message')
                     messages += `<div class="bg-slate-100 rounded-md px-2 w-full py-13">
                                         <span class="flex justify-center items-center text-[12px] font-bold text-blue-900">
-                                            No internal message available
+                                            Message thread
                                         </span>
                                 </div>
                                 `
@@ -736,7 +736,7 @@
                     emsg = `
                     <div class="bg-slate-100 rounded-md px-2 w-full py-13">
                         <span class="flex justify-center items-center text-[12px] font-bold text-blue-900">
-                            No internal message available
+                            Message thread
                         </span>
                     </div>
                     `
